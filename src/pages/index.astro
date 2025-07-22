@@ -26,17 +26,17 @@ const propiedades = await client.fetch(`*[_type == "property"]{
 			style="background-image: linear-gradient(rgba(0, 0, 0, 0.27), rgba(0,0,0,0.30)), url('/headerFondo.jpg')"
 		>
 			<div class="flex flex-col gap-5">
-				<h2 class="text-white text-6xl font-bold text-center">
+				<h2 class="text-white text-3xl md:text-6xl font-bold text-center">
 					Encontremos una hogar <br /> perfecto para ti
 				</h2>
-				<p class="text-3xl text-white font-medium">
+				<p class="text-xl px-4 text-center md:text-3xl text-white font-medium">
 					Busque con confianza con su fuente de viviendas en venta o
 					alquiler
 				</p>
-				<div class="w-full bg-white flex rounded-lg">
+				<div class="w-10/12 m-auto md:w-full bg-white flex rounded-lg">
 					<input
 						type="text"
-						class="flex-1 px-2 text-lg outline-0"
+						class="flex-1 px-2 md:text-lg outline-0"
 						placeholder="Colonia, Ciudad, Calle"
 					/>
 					<button
@@ -89,9 +89,9 @@ const propiedades = await client.fetch(`*[_type == "property"]{
 	<section
 		class="flex flex-col justify-center items-center text-slate-700 py-10"
 	>
-		<h2 class="text-3xl font-bold">Muévete hacia lo que te mueve</h2>
+		<h2 class="text-3xl font-bold text-center">Muévete hacia lo que te mueve</h2>
 		<p class="font-semibold text-xl mb-8">Lugares destacados</p>
-		<div class="flex gap-8">
+		<div class="flex gap-8 flex-wrap justify-center">
 			<div class="w-xs text-center">
 				<div class="overflow-hidden w-full h-96 rounded-xl">
 					<img
