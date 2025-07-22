@@ -1,0 +1,69 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { client } from "../../lib/sanityClient";
+
+// 👇 Esta función le dice a Astro qué slugs existen
+export async function getStaticPaths() {
+  const propiedades = await client.fetch(
+    `*[_type == "property"]{ "slug": slug.current }`,
+  );
+
+  return propiedades.map((prop: any) => ({
+    params: { slug: prop.slug },
+  }));
+}
+
+// 🟢 Este obtiene el slug actual
+const { slug } = Astro.params;
+
+// 🟢 Este busca la propiedad específica
+const propiedad = await client.fetch(
+  `
+  *[_type == "property" && slug.current == $slug][0]{
+    title,
+    description,
+    "imagenes": images[].asset->url,
+    "video": video.asset->url
+  }
+`,
+  { slug },
+);
+---
+
+<Layout title={propiedad.title}>
+  <section class="w-9/12 m-auto">
+    <a href="/" class="text-blue-600 underline">← Volver</a>
+
+    <h1 class="text-3xl font-bold mt-4 mb-2">{propiedad.title}</h1>
+    <p class="mb-4 text-gray-700">{propiedad.description}</p>
+
+    {
+      propiedad.video && (
+        <video class="w-full mb-4 rounded" controls>
+          <source src={propiedad.video} type="video/mp4" />
+          Tu navegador no soporta video.
+        </video>
+      )
+    }
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {
+        propiedad.imagenes?.map((img: string, i: number) => (
+          <img
+            src={img}
+            alt={`Imagen ${i + 1}`}
+            class="rounded w-full h-auto"
+          />
+        ))
+      }
+    </div>
+
+    <a
+      href={`https://wa.me/52XXXXXXXXXX?text=Hola, estoy interesado en esta propiedad: ${propiedad.title}`}
+      target="_blank"
+      class="inline-block bg-green-500 text-white px-4 py-2 mt-6 rounded hover:bg-green-600"
+    >
+      Contactar por WhatsApp
+    </a>
+  </section>
+</Layout>

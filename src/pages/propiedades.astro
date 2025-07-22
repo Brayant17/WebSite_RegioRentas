@@ -1,0 +1,94 @@
+---
+import Filtros from "../components/Filtros.astro";
+import Propiedad from "../components/Propiedad.astro";
+import Layout from "../layouts/Layout.astro";
+
+// este sera la pagina donde se buscaran las propiedades dependiendo de como se haya escogido o filtrado
+import { client } from "../lib/sanityClient";
+
+const propiedades = await client.fetch(`*[_type == "property"]{
+  _id,
+  title,
+  price,
+  description,
+  amenities,
+  area,
+  bedrooms,
+  bathrooms,
+  floors,
+  parking,
+  location,
+  operation,
+  publishedAt,
+  status,
+  "imagenes": images[].asset->url,
+  "slug": slug.current
+}`);
+---
+
+<Layout title="Regio Rentas / Propiedades">
+  <main class="w-9/12 m-auto flex flex-col gap-7 mt-8">
+    
+    <!-- Encabezado con buscador y filtros -->
+    <header class="flex gap-4 justify-between items-center w-full" aria-label="Buscador y filtros de propiedades">
+      <form
+        class="flex gap-1 p-2 rounded-sm w-2xs border border-gray-300 hover:border-red-700 focus-within:border-red-700"
+      >
+        <input
+          class="outline-0 w-full"
+          type="text"
+          placeholder="Ingrese municipio, colonia, calle"
+          aria-label="Buscar por ubicación"
+        />
+        <button type="submit" aria-label="Buscar">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+            <path d="M21 21l-6 -6"></path>
+          </svg>
+        </button>
+      </form>
+      <span class="font-bold">Se econtraron {propiedades.length} propiedades</span>
+      <Filtros />
+    </header>
+
+    <section></section>
+
+    <!-- Listado de propiedades -->
+    <section class="flex flex-col gap-3.5" aria-label="Listado de propiedades">
+      {
+        propiedades.map((prop: any) => (
+          <Propiedad
+            title={prop.title}
+            price={prop.price}
+            description={prop.description}
+            amenities={prop.amenities}
+            floors={prop.floors}
+            parking={prop.parking}
+            location={prop.location}
+            operation={prop.operation}
+            publishedAt={prop.publishedAt}
+            bedrooms={prop.bedrooms}
+            bathrooms={prop.bathrooms}
+            area={prop.area}
+            status={prop.status}
+            img={prop.imagenes[0]}
+            slug={prop.slug}
+          />
+        ))
+      }
+    </section>
+
+  </main>
+</Layout>

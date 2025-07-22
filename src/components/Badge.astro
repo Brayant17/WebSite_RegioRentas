@@ -1,0 +1,27 @@
+---
+const { icon, label } = Astro.props as {
+  icon: 'bed' | 'bath' | 'meter' | 'car' | 'floor';
+  label: string;
+};
+
+const icons = {
+  bed: `<path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M22 17v-3h-20"/><path d="M2 8v9"/><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z"/>`,
+  bath: `<path d="M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-3a1 1 0 0 1 1 -1z"/><path d="M6 12v-7a2 2 0 0 1 2 -2h3v2.25"/><path d="M4 21l1 -1.5"/><path d="M20 21l-1 -1.5"/>`,
+  meter: `<path d="M17 5h2a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-1a1 1 0 0 0 -1 1v1a1 1 0 0 0 1 1h2"/><path d="M4 12v6"/><path d="M4 14a2 2 0 0 1 2 -2h.5a2.5 2.5 0 0 1 2.5 2.5v3.5"/><path d="M9 15.5v-1a2.5 2.5 0 1 1 5 0v3.5"/>`,
+  car: `<path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"/>`,
+  floor: `<path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 5h-5v5h-5v5h-5v5h-5" />`
+};
+---
+
+<span class="flex gap-1 items-center bg-white text-slate-700 py-1 px-2.5 rounded-md text-sm border border-slate-300">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-4 h-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="#314158"
+    stroke-width="1.5"
+    set:html={icons[icon]}
+  />
+  {label}
+</span>

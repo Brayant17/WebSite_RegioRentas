@@ -1,0 +1,47 @@
+---
+// navbar
+import logo from "../assets/logo_regio_rentas-removebg.webp";
+---
+
+<div class="w-full border-b border-gray-200 py-4">
+    <div class="w-9/12 m-auto flex justify-between items-center">
+        <a href="/" class="flex items-center gap-1">
+            <img
+                class="w-16 object-cover aspect-square"
+                src={logo.src}
+                alt="Logo Regio Rentas servicios de inmobiliaria"
+            />
+            <h2 class="font-bold">
+                <span class="text-red-700">Regio</span> Rentas
+            </h2>
+        </a>
+        <div>
+            <ul class="flex gap-4">
+                <li
+                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                >
+                    <a href="/">Home</a>
+                </li>
+                <li
+                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                >
+                    Buscar
+                </li>
+                <li
+                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                >
+                    Rentar
+                </li>
+                <li
+                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                >
+                    <a href="/propiedades"> Propiedades </a>
+                </li>
+            </ul>
+        </div>
+        <button
+            class="bg-neutral-900 text-white px-4 py-2 rounded-lg font-bold`"
+            >Contactar</button
+        >
+    </div>
+</div>

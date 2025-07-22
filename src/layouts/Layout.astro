@@ -1,14 +1,46 @@
+---
+import NavMenu from "../components/NavMenu.astro";
+import "../styles/global.css";
+import logo from "../assets/logo_regio_rentas-removebg.webp";
+
+const { title } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es" class="h-full">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
-	<body>
-		<slot />
+	<body class="flex flex-col min-h-screen">
+		<NavMenu />
+		<main class="flex-1 py-4">
+			<slot />
+		</main>
+		<!-- Footer -->
+		<footer class="border-t border-gray-300 p-4 text-center flex">
+			<section class="basis-1 grow-1 flex justify-center border-r border-gray-300">
+				<div class="text-start flex flex-col gap-2">
+					<div class="flex items-center">
+						<img class="w-16 object-cover aspect-square" src={logo.src} alt={logo.src}>
+						<p class="font-bold"><span class="text-red-700">Regio</span> Rentas</p>
+					</div>
+					<span>Design By <a href="https://www.instagram.com/brayan_tsj/" target="_blank" class="text-orange-600 font-semibold">@brayant_tsj</a> web site: <a href="https://brayant.site/">brayant.site</a></span>
+					<!-- <p>la distancia más corta entre el paraíso y el lugar al que llamas hogar</p> -->
+					<span>© {new Date().getFullYear()} Mi Sitio - Todos los derechos reservados</span>
+				</div>
+			</section>
+			<div class="basis-1 grow-1">
+				<section class="grid grid-cols-3">
+					<div>Ver mas</div>
+					<div>Otros</div>
+					<div>Siguenos</div>
+				</section>
+			</div>
+		</footer>
 	</body>
 </html>
 
