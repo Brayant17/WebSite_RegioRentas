@@ -1,17 +1,14 @@
 ---
+import type { GetStaticPaths } from "astro";
 import Layout from "../../layouts/Layout.astro";
-import { client } from "../../lib/sanityClient";
+import { getSlugs } from "../../services/sanity"
 
-// 👇 Esta función le dice a Astro qué slugs existen
-export async function getStaticPaths() {
-  const propiedades = await client.fetch(
-    `*[_type == "property"]{ "slug": slug.current }`,
-  );
-
-  return propiedades.map((prop: any) => ({
-    params: { slug: prop.slug },
-  }));
-}
+export async const getStaticPaths = (() => {
+  const  slugs = await getSlugs.map((slug: any)=>({
+    slug : 
+  }))
+  return [];
+}) satisfies GetStaticPaths;
 
 // 🟢 Este obtiene el slug actual
 const { slug } = Astro.params;
