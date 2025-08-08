@@ -1,46 +1,90 @@
 ---
 // navbar
 import logo from "../assets/logo_regio_rentas-removebg.webp";
+import wareHouseIcon from "../assets/warehouse.png";
+import BuildingIcon from "../assets/building-tower.png";
+import houseIcon from "../assets/house.png";
+import ImageIcon from "./ImageIcon.astro";
+import cabinIcon from "../assets/cabin.png";
+import landIcon from "../assets/building.png";
 ---
-<div class="w-full border-b border-gray-200 py-4">
-    <div class="w-9/12 m-auto flex justify-between items-center">
-        <a href="/" class="flex items-center gap-1">
-            <img
-                class="w-16 object-cover aspect-square"
-                src={logo.src}
-                alt="Logo Regio Rentas servicios de inmobiliaria"
-            />
-            <h2 class="font-bold">
-                <span class="text-red-700">Regio</span> Rentas
-            </h2>
-        </a>
-        <div>
-            <ul class="flex gap-4">
-                <li
-                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                >
-                    <a href="/">Home</a>
-                </li>
-                <li
-                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                >
-                    Buscar
-                </li>
-                <li
-                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                >
-                    Rentar
-                </li>
-                <li
-                    class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                >
-                    <a href="/propiedades"> Propiedades </a>
-                </li>
-            </ul>
+
+<div class="fixed w-full">
+    <div class="w-full border-b border-gray-200 pt-4 ">
+        <div class="w-11/12 m-auto flex justify-between items-center pb-4">
+            <a href="/" class="flex items-center gap-1">
+                <img
+                    class="w-16 object-cover aspect-square"
+                    src={logo.src}
+                    alt="Logo Regio Rentas servicios de inmobiliaria"
+                />
+                <h2 class="font-bold">
+                    <!-- <span class="text-red-700">Regio</span> Rentas -->
+                </h2>
+            </a>
+            <div>
+                <ul class="flex gap-4">
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        <a href="/">Home</a>
+                    </li>
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        Buscar
+                    </li>
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        Rentar
+                    </li>
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        <a href="/propiedades"> Propiedades </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Esto hacerlo con React -->
+            <button
+                class="hidden md:inline-block bg-neutral-900 text-white px-4 py-2 rounded-lg font-bold`"
+                >Contactar</button
+            >
         </div>
-        <button
-            class="hidden md:inline-block bg-neutral-900 text-white px-4 py-2 rounded-lg font-bold`"
-            >Contactar</button
-        >
+    </div>
+    <div class="w-full border-b border-gray-200 pt-4">
+        <div class="w-11/12 min-h-fit m-auto flex justify-between">
+            <div class="h-16">
+                <div class="flex flex-row gap-8 items-center h-full">
+                    <ImageIcon>
+                        <img src={BuildingIcon.src} class="w-8" alt="" />
+                        <span>Depa</span>
+                    </ImageIcon>
+                    <ImageIcon>
+                        <img src={houseIcon.src} class="w-8" alt="" />
+                        <span>Casa</span>
+                    </ImageIcon>
+                    <ImageIcon>
+                        <img src={wareHouseIcon.src} class="w-8" alt="" />
+                        <span>Bodega</span>
+                    </ImageIcon>
+                    <ImageIcon>
+                        <img src={cabinIcon.src} class="w-8" alt="" />
+                        <span>Cabaña</span>
+                    </ImageIcon>
+                    <ImageIcon>
+                        <img src={landIcon.src} class="w-8" alt="" />
+                        <span>Terreno</span>
+                    </ImageIcon>
+                </div>
+            </div>
+            <div>
+                <div class="py-3 px-6 flex items-center gap-2 border border-gray-300 rounded-full hover:bg-red-300 cursor-pointer ease-in-out duration-100">
+                    <span>Filtros</span>
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-adjustments-horizontal"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 6l8 0" /><path d="M16 6l4 0" /><path d="M8 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 12l2 0" /><path d="M10 12l10 0" /><path d="M17 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 18l11 0" /><path d="M19 18l1 0" /></svg>   
+                </div>
+            </div>
+        </div>
     </div>
 </div>
