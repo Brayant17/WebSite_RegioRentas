@@ -1,6 +1,5 @@
 ---
-import Filtros from "../components/Filtros.astro";
-import Propiedad from "../components/Propiedad.astro";
+import CardProperty from "../components/CardProperty.astro";
 import Layout from "../layouts/Layout.astro";
 
 // este sera la pagina donde se buscaran las propiedades dependiendo de como se haya escogido o filtrado
@@ -60,7 +59,6 @@ const propiedades = await client.fetch(`*[_type == "property"]{
         </button>
       </form>
       <span class="font-bold">Se econtraron {propiedades.length} propiedades</span>
-      <Filtros />
     </header>
 
     <section></section>
@@ -69,22 +67,10 @@ const propiedades = await client.fetch(`*[_type == "property"]{
     <section class="flex flex-col gap-3.5" aria-label="Listado de propiedades">
       {
         propiedades.map((prop: any) => (
-          <Propiedad
-            title={prop.title}
-            price={prop.price}
-            description={prop.description}
-            amenities={prop.amenities}
-            floors={prop.floors}
-            parking={prop.parking}
-            location={prop.location}
-            operation={prop.operation}
-            publishedAt={prop.publishedAt}
-            bedrooms={prop.bedrooms}
-            bathrooms={prop.bathrooms}
-            area={prop.area}
-            status={prop.status}
-            img={prop.imagenes[0]}
-            slug={prop.slug}
+          <CardProperty
+            titulo={prop.title}
+            direccion={prop.description}
+            precio={prop.price}
           />
         ))
       }
