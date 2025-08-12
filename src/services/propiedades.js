@@ -2,54 +2,102 @@
 export default function propiedades() {
     return [
         {
-            titulo: "Casa moderna con jardín",
-            direccion: "Calle 45 #123, Col. Reforma",
-            precio: 320000
+            id: 1,
+            name: "Escapadita 1102",
+            location: "Isla Mujeres",
+            price: 38000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Departamento con vista al parque",
-            direccion: "Av. Central 789, Ciudad Jardín",
-            precio: 210000
+            id: 2,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Casa colonial en el centro",
-            direccion: "Calle Mayor 12, Centro Histórico",
-            precio: 275000
+            id: 3,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Penthouse en zona exclusiva",
-            direccion: "Av. del Sol 501, Zona Dorada",
-            precio: 500000
+            id: 4,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Casa de campo con terreno",
-            direccion: "Camino Real 342, Las Lomas",
-            precio: 190000
+            id: 5,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Departamento pequeño y acogedor",
-            direccion: "Calle 22 #98, Barrio Nuevo",
-            precio: 140000
+            id: 6,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Casa familiar cerca de escuelas",
-            direccion: "Calle 5 #456, Los Pinos",
-            precio: 280000
+            id: 7,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Loft moderno en zona industrial",
-            direccion: "Av. Industria 130, Parque Industrial",
-            precio: 230000
+            id: 8,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Casa con piscina y jardín amplio",
-            direccion: "Calle Jardines 89, Residencial Vista",
-            precio: 360000
+            id: 9,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
         },
         {
-            titulo: "Departamento en edificio nuevo",
-            direccion: "Av. Libertad 210, Centro Urbano",
-            precio: 200000
-        }
+            id: 10,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
+        },
+        {
+            id: 11,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
+        },
+        {
+            id: 12,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
+        },
+        {
+            id: 13,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
+        },
+        {
+            id: 14,
+            name: "Escapadita 1050",
+            location: "Cancún",
+            price: 30000,
+            images: ["https://escapadita.com.mx/images/upload/x_medium_a1c53a39531dc83dddbab1a5393c2c6a.jpeg", "https://escapadita.com.mx/images/upload/x_medium_b8866ee2229ac2879111fdb224c55aae.jpeg", "https://escapadita.com.mx/images/upload/x_medium_07148026216bc8540c388e41429e5df9.jpeg", "https://escapadita.com.mx/images/upload/x_medium_8722547779b8fa6a97ddcb69d6adeb13.jpeg", "https://escapadita.com.mx/images/upload/x_medium_28956283573ba460e62f3a3e621b40a8.jpeg","https://escapadita.com.mx/images/upload/x_medium_63310745732aac5f2b9a9a8dbf5c4510.jpeg", "https://escapadita.com.mx/images/upload/x_medium_78548749113da38f579724716f51ab86.jpeg", "https://escapadita.com.mx/images/upload/x_medium_279044136722d59ab21fc389d00d8d8f.jpeg"]
+        },
     ]
 }
