@@ -1,25 +1,25 @@
 ---
 // reestrucutrar todo
-import CardProperty from "../components/CardProperty.astro"
+import PropertyCard from "../components/PropertyCard.astro"
 import Layout from "../layouts/Layout.astro"
 import propiedades from "../services/propiedades";  
 
 type Propiedad = {
-    titulo: string;
-    direccion: String;
-    precio: number;
+	id: number;
+	name: string;
+	location: string;
+	price: number;
+    images: string[];
 }
 
 const porpiedades : Propiedad[] = propiedades()
-
-
 ---
 
 <Layout title="Index">
-	<section class="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-6">
+	<section class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
 		{
-			porpiedades.map(({titulo, direccion, precio})=>(
-				<CardProperty titulo={titulo} direccion={direccion} precio={precio} />
+			porpiedades.map((p)=>(
+				<PropertyCard property={p} />
 			))
 		}
 	</section>
