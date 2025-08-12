@@ -1,5 +1,5 @@
 ---
-import CardProperty from "../components/CardProperty.astro";
+// import CardProperty from "../components/CardProperty.astro";
 import Layout from "../layouts/Layout.astro";
 
 // este sera la pagina donde se buscaran las propiedades dependiendo de como se haya escogido o filtrado
@@ -65,7 +65,7 @@ const propiedades = await client.fetch(`*[_type == "property"]{
 
     <!-- Listado de propiedades -->
     <section class="flex flex-col gap-3.5" aria-label="Listado de propiedades">
-      {
+      <!-- {
         propiedades.map((prop: any) => (
           <CardProperty
             titulo={prop.title}
@@ -73,7 +73,7 @@ const propiedades = await client.fetch(`*[_type == "property"]{
             precio={prop.price}
           />
         ))
-      }
+      } -->
     </section>
 
   </main>
