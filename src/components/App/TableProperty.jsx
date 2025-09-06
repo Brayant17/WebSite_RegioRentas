@@ -1,6 +1,6 @@
 import { supabase } from "../../lib/supabaseClient"
 import { useEffect, useState } from "react";
-import ActionDropdown from "./ActionsDropDown";
+import ActionDropdown from "../App/ActionsDropdown";
 
 export default function TableProperty() {
 
