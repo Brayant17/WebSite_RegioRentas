@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
-    "@sanity/client": "^7.6.0",
+    "@astrojs/vercel": "^8.2.6",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.55.0",
     "@tailwindcss/vite": "^4.1.10",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "astro": "^5.9.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-dropzone": "^14.3.8",
     "swiper": "^11.2.10",
     "tailwindcss": "^4.1.10"
   }

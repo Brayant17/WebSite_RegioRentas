@@ -1,0 +1,57 @@
+---
+import LayoutApp from "../../layouts/LayoutApp.astro";
+import { supabase } from "../../lib/supabaseClient";
+
+// ReactComponent
+import ReactComponentUi from "../../components/React/ReactComponentUi";
+import TableProperty from "../../components/App/TableProperty";
+
+const { cookies, redirect } = Astro;
+
+const accessToken = cookies.get("sb-access-token");
+const refreshToken = cookies.get("sb-refresh-token");
+
+if (!accessToken || !refreshToken) {
+  return redirect("/login");
+}
+
+const { data, error } = await supabase.auth.setSession({
+  refresh_token: refreshToken.value,
+  access_token: accessToken.value,
+});
+
+if (error) {
+  cookies.delete("sb-access-token", {
+    path: "/",
+  });
+  cookies.delete("sb-refresh-token", {
+    path: "/",
+  });
+
+  return redirect("/signin");
+}
+
+const email = data?.user?.email;
+
+// console.log(data)
+// pasar la info en una prop o crear un componente de react
+---
+
+<LayoutApp title="panel de control">
+  <div class="flex justify-between w-full">
+    <h1 class="text-2xl text-slate-800 font-semibold">Mis publicaciones</h1>
+    <button
+      class="border border-slate-300 rounded-md bg-neutral-900 text-white px-4 py-2 flex gap-2 cursor-pointer"
+    >
+      <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+      Crear una publicacion
+    </button>
+  </div>
+  <!-- Tabla de publicaciones de las propiedades -->
+  <h1>Bienvenido {email}</h1>
+  <p>Estamos felices de verte aquí</p>
+  <div class="flex justify-center">
+    <TableProperty client:load />
+  </div>
+  <!-- <ReactComponentUi client:load /> -->
+</LayoutApp>

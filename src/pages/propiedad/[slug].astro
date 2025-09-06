@@ -1,69 +1,214 @@
 ---
+export const prerender = false; // No es necesario en el modo 'server'
+
+import PropertyCard from "../../components/property/PropertyCard.astro";
+import PropertyFeature from "../../components/property/PropertyFeature.astro";
 import Layout from "../../layouts/Layout.astro";
-import { client } from "../../lib/sanityClient";
+import { getPropiedad } from "../api/propiedades";
 
-// 👇 Esta función le dice a Astro qué slugs existen
-export async function getStaticPaths() {
-  const propiedades = await client.fetch(
-    `*[_type == "property"]{ "slug": slug.current }`,
-  );
+const slugPropiedad = Astro.params.slug;
 
-  return propiedades.map((prop: any) => ({
-    params: { slug: prop.slug },
-  }));
-}
+const [propiedad] = await getPropiedad(slugPropiedad);
 
-// 🟢 Este obtiene el slug actual
-const { slug } = Astro.params;
+console.log(propiedad.images);
 
-// 🟢 Este busca la propiedad específica
-const propiedad = await client.fetch(
-  `
-  *[_type == "property" && slug.current == $slug][0]{
-    title,
-    description,
-    "imagenes": images[].asset->url,
-    "video": video.asset->url
-  }
-`,
-  { slug },
-);
+const fiveImages = propiedad.images.slice(0, 5);
+
+console.log(fiveImages);
+
+// No se encontró ningún producto
+// if (!propiedad) {
+//   return new Response(null, {
+//     status: 404,
+//     statusText: 'Not found'
+//   });
+// }
+
+// El producto ya no está disponible
+// if (!product.isAvailable) {
+//   return Astro.redirect("/products", 301);
+// }
 ---
 
-<Layout title={propiedad.title}>
-  <section class="w-9/12 m-auto">
-    <a href="/" class="text-blue-600 underline">← Volver</a>
-
-    <h1 class="text-3xl font-bold mt-4 mb-2">{propiedad.title}</h1>
-    <p class="mb-4 text-gray-700">{propiedad.description}</p>
-
-    {
-      propiedad.video && (
-        <video class="w-full mb-4 rounded" controls>
-          <source src={propiedad.video} type="video/mp4" />
-          Tu navegador no soporta video.
-        </video>
-      )
-    }
-
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<Layout title={propiedad.name}>
+  <section class="w-11/12 md:w-10/12 lg:w-8/12 mx-auto">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px]"
+    >
       {
-        propiedad.imagenes?.map((img: string, i: number) => (
-          <img
-            src={img}
-            alt={`Imagen ${i + 1}`}
-            class="rounded w-full h-auto"
-          />
+        fiveImages.map((image, index) => (
+          <div
+            class={`bg-neutral-400 overflow-hidden rounded-xl aspect-[4/3] h-full ${
+              index === 0 ? "md:col-span-2 md:row-span-2" : ""
+            }`}
+          >
+            <img
+              src={image}
+              alt={`Imagen ${index + 1} de ${propiedad.name}`}
+              class="w-full h-full object-cover"
+            />
+          </div>
         ))
       }
+      <div
+        class="border border-gray-400 bg-white w-max px-6 py-2 rounded-md cursor-pointer absolute right-4 bottom-4 text-sm font-bold"
+      >
+        Ver todas
+      </div>
     </div>
-
-    <a
-      href={`https://wa.me/52XXXXXXXXXX?text=Hola, estoy interesado en esta propiedad: ${propiedad.title}`}
-      target="_blank"
-      class="inline-block bg-green-500 text-white px-4 py-2 mt-6 rounded hover:bg-green-600"
-    >
-      Contactar por WhatsApp
-    </a>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 relative">
+      <div class="col-span-2">
+        <div class="border-b border-slate-300 py-4">
+          <h1 class="text-3xl">{propiedad.name}</h1>
+        </div>
+        <!-- Component -->
+        <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
+          <h2 class="text-xl font-semibold">Características principales</h2>
+          <div class="flex flex-wrap gap-4">
+            <PropertyFeature type={propiedad.type} />
+            <PropertyFeature type={propiedad.type} />
+            <PropertyFeature type={propiedad.type} />
+            <PropertyFeature type={propiedad.type} />
+            <PropertyFeature type={propiedad.type} />
+          </div>
+        </div>
+        <!-- COmponent -->
+        <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
+          <h2 class="text-xl font-semibold">Descripción</h2>
+          <div class="flex flex-wrap gap-4">
+            <p>
+              Villa tipo alpina de lujo ideal para parejas y para celebrar
+              momentos especiales LA CABAÑA CUENTA CON: Cama matrimonial Para 2
+              personas Baño complet o AMENIDADES: Baño completo, chimenea,
+              cocina, sala, mesa exterior, jacuzzi temperatura medio ambiente
+              (costo extra por caldera $1,500) asador de gas, fogatero, Wifi.
+              Precio Extra por llevar mascota
+            </p>
+          </div>
+        </div>
+        <!-- Component -->
+        <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
+          <h2 class="text-xl font-semibold">Características de la propiedad</h2>
+          <div class="flex flex-wrap gap-8">
+            <div class="flex gap-2 items-center">
+              <div class="bg-slate-200 rounded-full p-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="icon icon-tabler icons-tabler-outline icon-tabler-wifi"
+                  ><path stroke="none" d="M0 0h24v24H0z" fill="none"
+                  ></path><path d="M12 18l.01 0"></path><path
+                    d="M9.172 15.172a4 4 0 0 1 5.656 0"></path><path
+                    d="M6.343 12.343a8 8 0 0 1 11.314 0"></path><path
+                    d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0"
+                  ></path></svg
+                >
+              </div>
+              <span>WiFi</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <div class="bg-slate-200 rounded-full p-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="icon icon-tabler icons-tabler-outline icon-tabler-pool"
+                  ><path stroke="none" d="M0 0h24v24H0z" fill="none"
+                  ></path><path
+                    d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"
+                  ></path><path
+                    d="M2 16a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"
+                  ></path><path d="M15 12v-7.5a1.5 1.5 0 0 1 3 0"></path><path
+                    d="M9 12v-7.5a1.5 1.5 0 0 0 -3 0"></path><path
+                    d="M15 5l-6 0"></path><path d="M9 10l6 0"></path></svg
+                >
+              </div>
+              <span>Alberca</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <div class="bg-slate-200 rounded-full p-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="icon icon-tabler icons-tabler-outline icon-tabler-dog"
+                  ><path stroke="none" d="M0 0h24v24H0z" fill="none"
+                  ></path><path d="M11 5h2"></path><path
+                    d="M19 12c-.667 5.333 -2.333 8 -5 8h-4c-2.667 0 -4.333 -2.667 -5 -8"
+                  ></path><path d="M11 16c0 .667 .333 1 1 1s1 -.333 1 -1h-2z"
+                  ></path><path d="M12 18v2"></path><path d="M10 11v.01"
+                  ></path><path d="M14 11v.01"></path><path
+                    d="M5 4l6 .97l-6.238 6.688a1.021 1.021 0 0 1 -1.41 .111a.953 .953 0 0 1 -.327 -.954l1.975 -6.815z"
+                  ></path><path
+                    d="M19 4l-6 .97l6.238 6.688c.358 .408 .989 .458 1.41 .111a.953 .953 0 0 0 .327 -.954l-1.975 -6.815z"
+                  ></path></svg
+                >
+              </div>
+              <span>Dog</span>
+            </div>
+          </div>
+        </div>
+        <div class="py-4 flex flex-col gap-4 border-b border-slate-300 mb-4">
+          <h2 class="text-xl font-semibold">Ubicación</h2>
+          <div class="flex flex-wrap gap-8">
+            <p>La propiedad está ubicada en {propiedad.location}</p>
+            map
+            <span
+              >La información exacta de la ubicación se proporciona por medio de
+              Whatsapp.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="col-span-1">
+        <div class="sticky top-28 md:px-4 w-full md:w-max">
+          <div class="p-4 border border-slate-300 rounded-xl w-full flex flex-col gap-8 justify-center items-center">
+            <p class="text-3xl text-slate-800 font-semibold">
+              $ {propiedad.price} MXN
+            </p>
+            <a href="#" class="border rounded-xl w-full flex items-center gap-4 py-3 px-4 bg-green-700 hover:bg-green-500 transition duration-200 text-white text-xl font-semibold">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
+              Mas información
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="w-full pb-20">
+      <h2 class="text-2xl py-8">Propiedades similares</h2>
+      <div class="flex flex-col md:flex-row w-full max-w-full gap-4 items-stretch">
+        <div class="flex-1 w-full md:w-36">
+          <PropertyCard property={propiedad} />
+        </div>
+        <div class="flex-1 w-full md:w-36">
+          <PropertyCard property={propiedad} />
+        </div>
+        <div class="flex-1 w-full md:w-36">
+          <PropertyCard property={propiedad} />
+        </div>
+        <div class="flex-1 w-full md:w-36">
+          <PropertyCard property={propiedad} />
+        </div>
+      </div>
+    </section>
   </section>
 </Layout>

@@ -1,0 +1,51 @@
+---
+// navbar
+import logo from "../../assets/logo_regio_rentas-removebg.webp";
+
+import Dropdown from "../ui/DropdownMenu.jsx";
+---
+
+<div class="fixed w-full bg-white z-30">
+    <div class="w-full border-b border-gray-200 pt-4">
+        <div class="w-11/12 m-auto flex justify-between items-center pb-4">
+            <a href="/" class="flex items-center gap-1">
+                <img
+                    class="w-16 object-cover aspect-square"
+                    src={logo.src}
+                    alt="Logo Regio Rentas servicios de inmobiliaria"
+                />
+                <h2 class="font-bold">
+                    <!-- <span class="text-red-700">Regio</span> Rentas -->
+                </h2>
+            </a>
+            <div class="hidden md:inline-block">
+                <ul class="flex gap-4">
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        <a href="/">Home</a>
+                    </li>
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        Buscar
+                    </li>
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        Rentar
+                    </li>
+                    <li
+                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
+                    >
+                        <a href="/propiedades"> Propiedades </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Esto hacerlo con React es un dropdown -->
+            <div>
+                <Dropdown client:load />
+            </div>
+        </div>
+    </div>
+</div>

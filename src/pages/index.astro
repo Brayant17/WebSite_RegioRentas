@@ -1,26 +1,10 @@
 ---
-// reestrucutrar todo
-import PropertyCard from "../components/PropertyCard.astro"
-import Layout from "../layouts/Layout.astro"
-import propiedades from "../services/propiedades";  
-
-type Propiedad = {
-	id: number;
-	name: string;
-	location: string;
-	price: number;
-    images: string[];
-}
-
-const porpiedades : Propiedad[] = propiedades()
+import Layout from "../layouts/Layout.astro";
+import App from "../components/React/App"
 ---
 
-<Layout title="Index">
-	<section class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
-		{
-			porpiedades.map((p)=>(
-				<PropertyCard property={p} />
-			))
-		}
+<Layout title="Regio Rentas">
+	<section>
+		<App client:load />
 	</section>
 </Layout>

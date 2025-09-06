@@ -1,0 +1,18 @@
+---
+import PropertyForm from "../../../../components/App/newProperty/PropertyForm";
+import LayoutApp from "../../../../layouts/LayoutApp.astro";
+
+const propertyId = Astro.params.propertyId
+---
+
+<LayoutApp title="Editar propiedad">
+    <h1 class="text-3xl text-neutral-800 font-semibold">
+        Editar la propiedad
+    </h1>
+    <span class="inline-block my-1.5 text-slate-500"
+        >Puedes editar la propiedad a continuacion</span
+    >
+    <div class="pt-4">
+        <PropertyForm propertyId={propertyId} client:only />
+    </div>
+</LayoutApp>
