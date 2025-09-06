@@ -39,12 +39,12 @@ export default function Dropdown() {
         <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
           <div className="py-1">
             <a
-              href="http://localhost:4321/login"
+              href="/login"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               Iniciar sesión
             </a>
-            <a
+            {/* <a
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
@@ -55,7 +55,7 @@ export default function Dropdown() {
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               Cerrar sesión
-            </a>
+            </a> */}
           </div>
         </div>
       )}
