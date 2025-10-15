@@ -1,0 +1,47 @@
+---
+const { estado, municipio, colonia } = Astro.props;
+
+const GOOGLE_MAPS_API_KEY = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+const mapUrl = `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(
+  `${colonia}, ${municipio}, ${estado}`,
+)}`;
+console.log(estado?.length);
+---
+
+{
+  estado !== "" || municipio !== "" ? (
+    <iframe
+      width="100%"
+      height="400"
+      style="border:0"
+      loading="lazy"
+      allowfullscreen
+      src={mapUrl}
+    />
+  ) : (
+    <div class="w-full flex flex-col gap-4 justify-center items-center text-gray-300">
+      <svg
+        width="54"
+        height="54"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-map-route"
+      >
+        <>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
+          <path d="M9 12v.01" />
+          <path d="M6 13v.01" />
+          <path d="M17 15l-4 -4" />
+          <path d="M13 15l4 -4" />
+        </>
+      </svg>
+      <span class="text-xl">Oops!</span>
+      <p class="text-2xl">No se encontro la ubicación</p>
+    </div>
+  )
+}

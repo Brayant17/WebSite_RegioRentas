@@ -1,39 +1,130 @@
 ---
-export const prerender = false; // No es necesario en el modo 'server'
+export const prerender = false;
 
-import PropertyCard from "../../components/property/PropertyCard.astro";
 import PropertyFeature from "../../components/property/PropertyFeature.astro";
 import Layout from "../../layouts/Layout.astro";
-import { getPropiedad } from "../api/propiedades";
+import { supabase } from "../../lib/supabaseClient";
+import MainFeatures from "../../components/property/MainFeatures.astro";
+import OtherFeatures from "../../components/property/OtherFeatures.astro";
+import Map from "../../components/property/Map.astro";
+import RelatedProperties from "../../components/property/RelatedProperties.astro";
+import ButtonGalleryModal from "../../components/property/ButtonGalleryModal.jsx";
+
+interface PropertyImage {
+  url: string;
+}
+
+interface Property {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  estado: string;
+  bedrooms: number;
+  bathrooms: number;
+  area: number;
+  floors: number;
+  parking: number;
+  municipio: string;
+  colonia: string;
+  property_type: string;
+  services: string[];
+  amenities?: string[];
+  property_images?: PropertyImage[];
+}
 
 const slugPropiedad = Astro.params.slug;
 
-const [propiedad] = await getPropiedad(slugPropiedad);
+const { data, error } = await supabase
+  .from("properties")
+  .select(
+    `
+    id,
+    title,
+    description,
+    price,
+    bedrooms,
+    bathrooms,
+    area,
+    floors,
+    parking,
+    estado,
+    municipio,
+    colonia,
+    property_type,
+    services,
+    amenities, 
+    property_images ( url )
+  `,
+  )
+  .eq("slug", slugPropiedad)
+  .maybeSingle<Property>();
 
-console.log(propiedad.images);
+if (error) {
+  console.error("❌ Error fetching property:", error);
+}
 
-const fiveImages = propiedad.images.slice(0, 5);
+const propiedad: Property = data ?? {
+  id: "",
+  title: "",
+  description: "",
+  price: 0,
+  bedrooms: 0,
+  bathrooms: 0,
+  area: 0,
+  floors: 0,
+  parking: 0,
+  estado: "",
+  municipio: "",
+  colonia: "",
+  property_type: "",
+  services: [],
+  amenities: [],
+  property_images: [],
+};
 
-console.log(fiveImages);
+const fiveImages: string[] = Array.isArray(propiedad.property_images)
+  ? propiedad.property_images.map((img) => img.url).slice(0, 5)
+  : [];
 
-// No se encontró ningún producto
-// if (!propiedad) {
-//   return new Response(null, {
-//     status: 404,
-//     statusText: 'Not found'
-//   });
-// }
+// 🧩 2️⃣ Propiedades similares: mismas ubicación o tipo
+const { data: similares, error: errorSimilares } = await supabase
+  .from("properties")
+  .select(
+    `
+    id,
+    title,
+    price,
+    estado,
+    municipio,
+    colonia,
+    price,
+    property_type,
+    slug,
+    property_images ( url )
+  `,
+  )
+  // ❗ criterio: mismo municipio o tipo, distinto id
+  .or(
+    `municipio.eq.${propiedad.municipio},property_type.eq.${propiedad.property_type}`,
+  )
+  .neq("id", propiedad.id)
+  .limit(4);
 
-// El producto ya no está disponible
-// if (!product.isAvailable) {
-//   return Astro.redirect("/products", 301);
-// }
+if (errorSimilares) console.error("Error fetching similares:", errorSimilares);
+
+const priceNormalized = propiedad.price.toLocaleString("es-MX", {
+  style: "currency",
+  currency: "MXN",
+  minimumFractionDigits: 0,
+});
+
 ---
 
-<Layout title={propiedad.name}>
+<Layout title={propiedad.title}>
   <section class="w-11/12 md:w-10/12 lg:w-8/12 mx-auto">
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px]"
+    <header
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px] animate-[fadeIn_1s_ease-in-out_forwards]"
     >
       {
         fiveImages.map((image, index) => (
@@ -44,134 +135,88 @@ console.log(fiveImages);
           >
             <img
               src={image}
-              alt={`Imagen ${index + 1} de ${propiedad.name}`}
+              alt={`Imagen ${index + 1} de ${propiedad.title}`}
               class="w-full h-full object-cover"
             />
           </div>
         ))
       }
       <div
-        class="border border-gray-400 bg-white w-max px-6 py-2 rounded-md cursor-pointer absolute right-4 bottom-4 text-sm font-bold"
+        class="border bg-white w-max rounded-md cursor-pointer absolute right-4 bottom-4 text-sm font-bold"
       >
-        Ver todas
+      {
+        propiedad.property_images && propiedad.property_images.length > 5 && (
+          <ButtonGalleryModal listImages={propiedad.property_images} client:load />
+        )
+      }
       </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 relative">
+    </header>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 relative animate-[fadeIn_1s_ease-in-out_forwards]"
+    >
       <div class="col-span-2">
         <div class="border-b border-slate-300 py-4">
-          <h1 class="text-3xl">{propiedad.name}</h1>
+          <h1 class="text-3xl">{propiedad.title}</h1>
         </div>
         <!-- Component -->
         <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
-          <h2 class="text-xl font-semibold">Características principales</h2>
-          <div class="flex flex-wrap gap-4">
-            <PropertyFeature type={propiedad.type} />
-            <PropertyFeature type={propiedad.type} />
-            <PropertyFeature type={propiedad.type} />
-            <PropertyFeature type={propiedad.type} />
-            <PropertyFeature type={propiedad.type} />
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <PropertyFeature
+              label="Tipo"
+              type="building"
+              value={propiedad.property_type}
+            />
+            <PropertyFeature
+              label="Recamaras"
+              type="bedrooms"
+              value={propiedad.bedrooms}
+            />
+            <PropertyFeature
+              label="Baños"
+              type="bathrooms"
+              value={propiedad.bathrooms}
+            />
+            <PropertyFeature
+              label="Estacionamiento"
+              type="parking"
+              value={propiedad.parking}
+            />
+            <PropertyFeature
+              label="Area (m²)"
+              type="area"
+              value={propiedad.area}
+            />
+            <PropertyFeature
+              label="Pisos"
+              type="floors"
+              value={propiedad.floors}
+            />
           </div>
         </div>
         <!-- COmponent -->
         <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
           <h2 class="text-xl font-semibold">Descripción</h2>
           <div class="flex flex-wrap gap-4">
-            <p>
-              Villa tipo alpina de lujo ideal para parejas y para celebrar
-              momentos especiales LA CABAÑA CUENTA CON: Cama matrimonial Para 2
-              personas Baño complet o AMENIDADES: Baño completo, chimenea,
-              cocina, sala, mesa exterior, jacuzzi temperatura medio ambiente
-              (costo extra por caldera $1,500) asador de gas, fogatero, Wifi.
-              Precio Extra por llevar mascota
+            <p class="whitespace-pre-line">
+              {propiedad.description}
             </p>
           </div>
         </div>
         <!-- Component -->
         <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
-          <h2 class="text-xl font-semibold">Características de la propiedad</h2>
-          <div class="flex flex-wrap gap-8">
-            <div class="flex gap-2 items-center">
-              <div class="bg-slate-200 rounded-full p-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-outline icon-tabler-wifi"
-                  ><path stroke="none" d="M0 0h24v24H0z" fill="none"
-                  ></path><path d="M12 18l.01 0"></path><path
-                    d="M9.172 15.172a4 4 0 0 1 5.656 0"></path><path
-                    d="M6.343 12.343a8 8 0 0 1 11.314 0"></path><path
-                    d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0"
-                  ></path></svg
-                >
-              </div>
-              <span>WiFi</span>
-            </div>
-            <div class="flex gap-2 items-center">
-              <div class="bg-slate-200 rounded-full p-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-outline icon-tabler-pool"
-                  ><path stroke="none" d="M0 0h24v24H0z" fill="none"
-                  ></path><path
-                    d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"
-                  ></path><path
-                    d="M2 16a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"
-                  ></path><path d="M15 12v-7.5a1.5 1.5 0 0 1 3 0"></path><path
-                    d="M9 12v-7.5a1.5 1.5 0 0 0 -3 0"></path><path
-                    d="M15 5l-6 0"></path><path d="M9 10l6 0"></path></svg
-                >
-              </div>
-              <span>Alberca</span>
-            </div>
-            <div class="flex gap-2 items-center">
-              <div class="bg-slate-200 rounded-full p-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-outline icon-tabler-dog"
-                  ><path stroke="none" d="M0 0h24v24H0z" fill="none"
-                  ></path><path d="M11 5h2"></path><path
-                    d="M19 12c-.667 5.333 -2.333 8 -5 8h-4c-2.667 0 -4.333 -2.667 -5 -8"
-                  ></path><path d="M11 16c0 .667 .333 1 1 1s1 -.333 1 -1h-2z"
-                  ></path><path d="M12 18v2"></path><path d="M10 11v.01"
-                  ></path><path d="M14 11v.01"></path><path
-                    d="M5 4l6 .97l-6.238 6.688a1.021 1.021 0 0 1 -1.41 .111a.953 .953 0 0 1 -.327 -.954l1.975 -6.815z"
-                  ></path><path
-                    d="M19 4l-6 .97l6.238 6.688c.358 .408 .989 .458 1.41 .111a.953 .953 0 0 0 .327 -.954l-1.975 -6.815z"
-                  ></path></svg
-                >
-              </div>
-              <span>Dog</span>
-            </div>
-          </div>
+          <h2 class="text-xl font-semibold">
+            Servicios incluidos
+          </h2>
+          <MainFeatures services={propiedad.services} />
+          { propiedad.amenities?.length ? (
+            <h2 class="text-xl font-semibold">Amenidades</h2>
+            <OtherFeatures services={propiedad.amenities} />
+          ): null }
         </div>
         <div class="py-4 flex flex-col gap-4 border-b border-slate-300 mb-4">
           <h2 class="text-xl font-semibold">Ubicación</h2>
           <div class="flex flex-wrap gap-8">
-            <p>La propiedad está ubicada en {propiedad.location}</p>
-            map
+            <Map estado={propiedad.estado} municipio={propiedad.municipio} colonia={propiedad.colonia}  />
             <span
               >La información exacta de la ubicación se proporciona por medio de
               Whatsapp.</span
@@ -181,12 +226,32 @@ console.log(fiveImages);
       </div>
       <div class="col-span-1">
         <div class="sticky top-28 md:px-4 w-full md:w-max">
-          <div class="p-4 border border-slate-300 rounded-xl w-full flex flex-col gap-8 justify-center items-center">
+          <div
+            class="p-4 border border-slate-300 rounded-xl w-full flex flex-col gap-8 justify-center items-center"
+          >
             <p class="text-3xl text-slate-800 font-semibold">
-              $ {propiedad.price} MXN
+              {priceNormalized} MXN
             </p>
-            <a href="#" class="border rounded-xl w-full flex items-center gap-4 py-3 px-4 bg-green-700 hover:bg-green-500 transition duration-200 text-white text-xl font-semibold">
-              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
+            <a
+              href="#"
+              class="border rounded-xl w-full flex items-center gap-4 py-3 px-4 bg-green-700 hover:bg-green-500 transition duration-200 text-white text-xl font-semibold"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"
+                ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                  d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path><path
+                  d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"
+                ></path></svg
+              >
               Mas información
             </a>
           </div>
@@ -195,20 +260,19 @@ console.log(fiveImages);
     </div>
     <section class="w-full pb-20">
       <h2 class="text-2xl py-8">Propiedades similares</h2>
-      <div class="flex flex-col md:flex-row w-full max-w-full gap-4 items-stretch">
-        <div class="flex-1 w-full md:w-36">
-          <PropertyCard property={propiedad} />
-        </div>
-        <div class="flex-1 w-full md:w-36">
-          <PropertyCard property={propiedad} />
-        </div>
-        <div class="flex-1 w-full md:w-36">
-          <PropertyCard property={propiedad} />
-        </div>
-        <div class="flex-1 w-full md:w-36">
-          <PropertyCard property={propiedad} />
-        </div>
-      </div>
+      <RelatedProperties property_type={propiedad.property_type} propertyID={propiedad.id} />
     </section>
   </section>
+  </section>
+
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
 </Layout>

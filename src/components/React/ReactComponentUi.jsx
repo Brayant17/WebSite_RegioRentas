@@ -40,7 +40,7 @@ export default function UserProfile() {
     }
 
     // estado del user para ver si rendereiza al tiempo de servidor
-    console.log(user);
+    // console.log(user);
 
     fetchUser()
   }, []) // solo se ejecuta al montar

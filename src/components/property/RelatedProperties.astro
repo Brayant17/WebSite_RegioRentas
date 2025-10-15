@@ -1,0 +1,77 @@
+---
+import PropertyCard from "./PropertyCard.astro";
+import { supabase } from "../../lib/supabaseClient";
+
+// Recibes property_type y propertyID desde Astro.props
+const { property_type, propertyID } = Astro.props as {
+    property_type: string;
+    propertyID: string;
+};
+
+interface Property {
+    id: string;
+    title: string;
+    price: number;
+    estado: string;
+    municipio: string;
+    colonia: string;
+    property_type: string;
+    property_images?: { url: string }[];
+    images?: string[];
+    slug: string;
+}
+
+// Traemos propiedades del mismo tipo
+const { data: similares, error } = await supabase
+    .from("properties")
+    .select(
+        `
+    id,
+    title,
+    price,
+    estado,
+    municipio,
+    colonia,
+    property_type,
+    property_images ( url ),
+    slug
+  `,
+    )
+    .eq("property_type", property_type)
+    .limit(4); // puedes traer más y luego filtrar una
+
+if (error) {
+    console.error("❌ Error fetching related properties:", error);
+}
+
+// Normalizamos, filtramos y limitamos a 3 propiedades
+const similaresNormalized = (similares || [])
+  // si propertyID existe, excluye esa propiedad
+  .filter((p: Property) => !propertyID || p.id !== propertyID)
+  // normaliza imágenes
+  .map((p: Property) => ({
+    ...p,
+    images: p.property_images
+      ? p.property_images.map((img) => img.url)
+      : [],
+  }))
+  // limitamos a 3 propiedades
+  .slice(0, 3);
+
+---
+
+<section>
+    {
+        similaresNormalized.length > 0 ? (
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {similaresNormalized.map((prop) => (
+                    <PropertyCard property={prop} />
+                ))}
+            </div>
+        ) : (
+            <p class="text-gray-600">
+                No se encontraron propiedades relacionadas.
+            </p>
+        )
+    }
+</section>

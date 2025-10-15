@@ -26,8 +26,6 @@ export const initialPropertyData = {
   parking: 0,
 
   // Estado físico
-  year_built: null,   // tipo Date o null
-  condition: "",      // usar valores de CONDITIONS
   furnished: false,
 
   // Servicios y amenidades
@@ -45,8 +43,7 @@ export const initialPropertyData = {
   plans: "",
 
   // Estado de publicación
-  status: "available", // usar valores de STATUS
+  status: "Disponible", // usar valores de STATUS
   user_id: "",
-  published_at: null,   // Date o null
   available_from: null  // Date o null
 };

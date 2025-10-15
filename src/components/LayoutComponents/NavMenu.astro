@@ -18,7 +18,7 @@ import Dropdown from "../ui/DropdownMenu.jsx";
                     <!-- <span class="text-red-700">Regio</span> Rentas -->
                 </h2>
             </a>
-            <div class="hidden md:inline-block">
+            <div class="hidden">
                 <ul class="flex gap-4">
                     <li
                         class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
@@ -44,7 +44,13 @@ import Dropdown from "../ui/DropdownMenu.jsx";
             </div>
             <!-- Esto hacerlo con React es un dropdown -->
             <div>
-                <Dropdown client:load />
+                <!-- <Dropdown client:load /> -->
+                <a
+                    href="/login"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                    Iniciar sesión
+                </a>
             </div>
         </div>
     </div>

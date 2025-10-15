@@ -66,7 +66,7 @@ export default function NewProperty({ propertyId }) {
             fetchProperty();
         }
     }, [propertyId]);
-    
+
     // Revisar esta funcion asincrona para subir las imagenes a supabase
     // Guardar (Editar o Crear)
     const handleSave = async () => {
@@ -194,7 +194,7 @@ export default function NewProperty({ propertyId }) {
                     <h4 className="font-semibold">Tipo y Características</h4>
                     <div className="flex flex-wrap w-full justify-between">
                         <TypePropertyOperation propertyType={propertyData.property_type} operation={propertyData.operation} setterState={setPropertyData} />
-                        <PhysicalState yearBuilt={propertyData.year_built} condition={propertyData.condition} furnished={propertyData.furnished} setterState={setPropertyData} />
+                        <PhysicalState furnished={propertyData.furnished} setterState={setPropertyData} />
                     </div>
                     <div className="flex w-full">
                         <Features price={propertyData.price} area={propertyData.area} floors={propertyData.floors} bedrooms={propertyData.bedrooms} bathrooms={propertyData.bathrooms} parking={propertyData.parking} setterState={setPropertyData} />
@@ -223,7 +223,7 @@ export default function NewProperty({ propertyId }) {
             </div>
             <div className="flex-1/5 mx-4">
                 <div className="p-2 border border-gray-300 rounded flex flex-col gap-4">
-                    <Status setterStatus={setPropertyData} />
+                    <Status status={propertyData.status} setterStatus={setPropertyData} />
                     <Fechas availableFrom={propertyData.available_from} setterState={setPropertyData} />
                     <button
                         className="cursor-pointer border bg-neutral-800 text-white rounded-md p-2.5 hover:bg-neutral-950 duration-300 flex justify-center items-center gap-2"

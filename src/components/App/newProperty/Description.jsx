@@ -6,7 +6,6 @@ export default function Description({ description, setterState }) {
 
     const handleChangeDescription = (e) => {
         const newDescription = e.target.value;
-        console.log(newDescription);
         setterState(prev => (
             { ...prev, description: newDescription }
         ));

@@ -1,7 +1,5 @@
 export default function Fechas({ availableFrom, setterState }) {
 
-    // console.log(availableFrom)
-
     const handleChange = (e) => {
         const date = e.target.value;
         setterState(prev => (

@@ -1,23 +1,26 @@
 ---
 // React Component
-import PropertySlider from "./PropertySlider.jsx"
+import PropertySlider from "./PropertySlider.jsx";
 // IMG Example
 interface Props {
-    property: any
+    property: any;
 }
-const { property } = Astro.props
-
-console.log(property)
+const { property } = Astro.props;
 ---
 
-
 <article class="rounded-lg w-full">
-    <div class="w-full aspect-[4/3] sm:aspect-[3/2] rounded-xl overflow-hidden">
-        <PropertySlider client:load images={property.images} name=test />
-    </div>
-    <div class="py-1.5 px-4">
-        <span class="font-normal text-slate-700 font-display text-sm">{property.name}</span>
-        <p class="font-bold text-slate-700">{property.location}</p>
-        <span class="font-bold text-slate-700">{property.price} MXN / Noche aprox</span>
-    </div>
+    <a href={`/propiedad/${property.slug}`} class="block">
+        <div
+            class="w-full aspect-[4/3] sm:aspect-[3/2] rounded-xl overflow-hidden"
+        >
+            <PropertySlider client:load images={property.images} name="test" />
+        </div>
+        <div class="py-1.5 px-4">
+            <span class="font-normal text-slate-700 font-display text-sm"
+                >{property.title}</span
+            >
+            <p class="font-bold text-slate-700">{property.location}</p>
+            <span class="font-bold text-slate-700">{property.price} MXN</span>
+        </div>
+    </a>
 </article>

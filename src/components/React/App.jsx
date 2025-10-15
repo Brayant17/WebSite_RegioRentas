@@ -6,7 +6,6 @@ import PropertyList from "../property/PropertyList.jsx";
 
 export default function App() {
 
-    const [filter, setFilter] = useState({})
     
     return (
         <FiltersProvider>

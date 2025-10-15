@@ -1,0 +1,18 @@
+---
+const otherServices = Astro.props.services as string[];
+---
+<section>
+    {otherServices && otherServices.length > 0 ? (
+        <div class="flex flex-wrap gap-3">
+            {
+                otherServices.map((service) => (
+                    <div class="p-2.5 w-max rounded-md border border-slate-300 text-center">
+                        <p class="wrap-break-word text-xs font-medium">{service.charAt(0).toUpperCase() + service.slice(1).toLowerCase()}</p>
+                    </div>
+                ))
+            }
+        </div>
+    ) : (
+        <p class="text-gray-500">No hay amenidades disponibles.</p>
+    )}
+</section>

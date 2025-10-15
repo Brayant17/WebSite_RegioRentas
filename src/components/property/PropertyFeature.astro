@@ -1,30 +1,21 @@
 ---
-const {type} = Astro.props
+import { icons } from "./icons";
+
+interface Props {
+  type: keyof typeof icons; // 'building' | 'user' | 'bedrooms'
+  value: string | number;
+  label: string;
+}
+
+const { type, value, label } = Astro.props as Props;
+
+const icon = icons[type] || icons.building;
 ---
 
-<div class="flex p-4 rounded-md border border-slate-300 w-max gap-4">
-    <aside>
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-building"
-            ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
-                d="M3 21l18 0"></path><path d="M9 8l1 0"></path><path
-                d="M9 12l1 0"></path><path d="M9 16l1 0"></path><path
-                d="M14 8l1 0"></path><path d="M14 12l1 0"></path><path
-                d="M14 16l1 0"></path><path
-                d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"></path></svg
-        >
-    </aside>
-    <div class="flex flex-col">
-        <p>Tipo de propiedad</p>
-        <span class="text-slate-700">{type}</span>
+<div class="p-4 rounded-md border border-slate-300 h-full items-center gap-4">
+    <p class="wrap-break-word mb-2.5 text-sm font-semibold">{label}</p>
+    <div class="flex gap-2 items-center">
+        <aside set:html={icon} class="w-6 h-6 text-slate-700"></aside>
+        <span class="text-slate-700 wrap-break-word">{value}</span>
     </div>
 </div>

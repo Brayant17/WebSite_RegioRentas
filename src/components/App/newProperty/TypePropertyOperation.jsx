@@ -23,6 +23,7 @@ export default function TypePropertyOperation({ propertyType, operation, setterS
                             <option value="" disabled></option>
                             <option value="Departamento">Departamento</option>
                             <option value="Casa">Casa</option>
+                            <option value="Bodega">Bodega</option>
                             <option value="Cabaña">Cabaña</option>
                             <option value="Terreno">Terreno</option>
                         </select>

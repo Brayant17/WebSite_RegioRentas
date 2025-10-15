@@ -10,9 +10,9 @@ function PropertyCard({ id, property, slug }) {
                 </a>
             </div>
             <div className="py-1.5 px-4">
-                <span className="font-normal text-slate-700 font-display text-sm">{property.name} id:{id}</span>
-                <p className="font-bold text-slate-700">{property.location}</p>
-                <span className="font-bold text-slate-700">{property.price} MXN / Noche aprox</span>
+                <span className="font-normal text-slate-700 font-display text-sm">{property.title}</span>
+                <p className="font-bold text-slate-700">{property.municipio} {property.colonia}</p>
+                <span className="font-bold text-slate-700">{property.price} MXN</span>
             </div>
         </article>
     )

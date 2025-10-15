@@ -1,0 +1,25 @@
+---
+import * as icon from "../../components/property/icons.js";
+
+interface Props {
+  services: string[]; // e.g., ['pool', 'gym', 'wifi']
+} 
+
+const { services } = Astro.props as Props;
+---
+
+<div class="flex flex-wrap gap-8">
+    {
+        services.map((service) => (
+            <div class="flex gap-2 items-center">
+                <div class="">
+                    <div set:html={icon.icons[service as keyof typeof icon.icons] ?? null} />
+                </div>
+                <span class="text-sm">
+                    {service.charAt(0).toUpperCase() +
+                        service.slice(1).toLowerCase()}
+                </span>
+            </div>
+        ))
+    }
+</div>
