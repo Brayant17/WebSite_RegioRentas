@@ -14,7 +14,7 @@ export default function PropertyList({ limit = 24 }) {
   const [hasMore, setHasMore] = useState(true);
   const loadRef = useRef(null);
 
-  // 🔥 Fetch desde Supabase con JOIN a property_images
+  // Fetch desde Supabase con JOIN a property_images
   const fetchProperties = async (currentPage, currentType) => {
     if (!currentType) return;
 
@@ -127,7 +127,7 @@ export default function PropertyList({ limit = 24 }) {
           exit={{ opacity: 0 }}
         >
           <motion.section
-            className="w-11/12 m-auto py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+            className="w-11/12 m-auto py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
