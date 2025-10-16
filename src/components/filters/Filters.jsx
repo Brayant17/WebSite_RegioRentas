@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import ButtonModal from "../ui/ButtonModal";
+import ModalFilters from "./ModalFilters"
 import { useFilters } from "../filters/FilterContext";
 import MenuIcons from "./MenuIcons";
 
@@ -26,14 +26,14 @@ export default function Filters() {
             {isActive && (
                 <motion.div
                     key="filters-bar"
-                    className="flex flex-row justify-between items-center px-4 md:px-8 border-b border-gray-200 bg-white sticky top-0 z-10"
+                    className="flex flex-row justify-between items-center px-4 md:px-20 border-b border-gray-200 bg-white sticky top-0 z-10"
                     variants={filterVariants}
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                 >
                     <MenuIcons handleSelect={handleSelect} filters={filters} />
-                    <ButtonModal title={"Filtros"}>
+                    <ModalFilters title={"Filtros"}>
                         <span className="hidden md:block">Filtros</span>
                         <svg
                             width="24"
@@ -57,7 +57,7 @@ export default function Filters() {
                             <path d="M4 18h11" />
                             <path d="M19 18h1" />
                         </svg>
-                    </ButtonModal>
+                    </ModalFilters>
                 </motion.div>
             )}
         </AnimatePresence>
