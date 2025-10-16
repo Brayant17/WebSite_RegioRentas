@@ -55,7 +55,7 @@ export default function FirstMenu() {
             </motion.div>
 
             <motion.img
-                className="absolute bottom-0 left-0"
+                className="absolute bottom-0 left-0 -z-10 w-full object-cover"
                 src="/mockup-city.png"
                 alt=""
                 variants={imgVariants}
