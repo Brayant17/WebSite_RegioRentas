@@ -2,8 +2,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { PropertyCard } from "./PropertyCard.jsx";
 import { useFilters } from "../filters/FilterContext.jsx";
-import FirstMenu from "./FirtMenu.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import Filters from "../filters/Filters.jsx"
 
 export default function PropertyList({ limit = 24 }) {
   const { filters } = useFilters();
@@ -16,37 +16,40 @@ export default function PropertyList({ limit = 24 }) {
 
   // Fetch desde Supabase con JOIN a property_images
   const fetchProperties = async (currentPage, currentType) => {
-    if (!currentType) return;
-
     setLoading(true);
     const start = currentPage * limit;
     const end = start + limit - 1;
 
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from("properties")
         .select(`
-          id,
-          title,
-          description,
-          price,
-          municipio,
-          colonia,
-          slug,
-          property_type,
-          property_images (
-            url
-          )
-        `)
-        .eq("property_type", currentType)
+        id,
+        title,
+        description,
+        price,
+        municipio,
+        colonia,
+        slug,
+        property_type,
+        property_images (
+          url
+        )
+      `)
         .range(start, end);
+
+      // 👇 Si hay filtro, aplicamos el .eq()
+      if (currentType) {
+        query = query.eq("property_type", currentType);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error("Error al obtener datos de Supabase:", error);
         return;
       }
 
-      // Estructura final: cada propiedad tendrá un array property_images con las URLs
       if (currentPage === 0) {
         setProperties(data);
       } else {
@@ -61,17 +64,18 @@ export default function PropertyList({ limit = 24 }) {
     setLoading(false);
   };
 
+
   useEffect(() => {
-    if (!filters.type) return;
     fetchProperties(page, filters.type);
   }, [page, filters.type]);
 
   useEffect(() => {
     setPage(0);
+    setHasMore(true);
   }, [filters.type]);
 
   useEffect(() => {
-    if (!hasMore || loading || !filters.type) return;
+    if (!hasMore || loading) return;
     if (!loadRef.current) return;
 
     const observer = new IntersectionObserver(
@@ -85,13 +89,7 @@ export default function PropertyList({ limit = 24 }) {
 
     observer.observe(loadRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, filters.type]);
-
-  const fadeVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-    exit: { opacity: 0, y: -30, transition: { duration: 0.4, ease: "easeIn" } }
-  };
+  }, [hasMore, loading, page]);
 
   const containerVariants = {
     hidden: {},
@@ -107,51 +105,38 @@ export default function PropertyList({ limit = 24 }) {
 
   return (
     <AnimatePresence mode="wait">
-      {!filters.type ? (
-        <motion.div
-          key="first-menu"
-          className="w-full h-screen"
-          variants={fadeVariants}
+      <motion.div
+        key="main-content"
+        className="w-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.section
+          className="w-11/12 m-auto py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={containerVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
         >
-          <FirstMenu />
-        </motion.div>
-      ) : (
-        <motion.div
-          key="main-content"
-          className="w-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.section
-            className="w-11/12 m-auto py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            {properties.map((property) => (
-              <motion.div key={property.id} variants={itemVariants}>
-                <PropertyCard
-                  key={property.id}
-                  id={property.id}
-                  property={{
-                    ...property,
-                    images: property.property_images?.map((img) => img.url) || []
-                  }}
-                  slug={property.slug}
-                />
-              </motion.div>
-            ))}
-          </motion.section>
+          {properties.map((property) => (
+            <motion.div key={property.id} variants={itemVariants}>
+              <PropertyCard
+                key={property.id}
+                id={property.id}
+                property={{
+                  ...property,
+                  images: property.property_images?.map((img) => img.url) || []
+                }}
+                slug={property.slug}
+              />
+            </motion.div>
+          ))}
+        </motion.section>
 
-          {loading && <p className="text-center py-4">Cargando...</p>}
-          {hasMore && !loading && <div ref={loadRef} />}
-        </motion.div>
-      )}
+        {loading && <p className="text-center py-4">Cargando...</p>}
+        {hasMore && !loading && <div ref={loadRef} />}
+      </motion.div>
     </AnimatePresence>
   );
 }
