@@ -6,7 +6,7 @@ import logo from "../../assets/logo_regio_rentas-removebg.webp";
 <div class="fixed w-full bg-white z-30">
     <div class="w-full border-b border-gray-200 pt-4">
         <div class="w-11/12 m-auto flex justify-between items-center pb-4">
-            <a href="/" class="flex items-center gap-1">
+            <a href="/" class="flex-1 flex items-center gap-1">
                 <img
                     class="w-16 object-cover aspect-square"
                     src={logo.src}
@@ -16,38 +16,24 @@ import logo from "../../assets/logo_regio_rentas-removebg.webp";
                     <!-- <span class="text-red-700">Regio</span> Rentas -->
                 </h2>
             </a>
-            <div class="hidden">
-                <ul class="flex gap-4">
-                    <li
-                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                    >
-                        <a href="/">Home</a>
-                    </li>
-                    <li
-                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                    >
-                        Buscar
-                    </li>
-                    <li
-                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                    >
-                        Rentar
-                    </li>
-                    <li
-                        class="font-bold cursor-pointer border-b-2 border-white hover:border-b-2 hover:border-red-700"
-                    >
-                        <a href="/propiedades"> Propiedades </a>
-                    </li>
-                </ul>
+            <div class="flex-1 text-xl">
+                <h2>🏡 Tu próximo hogar, a un clic.</h2>
             </div>
             <!-- Esto hacerlo con React es un dropdown -->
-            <div>
+            <div class="flex gap-2.5">
                 <!-- <Dropdown client:load /> -->
+                <!-- Botón secundario más neutro -->
                 <a
                     href="/login"
-                    class="block px-4 py-2 text-sm border border-gray-400 rounded text-gray-800 hover:bg-gray-100"
+                    class="block px-4 py-2 text-sm font-semibold text-gray-800 rounded transition-all duration-200 hover:-translate-y-0.5"
                 >
                     Iniciar sesión
+                </a>
+                <a
+                    href="/login"
+                    class="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
+                >
+                    Publicar propiedad
                 </a>
             </div>
         </div>
