@@ -1,48 +1,45 @@
-# Astro Starter Kit: Basics
+# 🏠 Regio Rentas
 
-```sh
-npm create astro@latest -- --template basics
-```
+**Regio Rentas** es una plataforma tipo *marketplace inmobiliario* donde los usuarios pueden **publicar, explorar y filtrar propiedades** en diferentes zonas.  
+Su objetivo es facilitar la conexión entre quienes ofrecen propiedades y quienes buscan un lugar ideal para rentar o comprar.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+🌐 **Demo en producción:** [https://regiorentas.mx](https://regiorentas.mx)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## 🚀 Características principales
 
-## 🚀 Project Structure
+- 🏡 Publicación de propiedades por parte de usuarios.
+- 🔍 Búsqueda avanzada por zona, tipo de propiedad y filtros personalizados.
+- 🧭 Feed dinámico con listados actualizados.
+- ⚡ Interfaz moderna y rápida construida con **Astro + React**.
+- 📱 Diseño adaptable (responsive) para todos los dispositivos.
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## 🧠 Tecnologías utilizadas
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+| Tecnología | Uso principal |
+|-------------|----------------|
+| **Astro** | Framework principal para el sitio web |
+| **React** | Componentes interactivos y UI |
+| **Node.js / npm** | Gestión de dependencias y scripts de desarrollo |
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## 🛠️ Instalación y ejecución
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Clona el repositorio y ejecuta los siguientes comandos:
 
-## 👀 Want to learn more?
+```bash
+# Clonar el proyecto
+git clone https://github.com/Brayant17/regio-rentas.git
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Entrar al directorio
+cd regio-rentas
+
+# Instalar dependencias
+npm install
+
+# Iniciar entorno de desarrollo
+npm run dev
