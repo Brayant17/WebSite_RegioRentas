@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { PropertyCard } from "./PropertyCard.jsx";
 import { useFilters } from "../filters/FilterContext.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
-import Filters from "../filters/Filters.jsx"
+import SkeletonCard from "./SkeletonCard";
 
 export default function PropertyList({ limit = 24 }) {
   const { filters } = useFilters();
@@ -15,7 +15,7 @@ export default function PropertyList({ limit = 24 }) {
   const loadRef = useRef(null);
 
   // Fetch desde Supabase con JOIN a property_images
-  const fetchProperties = async (currentPage, currentType) => {
+  const fetchProperties = async (currentPage, filters) => {
     setLoading(true);
     const start = currentPage * limit;
     const end = start + limit - 1;
@@ -38,10 +38,10 @@ export default function PropertyList({ limit = 24 }) {
       `)
         .range(start, end);
 
-      // 👇 Si hay filtro, aplicamos el .eq()
-      if (currentType) {
-        query = query.eq("property_type", currentType);
-      }
+      // 🧠 Aplica los filtros si existen
+      if (filters.type) query = query.eq("property_type", filters.type);
+      if (filters.operation) query = query.eq("operation", filters.operation);
+      if (filters.zone) query = query.eq("zona", filters.zone);
 
       const { data, error } = await query;
 
@@ -66,13 +66,13 @@ export default function PropertyList({ limit = 24 }) {
 
 
   useEffect(() => {
-    fetchProperties(page, filters.type);
-  }, [page, filters.type]);
+    fetchProperties(page, filters);
+  }, [page, filters]);
 
   useEffect(() => {
     setPage(0);
     setHasMore(true);
-  }, [filters.type]);
+  }, [filters]);
 
   useEffect(() => {
     if (!hasMore || loading) return;
@@ -119,22 +119,38 @@ export default function PropertyList({ limit = 24 }) {
           animate="visible"
           exit="exit"
         >
-          {properties.map((property) => (
-            <motion.div key={property.id} variants={itemVariants}>
-              <PropertyCard
-                key={property.id}
-                id={property.id}
-                property={{
-                  ...property,
-                  images: property.property_images?.map((img) => img.url) || []
-                }}
-                slug={property.slug}
-              />
-            </motion.div>
-          ))}
+          {/* 👇 Aquí va tu bloque de render condicional */}
+          {loading && properties.length === 0 ? (
+            Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))
+          ) : properties?.length > 0 ? (
+            properties.map((property) => (
+              <motion.div key={property.id} variants={itemVariants}>
+                <PropertyCard
+                  key={property.id}
+                  id={property.id}
+                  property={{
+                    ...property,
+                    images: property.property_images?.map((img) => img.url) || []
+                  }}
+                  slug={property.slug}
+                />
+              </motion.div>
+            ))
+          ) : (
+            !loading && (
+              <div className="col-span-full flex flex-col items-center justify-center py-16 text-gray-500">
+                <p className="text-lg font-medium">No se encontraron resultados</p>
+                <p className="text-sm text-gray-400">Intenta ajustar tus filtros.</p>
+              </div>
+            )
+          )}
         </motion.section>
 
-        {loading && <p className="text-center py-4">Cargando...</p>}
+        {loading && properties.length > 0 && (
+          <p className="text-center py-4">Cargando más...</p>
+        )}
         {hasMore && !loading && <div ref={loadRef} />}
       </motion.div>
     </AnimatePresence>
