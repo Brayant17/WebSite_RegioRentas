@@ -76,7 +76,12 @@ export default function Filters() {
                 </div>
                 <div>
                     <div>
-                        <button className="inline-flex items-center gap-2 px-4 py-2.5 md:py-2 bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors duration-200 ease-in-out rounded-lg text-white text-sm md:text-base font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 cursor-pointer">
+                        <a
+                            href="https://wa.me/5218119995314?text=¡Hola!%20Estoy%20interesado%20en%20más%20información%20sobre%20las%20propiedades."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Contactar por WhatsApp"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 md:py-2 bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors duration-200 ease-in-out rounded-lg text-white text-sm md:text-base font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 cursor-pointer">
                             <svg
                                 width="20"
                                 height="20"
@@ -93,7 +98,7 @@ export default function Filters() {
                                 <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
                             </svg>
                             <span>Contactar</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </motion.div>
