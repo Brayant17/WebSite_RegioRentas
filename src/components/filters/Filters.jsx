@@ -77,27 +77,10 @@ export default function Filters() {
                 <div>
                     <div>
                         <a
-                            href="https://wa.me/5218119995314?text=¡Hola!%20Estoy%20interesado%20en%20más%20información%20sobre%20las%20propiedades."
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Contactar por WhatsApp"
-                            className="inline-flex items-center gap-2 px-4 py-2.5 md:py-2 bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors duration-200 ease-in-out rounded-lg text-white text-sm md:text-base font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 cursor-pointer">
-                            <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="icon icon-tabler icon-tabler-brand-whatsapp"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
-                                <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
-                            </svg>
-                            <span>Contactar</span>
+                            href="/login"
+                            class="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
+                        >
+                            Publicar propiedad
                         </a>
                     </div>
                 </div>
