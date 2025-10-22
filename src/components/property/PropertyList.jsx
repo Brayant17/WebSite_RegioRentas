@@ -41,7 +41,12 @@ export default function PropertyList({ limit = 24 }) {
       // 🧠 Aplica los filtros si existen
       if (filters.type) query = query.eq("property_type", filters.type);
       if (filters.operation) query = query.eq("operation", filters.operation);
-      if (filters.zone) query = query.eq("zona", filters.zone);
+      if (filters.zone){
+        const zone = filters.zone;
+        query = query.or(
+          `estado.ilike.%${zone}%,municipio.ilike.%${zone}%,colonia.ilike.%${zone}%,zona.ilike.%${zone}%`
+        );
+      }
 
       const { data, error } = await query;
 
