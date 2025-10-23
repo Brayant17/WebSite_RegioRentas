@@ -1,54 +1,77 @@
 ---
 import logo from "../../assets/logo_regio_rentas-removebg.webp";
-import FooterSVG from "./FooterSVG.astro";
 ---
 
-<!-- <FooterSVG /> -->
-<footer class="w-fill pb-8 pt-20 bg-slate-800 text-white m-0">
-    <div class="w-11/12 md:w-8/12 m-auto rounded-2xl">
+<footer
+    class="bg-neutral-900 text-white pt-20 pb-8 border-t border-neutral-800"
+>
+    <div class="flex flex-col gap-2 w-11/12 md:w-8/12 m-auto">
         <section
-            class="flex flex-col md:flex-row justify-between items-center pb-2"
+            class="flex flex-col md:flex-row justify-between items-center pb-8"
         >
-            <div class="w-24 h-24 bg-slate-100 rounded-full p-1 m-1 md:m-0">
+            <div class="w-24 h-24 bg-slate-100 rounded-full p-1.5 mb-4 md:m-0">
                 <img
                     src={logo.src}
-                    alt="Logo pie de pagina Regio Rentas"
+                    alt="Logo Regio Rentas"
                     class="w-full h-full object-contain"
                 />
             </div>
-            <div class="flex flex-col gap-2 items-center md:items-start">
-                <h6 class="font-semibold">Regio Rentas</h6>
-                <a class="text-slate-400" href="#">Acerca de</a>
-                <a class="text-slate-400" href="">Contáctenos</a>
+
+            <div class="flex flex-col space-y-1 items-center md:items-start">
+                <h6
+                    class="font-semibold text-red-500 text-sm uppercase tracking-wide mb-1"
+                >
+                    Regio Rentas
+                </h6>
+                <a class="text-gray-400 hover:text-white transition" href="/"
+                    >Home</a
+                >
+                <a class="text-gray-400 hover:text-white transition" href="#"
+                    >Acerca de</a
+                >
             </div>
-            <div class="flex flex-col gap-2 items-center md:items-start">
-                <h6 class="font-semibold">Portal</h6>
-                <a class="text-slate-400" href="">Conviertete en broker</a>
-                <a class="text-slate-400" href="">Términos y condiciones</a>
+
+            <div class="flex flex-col space-y-1 items-center md:items-start">
+                <h6
+                    class="font-semibold text-red-500 text-sm uppercase tracking-wide mb-1"
+                >
+                    Portal
+                </h6>
+                <a class="text-gray-400 hover:text-white transition" href="#"
+                    >Conviértete en broker</a
+                >
+                <a class="text-gray-400 hover:text-white transition" href="#"
+                    >Términos y condiciones</a
+                >
+                <a class="text-gray-400 hover:text-white transition" href="#"
+                    >Aviso de privacidad</a
+                >
             </div>
         </section>
+
         <section
-            class="flex flex-col md:flex-row justify-between items-center border-t border-slate-400 py-8"
+            class="flex flex-col md:flex-row justify-between items-center border-t border-slate-700 py-7"
         >
-            <p>
-                Derechos reservados: RegioRentas
-                <span class="mt-2 block text-sm font-bold text-slate-400"
-                    >Design By: <a
-                        class="text-orange-500"
+            <p class="text-sm text-gray-400 text-center md:text-left">
+                © Regio Rentas — Todos los derechos reservados
+                <span class="block text-xs text-slate-500 mt-1">
+                    Design by <a
                         href="https://www.instagram.com/brayan_tsj/"
-                        target="_blank">@Brayan_tsj</a
-                    ></span
-                >
+                        target="_blank"
+                        class="text-orange-500 hover:text-orange-300 duration-500">@Brayan_tsj</a
+                    >
+                </span>
             </p>
-            <div class="flex gap-4 mt-8">
+
+            <div class="flex gap-4 mt-6 md:mt-0">
                 <a
-                    class="bg-white text-slate-800 rounded-full p-2.5 inline-block"
+                    class="bg-red-600 text-white hover:bg-white transition duration-200 hover:text-neutral-900 rounded-full p-2.5 inline-block"
                     href="#"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -63,13 +86,13 @@ import FooterSVG from "./FooterSVG.astro";
                     >
                 </a>
                 <a
-                    class="bg-white text-slate-800 rounded-full p-2.5 inline-block"
+                    class="bg-red-600 text-white hover:bg-white transition duration-200 hover:text-neutral-900 rounded-full p-2.5 inline-block"
                     href="#"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -85,13 +108,13 @@ import FooterSVG from "./FooterSVG.astro";
                     >
                 </a>
                 <a
-                    class="bg-white text-slate-800 rounded-full p-2.5 inline-block"
+                    class="bg-red-600 text-white hover:bg-white transition duration-200 hover:text-neutral-900 rounded-full p-2.5 inline-block"
                     href="#"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
