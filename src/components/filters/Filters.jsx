@@ -4,17 +4,19 @@ import { useFilters } from "../filters/FilterContext";
 import Dropdown from "../ui/DropdownMenu";
 
 export default function Filters() {
-    const { filters, setFilter } = useFilters();
+    const { filters, setFilter, clearFilters } = useFilters();
+    const keysToCheck = ['zone', 'type' ];
+    const allSelectedNull = keysToCheck.every(key => filters[key] === null);
 
     const getCurrentFilterLabel = () => {
         if (!filters.type && !filters.operation) return null;
 
-        if (filters.operation === "Renta"){
-            if(filters.type === "Departamento"){
+        if (filters.operation === "Renta") {
+            if (filters.type === "Departamento") {
                 return "Rentar depa";
             }
             return `Rentar ${filters.type || ""}`.trim();
-        } 
+        }
         if (filters.operation === "Venta") return `Comprar ${filters.type || ""}`.trim();
 
         return null;
@@ -75,19 +77,49 @@ export default function Filters() {
         setFilter("zone", zone);
     }
 
+    const handleClearSelections = () => {
+        clearFilters();
+    }
+
     return (
         <AnimatePresence>
             <motion.div
                 key="filters-bar"
-                className="flex flex-row justify-between items-center px-4 md:px-20 pb-4 border-b border-gray-200 bg-white sticky top-0 z-10"
+                className="flex flex-row justify-between items-center px-4 md:px-20 pb-4 border-b border-gray-200 bg-white"
                 variants={filterVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
             >
-                <div className="flex flex-col sm:flex-row gap-2.5">
+                <div className="flex flex-col justify-center items-center sm:flex-row gap-2.5">
                     <Dropdown title="Que buscas?" options={optionsType} onSelect={handleSelectType} initialSelect={getCurrentFilterLabel()} />
                     <Dropdown title="Zona" options={zonas} onSelect={handleSelectZone} initialSelect={filters.zone} />
+                    {
+                        !allSelectedNull && (
+                            <span
+                                onClick={handleClearSelections}
+                                className="text-xs underline flex gap-0.5 items-center cursor-pointer"
+                            >
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="icon icon-tabler icons-tabler-outline icon-tabler-x"
+                                >
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M18 6l-12 12" />
+                                    <path d="M6 6l12 12" />
+                                </svg>
+                                Quitar selecciones
+                            </span>
+
+                        )
+                    }
                 </div>
                 <div>
                     <div>
