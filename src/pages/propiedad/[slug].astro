@@ -224,7 +224,7 @@ const priceNormalized = propiedad.price.toLocaleString("es-MX", {
           </div>
         </div>
       </div>
-      <div class="col-span-1">
+      <div class="col-span-1 py-8">
         <div class="sticky top-28 md:px-4 w-full md:w-max">
           <div
             class="p-4 border border-slate-300 rounded-xl w-full flex flex-col gap-8 justify-center items-center"
@@ -258,7 +258,7 @@ const priceNormalized = propiedad.price.toLocaleString("es-MX", {
         </div>
       </div>
     </div>
-    <section class="w-full pb-20">
+    <section class="w-full pb-20 border-t md:border-t-0 border-slate-300">
       <h2 class="text-2xl py-8">Propiedades similares</h2>
       <RelatedProperties property_type={propiedad.property_type} propertyID={propiedad.id} />
     </section>
