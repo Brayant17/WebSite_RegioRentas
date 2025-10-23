@@ -1,9 +1,24 @@
+//Filters.jsx
 import { motion, AnimatePresence } from "framer-motion";
 import { useFilters } from "../filters/FilterContext";
 import Dropdown from "../ui/DropdownMenu";
 
 export default function Filters() {
-    const { setFilter } = useFilters();
+    const { filters, setFilter } = useFilters();
+
+    const getCurrentFilterLabel = () => {
+        if (!filters.type && !filters.operation) return null;
+
+        if (filters.operation === "Renta"){
+            if(filters.type === "Departamento"){
+                return "Rentar depa";
+            }
+            return `Rentar ${filters.type || ""}`.trim();
+        } 
+        if (filters.operation === "Venta") return `Comprar ${filters.type || ""}`.trim();
+
+        return null;
+    };
 
     const filterVariants = {
         hidden: { opacity: 0, y: -20 },
@@ -71,14 +86,14 @@ export default function Filters() {
                 exit="exit"
             >
                 <div className="flex flex-col sm:flex-row gap-2.5">
-                    <Dropdown title="Que buscas?" options={optionsType} onSelect={handleSelectType} />
-                    <Dropdown title="Zona" options={zonas} onSelect={handleSelectZone} />
+                    <Dropdown title="Que buscas?" options={optionsType} onSelect={handleSelectType} initialSelect={getCurrentFilterLabel()} />
+                    <Dropdown title="Zona" options={zonas} onSelect={handleSelectZone} initialSelect={filters.zone} />
                 </div>
                 <div>
                     <div>
                         <a
                             href="/login"
-                            class="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
+                            className="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
                         >
                             Publicar propiedad
                         </a>

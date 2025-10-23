@@ -1,9 +1,14 @@
+//DropdownMenu.jsx
 import { useEffect, useRef, useState } from "react";
 
-export default function Dropdown({ title, options, onSelect }) {
+export default function Dropdown({ title, options, onSelect, initialSelect }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [select, setSelect] = useState(null);
+  const [select, setSelect] = useState(initialSelect);
+
+  useEffect(()=>{
+    setSelect(initialSelect);
+  }, [initialSelect]);
 
   const handleSelect = (option) => {
     onSelect(option);
@@ -32,7 +37,6 @@ export default function Dropdown({ title, options, onSelect }) {
                    text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer 
                    min-w-[120px] max-w-[180px] sm:max-w-[200px] md:max-w-none 
                    truncate"
-        title={select ? select : title}
       >
         <span className="truncate">{select ? select : title}</span>
         <svg

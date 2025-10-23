@@ -14,7 +14,7 @@ export default function PropertyList({ limit = 24 }) {
   const [hasMore, setHasMore] = useState(true);
   const loadRef = useRef(null);
 
-  // Fetch desde Supabase con JOIN a property_images
+  // 🚀 Fetch desde Supabase con filtros
   const fetchProperties = async (currentPage, filters) => {
     setLoading(true);
     const start = currentPage * limit;
@@ -24,24 +24,23 @@ export default function PropertyList({ limit = 24 }) {
       let query = supabase
         .from("properties")
         .select(`
-        id,
-        title,
-        description,
-        price,
-        municipio,
-        colonia,
-        slug,
-        property_type,
-        property_images (
-          url
-        )
-      `)
+          id,
+          title,
+          description,
+          price,
+          municipio,
+          colonia,
+          slug,
+          property_type,
+          operation,
+          property_images (url)
+        `)
         .range(start, end);
 
-      // 🧠 Aplica los filtros si existen
+      // 🧠 Aplica los filtros
       if (filters.type) query = query.eq("property_type", filters.type);
       if (filters.operation) query = query.eq("operation", filters.operation);
-      if (filters.zone){
+      if (filters.zone) {
         const zone = filters.zone;
         query = query.or(
           `estado.ilike.%${zone}%,municipio.ilike.%${zone}%,colonia.ilike.%${zone}%,zona.ilike.%${zone}%`
@@ -51,7 +50,7 @@ export default function PropertyList({ limit = 24 }) {
       const { data, error } = await query;
 
       if (error) {
-        console.error("Error al obtener datos de Supabase:", error);
+        console.error("Error al obtener propiedades:", error);
         return;
       }
 
@@ -69,18 +68,18 @@ export default function PropertyList({ limit = 24 }) {
     setLoading(false);
   };
 
-
+  // 🧩 Efectos
+  // 1️⃣ Re-fetch cuando filtros cambian o se inicializan
   useEffect(() => {
-    fetchProperties(page, filters);
-  }, [page, filters]);
-
-  useEffect(() => {
+    if (!filters._initialized) return; // Espera hasta que los filtros se carguen del sessionStorage
     setPage(0);
     setHasMore(true);
+    fetchProperties(0, filters);
   }, [filters]);
 
+  // 2️⃣ Cargar más propiedades al hacer scroll
   useEffect(() => {
-    if (!hasMore || loading) return;
+    if (!filters._initialized || !hasMore || loading) return;
     if (!loadRef.current) return;
 
     const observer = new IntersectionObserver(
@@ -94,18 +93,23 @@ export default function PropertyList({ limit = 24 }) {
 
     observer.observe(loadRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, page]);
+  }, [filters, hasMore, loading]);
 
+  // 3️⃣ Fetch siguiente página
+  useEffect(() => {
+    if (page === 0 || !filters._initialized) return;
+    fetchProperties(page, filters);
+  }, [page]);
+
+  // 🎞️ Animaciones
   const containerVariants = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.6 } },
-    exit: {}
+    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.4, ease: "easeIn" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
   return (
@@ -124,20 +128,17 @@ export default function PropertyList({ limit = 24 }) {
           animate="visible"
           exit="exit"
         >
-          {/* 👇 Aquí va tu bloque de render condicional */}
-          {loading && properties.length === 0 ? (
-            Array.from({ length: 8 }).map((_, i) => (
-              <SkeletonCard key={i} />
-            ))
+          {/* ⏳ Si los filtros aún no se cargan o estamos cargando */}
+          {!filters._initialized || (loading && properties.length === 0) ? (
+            Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
           ) : properties?.length > 0 ? (
             properties.map((property) => (
               <motion.div key={property.id} variants={itemVariants}>
                 <PropertyCard
-                  key={property.id}
                   id={property.id}
                   property={{
                     ...property,
-                    images: property.property_images?.map((img) => img.url) || []
+                    images: property.property_images?.map((img) => img.url) || [],
                   }}
                   slug={property.slug}
                 />
@@ -145,16 +146,27 @@ export default function PropertyList({ limit = 24 }) {
             ))
           ) : (
             !loading && (
-              <div className="col-span-full flex flex-col items-center justify-center py-16 text-gray-500">
+              <motion.div
+                className="col-span-full flex flex-col items-center justify-center py-16 text-gray-500"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
                 <p className="text-lg font-medium">No se encontraron resultados</p>
                 <p className="text-sm text-gray-400">Intenta ajustar tus filtros.</p>
-              </div>
+              </motion.div>
             )
           )}
         </motion.section>
 
+        {/* 🔁 Scroll infinito */}
         {loading && properties.length > 0 && (
-          <p className="text-center py-4">Cargando más...</p>
+          <motion.p
+            className="text-center py-4 text-gray-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            Cargando más...
+          </motion.p>
         )}
         {hasMore && !loading && <div ref={loadRef} />}
       </motion.div>
