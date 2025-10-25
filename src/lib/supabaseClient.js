@@ -1,17 +1,10 @@
 // src/lib/supabaseClient.js
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from "@supabase/ssr"
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
-export const supabase = createClient(
+export const supabase = createBrowserClient(
     supabaseUrl,
-    supabaseAnonKey,
-    {
-        auth: {
-            persistSession: true,
-            flowType: "pkce",
-            storageKey: 'supabase.auth.token'
-        }
-    }
+    supabaseAnonKey
 );

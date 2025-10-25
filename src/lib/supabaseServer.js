@@ -1,27 +1,43 @@
 import { createServerClient } from "@supabase/ssr";
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY
 
-export function createSupabaseServerClient(request, response) {
-    const supabase = createServerClient(
+export function supabaseServer(cookies) {
+    return createServerClient(
         supabaseUrl,
-        supabaseAnonKey,
+        supabaseServiceKey,
         {
             cookies: {
-                get: (key) => cookies.get(key)?.value ?? '', // 👈 Aquí se usa el API de Astro correctamente
-                set: (key, value, options) => {
-                    cookies.set(key, value, {
-                        ...options,
-                        httpOnly: true,
-                        secure: true,
-                        sameSite: 'lax',
-                    });
-                },
-                remove: (key) => cookies.delete(key),
-            },
+                get: (key) => cookies.get(key)?.value,
+                set: (key, value, options) => cookies.set(key, value, options),
+                remove: (key, options) => cookies.delete(key, options),
+            }
         }
-    )
-
-    return supabase
+    );
 }
+
+
+// Funcionalidad anterior (viejita)
+// export function supabaseServer(request, response) {
+//     const supabase = createServerClient(
+//         supabaseUrl,
+//         supabaseAnonKey,
+//         {
+//             cookies: {
+//                 get: (key) => cookies.get(key)?.value ?? '', // 👈 Aquí se usa el API de Astro correctamente
+//                 set: (key, value, options) => {
+//                     cookies.set(key, value, {
+//                         ...options,
+//                         httpOnly: true,
+//                         secure: true,
+//                         sameSite: 'lax',
+//                     });
+//                 },
+//                 remove: (key) => cookies.delete(key),
+//             },
+//         }
+//     )
+
+//     return supabase
+// }
