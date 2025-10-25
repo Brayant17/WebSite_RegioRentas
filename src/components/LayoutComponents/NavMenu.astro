@@ -1,6 +1,7 @@
 ---
 // navbar
 import logo from "../../assets/logo_regio_rentas-removebg.webp";
+import ProfileUser from "./ProfileUser";
 ---
 
 <div class="fixed w-full bg-white z-30">
@@ -23,12 +24,7 @@ import logo from "../../assets/logo_regio_rentas-removebg.webp";
             <div class="flex gap-2.5">
                 <!-- <Dropdown client:load /> -->
                 <!-- Botón secundario más neutro -->
-                <a
-                    href="/login"
-                    class="block px-4 py-2 text-sm font-semibold text-gray-800 rounded transition-all duration-200 hover:-translate-y-0.5"
-                >
-                    Iniciar sesión
-                </a>
+                <ProfileUser client:load />
                 <a
                     href="https://wa.me/5218119995314?text=¡Hola!%20Estoy%20interesado%20en%20más%20información%20sobre%20las%20propiedades."
                     target="_blank"
