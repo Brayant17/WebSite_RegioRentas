@@ -1,0 +1,15 @@
+---
+// poner validacion con astro sobre si inicio session el usuario en supabase, para restringir esta pagina
+import TableProperty from "../../components/App/TableProperty";
+import Layout from "../../layouts/LayoutPanel.astro";
+---
+
+<Layout title="Favoritos">
+    <div class="flex items-center justify-between w-full">
+        <h1 class="text-xl">Mis Publicaciones</h1>
+        <a class="bg-neutral-900 text-white px-4 py-2 rounded-md" href="publicaciones/nueva">Crear publicacion</a>
+    </div>
+    <div class="py-8">
+        <TableProperty client:load />
+    </div>
+</Layout>

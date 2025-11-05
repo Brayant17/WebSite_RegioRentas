@@ -1,0 +1,10 @@
+---
+// poner validacion con astro sobre si inicio session el usuario en supabase, para restringir esta pagina
+import FavoriteList from "../../components/panel/FavoriteList"
+import Layout from "../../layouts/LayoutPanel.astro"
+--- 
+
+<Layout title="Favoritos">
+    <h2 class="text-2xl mb-8">Mis favoritos</h2>
+    <FavoriteList client:load />
+</Layout>

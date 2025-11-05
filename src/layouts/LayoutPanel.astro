@@ -1,0 +1,104 @@
+---
+import NavMenu from "../components/LayoutComponents/NavMenu.astro";
+import "../styles/global.css";
+import Footer from "../components/LayoutComponents/Footer.astro";
+import AuthWatcher from "../components/AuthWatcher";
+
+const { title } = Astro.props;
+
+const { pathname } = Astro.url;
+---
+
+<!doctype html>
+<html lang="es" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
+    <body class="flex flex-col min-h-screen">
+        <AuthWatcher client:load />
+        <NavMenu />
+        <main class="flex-1 flex pt-28 w-10/12 m-auto mt-4 gap-8">
+            <aside
+                class="hidden md:flex h-full relative"
+            >
+                <div class="sticky top-30 flex flex-col bg-slate-100 p-4 rounded-lg h-max gap-3">
+                    <a
+                        href="/panel/favoritos"
+                        class=`ring-1 ring-gray-300 hover:ring-gray-600 py-2 px-3 rounded-md text-sm w-3xs flex justify-between items-center ${pathname == "/panel/favoritos" ? "bg-white" : ""}`
+                    >
+                        <span>Mis favoritos</span>
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"
+                            ><path stroke="none" d="M0 0h24v24H0z" fill="none"
+                            ></path><path d="M9 6l6 6l-6 6"></path></svg
+                        >
+                    </a>
+                    <a
+                        href="/panel/publicaciones"
+                        class=`ring-1 ring-gray-300 hover:ring-gray-600 py-2 px-3 rounded-md text-sm w-3xs flex justify-between items-center ${pathname == "/panel/publicaciones" ? "bg-white" : ""}`
+                    >
+                        <span>Mis publicaciones</span>
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"
+                            ><path stroke="none" d="M0 0h24v24H0z" fill="none"
+                            ></path><path d="M9 6l6 6l-6 6"></path></svg
+                        >
+                    </a>
+                    <a
+                        href="/panel/configuracion"
+                        class=`hidden ring-1 ring-gray-300 hover:ring-gray-600 py-2 px-3 rounded-md text-sm w-3xs justify-between items-center ${pathname == "/panel/configuracion" ? "bg-white" : ""}`
+                    >
+                        <span>Configuracion</span>
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"
+                            ><path stroke="none" d="M0 0h24v24H0z" fill="none"
+                            ></path><path d="M9 6l6 6l-6 6"></path></svg
+                        >
+                    </a>
+                </div>
+            </aside>
+            <div class="w-full">
+                <slot />
+            </div>
+        </main>
+        <!-- Footer -->
+        <Footer />
+    </body>
+</html>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
