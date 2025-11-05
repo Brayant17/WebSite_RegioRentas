@@ -115,38 +115,75 @@ export default function NewProperty({ propertyId }) {
             }
         }
 
-        // Subir imagenes
+        // 3. Subir imágenes nuevas
         const newFiles = files.filter(f => !f.isExisting);
-        for (const fileObj of newFiles) {
+
+        for (let index = 0; index < newFiles.length; index++) {
+            const fileObj = newFiles[index];
             const fileName = `${Date.now()}-${fileObj.file.name}`;
             const filePath = `${userId}/${currentPropertyId}/${fileName}`;
 
-            const { error: uploadError } = await supabase.storage
+            // 🟢 Subir a Supabase Storage
+            const { data: uploadData, error: uploadError } = await supabase.storage
                 .from("properties")
-                .upload(filePath, fileObj.file);
+                .upload(filePath, fileObj.file, { upsert: true });
 
             if (uploadError) {
-                console.error("Error subiendo archivo:", uploadError.message);
+                console.error("❌ Error subiendo archivo:", uploadError.message);
                 continue;
             }
 
-            const { data: publicUrlData } = supabase.storage
+            // 🟢 Obtener URL pública
+            const { data: urlData, error: urlError } = supabase.storage
                 .from("properties")
                 .getPublicUrl(filePath);
 
-            // Guardar en la tabla property_images
-            await supabase.from("property_images").insert([{
+            if (urlError) {
+                console.error("❌ Error obteniendo URL pública:", urlError.message);
+                continue;
+            }
+
+            const publicUrl = urlData?.publicUrl;
+            // 🔹 Determinar su posición real según el array 'files'
+            const fileIndexInFullList = files.findIndex(f => f.file?.name === fileObj.file.name);
+
+            // 🟢 Insertar en la tabla property_images
+            const { data: insertedImages, error: insertError } = await supabase.from("property_images").insert([{
                 property_id: currentPropertyId,
-                url: publicUrlData.publicUrl,
-                filename: fileName
-            }]);
+                url: publicUrl,
+                filename: fileName,
+                order: fileIndexInFullList + 1
+            }])
+                .select("id"); // para obtener el id real generado por supabase
+
+            if (insertError) {
+                console.error("❌ Error insertando imagen en DB:", insertError.message);
+                continue;
+            }
+
+            console.log(insertedImages);
+            console.log("Objeto de file: ", fileObj);
+
+            const newId = insertedImages?.[0]?.id;
+
+            // actualizar el array en memoria con el UUID real
+            fileObj.filename = fileName
+            fileObj.id = newId;
+            fileObj.isExisting = true
+            fileObj.preview = publicUrl;
         }
 
-        // 5. Eliminar imágenes marcadas para borrar usando el endpoint
+        // ⚠️ Muy importante: forzar el estado antes de actualizar orden
+        setFiles(prev => [...prev]);
+        await new Promise(resolve => setTimeout(resolve, 200)); // pequeño delay opcional
+
+        // 4. Eliminar imágenes marcadas para borrar usando el endpoint
         for (const delFile of deletedFiles) {
+            console.log(deletedFiles);
             if (delFile.isExisting) {
                 try {
                     const path = `${userId}/${currentPropertyId}/${delFile.filename}`;
+                    console.log(path);
                     const res = await fetch('/api/delete-image', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -167,6 +204,24 @@ export default function NewProperty({ propertyId }) {
             }
         }
 
+        /// 5. Actualizar orden de imágenes existentes
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.isExisting && /^[0-9a-fA-F-]{36}$/.test(file.id)) { // ✅ solo UUID válidos
+                const { error: updateOrderError } = await supabase
+                    .from("property_images")
+                    .update({ order: i + 1 })
+                    .eq("id", file.id);
+
+                if (updateOrderError) {
+                    console.error(`❌ Error actualizando orden (${file.filename}):`, updateOrderError.message);
+                }
+            }
+        }
+
+        files.forEach(f => {
+            if (f.preview?.startsWith("blob:")) URL.revokeObjectURL(f.preview);
+        });
 
         setSaving(false);
 
@@ -181,7 +236,7 @@ export default function NewProperty({ propertyId }) {
     if (loading) return <p>Cargando propiedad</p>
 
     return (
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col gap-4 md:gap-0 md:flex-row">
             <div className="flex flex-col gap-10 flex-4/5 border border-slate-200 rounded p-4">
                 <div className="flex flex-col gap-1.5">
                     <TitleSlug title={propertyData.title} slug={propertyData.slug} setterState={setPropertyData} />
@@ -221,7 +276,7 @@ export default function NewProperty({ propertyId }) {
                     <DropZone files={files} setFiles={setFiles} deletedFiles={deletedFiles} setDeletedFiles={setDeletedFiles} />
                 </div>
             </div>
-            <div className="flex-1/5 mx-4">
+            <div className="flex-1/5 md:mx-4">
                 <div className="p-2 border border-gray-300 rounded flex flex-col gap-4">
                     <Status status={propertyData.status} setterStatus={setPropertyData} />
                     <Fechas availableFrom={propertyData.available_from} setterState={setPropertyData} />
