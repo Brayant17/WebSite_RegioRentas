@@ -29,7 +29,10 @@ export const POST: APIRoute = async ({ request, cookies, redirect, url }) => {
         }
 
         // redirige a la URL de Google (login)
-        return Response.redirect(data.url, 302);
+        return new Response(null, {
+            status: 302,
+            headers: { Location: data.url },
+        });
     }
 
     // 🔹 Caso 2: login con email y password
