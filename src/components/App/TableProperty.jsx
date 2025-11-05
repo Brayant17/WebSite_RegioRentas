@@ -15,23 +15,37 @@ export default function TableProperty() {
         setLoading(true);
         setError(null);
 
-        const from = (page - 1) * pageSize;
-        const to = from + pageSize - 1;
+        try {
+            // Obtenemos el usuario logueado
+            const {
+                data: { user },
+                error: userError,
+            } = await supabase.auth.getUser();
 
-        const { data, error, count } = await supabase
-            .from("properties")
-            .select("*", { count: "exact" })
-            .range(from, to)
-            .order("id", { ascending: false });
+            if (userError) throw userError;
+            if (!user) throw new Error("Usuario no autenticado");
 
-        if (error) {
-            setError(error.message);
-        } else {
+            const from = (page - 1) * pageSize;
+            const to = from + pageSize - 1;
+
+            // Filtramos por user_id del usuario logueado
+            const { data, error, count } = await supabase
+                .from("properties")
+                .select("*", { count: "exact" })
+                .eq("user_id", user.id) // filtro por usuario
+                .range(from, to)
+                .order("id", { ascending: false });
+
+            if (error) throw error;
+
             setProperties(data || []);
             setTotalCount(count || 0);
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     const handleClickDelete = async (idProperty) => {
@@ -128,7 +142,7 @@ export default function TableProperty() {
                                 <td className="px-6 py-4 flex items-center gap-2">
                                     <ActionDropdown
                                         name="Acciones"
-                                        link={`propiedad/editar/${property.id}`}
+                                        link={`publicaciones/editar/${property.id}`}
                                         handleDelete={() => handleClickDelete(property.id)}
                                     />
                                 </td>
@@ -168,11 +182,10 @@ export default function TableProperty() {
                         <button
                             key={i + 1}
                             onClick={() => setPage(i + 1)}
-                            className={`border border-slate-400 rounded px-2 py-1 text-xs ${
-                                page === i + 1
+                            className={`border border-slate-400 rounded px-2 py-1 text-xs ${page === i + 1
                                     ? "bg-slate-200 text-slate-800 font-medium"
                                     : "bg-white text-slate-600"
-                            }`}
+                                }`}
                         >
                             {i + 1}
                         </button>
