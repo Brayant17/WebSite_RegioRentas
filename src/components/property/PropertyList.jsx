@@ -1,3 +1,4 @@
+// PropertyList
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { PropertyCard } from "./PropertyCard.jsx";
@@ -9,10 +10,21 @@ export default function PropertyList({ limit = 24 }) {
   const { filters } = useFilters();
 
   const [properties, setProperties] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const loadRef = useRef(null);
+
+  // obtener session
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) =>
+      setSession(session)
+    );
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
   // 🚀 Fetch desde Supabase con filtros
   const fetchProperties = async (currentPage, filters) => {
@@ -33,8 +45,9 @@ export default function PropertyList({ limit = 24 }) {
           slug,
           property_type,
           operation,
-          property_images (url)
+          property_images (url, order)
         `)
+        .order("order", { foreignTable: "property_images", ascending: true })
         .range(start, end);
 
       // 🧠 Aplica los filtros
@@ -101,6 +114,30 @@ export default function PropertyList({ limit = 24 }) {
     fetchProperties(page, filters);
   }, [page]);
 
+  // fetch favortios del usuario (una sola vez)
+  useEffect(() => {
+    if (!session) {
+      setFavorites([]); // 🔹 limpiar favoritos al cerrar sesión
+      return;
+    } // 🔹 espera hasta tener session
+
+    const fetchFavorites = async () => {
+      const { data, error } = await supabase
+        .from("favorites")
+        .select("property_id")
+        .eq("user_id", session.user.id);
+
+      if (error) {
+        console.error("Error cargando favoritos:", error);
+        return;
+      }
+
+      setFavorites(data?.map(fav => fav.property_id) || []);
+    };
+
+    fetchFavorites();
+  }, [session])
+
   // 🎞️ Animaciones
   const containerVariants = {
     hidden: {},
@@ -141,6 +178,8 @@ export default function PropertyList({ limit = 24 }) {
                     images: property.property_images?.map((img) => img.url) || [],
                   }}
                   slug={property.slug}
+                  isFavorite={favorites.includes(property.id)}
+                  session={session}
                 />
               </motion.div>
             ))

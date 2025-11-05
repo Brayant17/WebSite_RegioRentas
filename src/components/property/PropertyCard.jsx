@@ -1,8 +1,9 @@
-// React Component
+// React Component PropertyCard.jsx
 import PropertySlider from "./PropertySlider.jsx"
+import FavoriteButton from "./FavoriteButton.jsx"
 
-function PropertyCard({ id, property, slug }) {
-
+function PropertyCard({ id, property, slug, isFavorite, session }) {
+    const dominio = window.location.origin
     const priceNormalized = property.price.toLocaleString("es-MX", {
         style: "currency",
         currency: "MXN",
@@ -11,8 +12,13 @@ function PropertyCard({ id, property, slug }) {
 
     return (
         <article className="rounded-lg w-full">
-            <div className="w-full aspect-[4/3] sm:aspect-[3/2] rounded-xl overflow-hidden">
-                <a href={`propiedad/${slug}`}>
+            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] rounded-xl overflow-hidden group">
+                <FavoriteButton
+                    propertyId={id}
+                    isInitiallyFavorite={isFavorite}
+                    session={session}
+                />
+                <a href={`${dominio}/propiedad/${slug}`}>
                     <PropertySlider client:visible images={property.images} name="test" />
                 </a>
             </div>
