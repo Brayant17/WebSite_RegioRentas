@@ -10,7 +10,7 @@ export default function TypePropertyOperation({ propertyType, operation, setterS
 
     return (
         <div className="py-4 flex flex-col gap-3 flex-1">
-            <div className="flex flex-row gap-2.5">
+            <div className="flex flex-col md:flex-row gap-2.5">
                 <div className="w-full max-w-sm min-w-[200px]">
                     <label htmlFor="property_type" className="inline-block mb-1.5 text-sm font-semibold text-neutral-700">Tipo *</label>
                     <div className="relative">
