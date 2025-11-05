@@ -9,6 +9,7 @@ import OtherFeatures from "../../components/property/OtherFeatures.astro";
 import Map from "../../components/property/Map.astro";
 import RelatedProperties from "../../components/property/RelatedProperties.astro";
 import ButtonGalleryModal from "../../components/property/ButtonGalleryModal.jsx";
+import FavoriteButtonDetail from "../../components/property/FavoriteButtonDetail";
 
 interface PropertyImage {
   url: string;
@@ -54,10 +55,11 @@ const { data, error } = await supabase
     property_type,
     services,
     amenities, 
-    property_images ( url )
+    property_images ( url, order )
   `,
   )
   .eq("slug", slugPropiedad)
+  .order("order", { foreignTable: "property_images", ascending: true })
   .maybeSingle<Property>();
 
 if (error) {
@@ -123,6 +125,9 @@ const priceNormalized = propiedad.price.toLocaleString("es-MX", {
 
 <Layout title={propiedad.title}>
   <section class="w-11/12 md:w-10/12 lg:w-8/12 mx-auto">
+    <div class="w-full flex justify-end py-2.5 px-3">
+      <FavoriteButtonDetail idProperty={propiedad.id} client:load />
+    </div>
     <header
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px] animate-[fadeIn_1s_ease-in-out_forwards]"
     >
@@ -130,7 +135,9 @@ const priceNormalized = propiedad.price.toLocaleString("es-MX", {
         fiveImages.map((image, index) => (
           <div
             class={`bg-neutral-400 overflow-hidden rounded-xl aspect-[4/3] h-full ${
-              index === 0 ? "md:col-span-2 md:row-span-2" : ""
+              index === 0 
+                ? "md:col-span-2 md:row-span-2" 
+                : ""
             }`}
           >
             <img
