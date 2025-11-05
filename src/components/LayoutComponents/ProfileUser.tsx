@@ -36,9 +36,10 @@ export default function ProfileUser({ initialUser }: NavbarProps) {
     }, []);
 
     async function handleLogout() {
-        await supabase.auth.signOut();
-        setUser(null);
-        setOpen(false);
+        // 👇 Llama a la API del servidor
+        await fetch('/api/auth/logout', { method: 'GET' })
+        // El servidor ya redirige, pero por compatibilidad:
+        window.location.href = '/'
     }
 
     return (
@@ -78,7 +79,7 @@ export default function ProfileUser({ initialUser }: NavbarProps) {
                             </div>
                             <div className="p-1">
                                 <a
-                                    href=""
+                                    href="/panel/favoritos"
                                     className='flex items-center gap-2 p-2 rounded-sm hover:bg-gray-100'
                                 >
                                     <svg
@@ -99,7 +100,7 @@ export default function ProfileUser({ initialUser }: NavbarProps) {
                             </div>
                             <div className="p-1">
                                 <a
-                                    href=""
+                                    href="/panel/publicaciones"
                                     className='flex items-center gap-2 p-2 rounded-sm hover:bg-gray-100'
                                 >
                                     <svg
