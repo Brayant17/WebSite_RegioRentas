@@ -1,7 +1,8 @@
 // src/pages/api/auth/callback.ts
 import { supabaseServer } from '../../../lib/supabaseServer';
+import type { APIContext } from 'astro';
 
-export async function GET({ cookies, request }) {
+export async function GET({ cookies, request }: APIContext): Promise<Response> {
   try {
     const supabase = supabaseServer(cookies);
 
