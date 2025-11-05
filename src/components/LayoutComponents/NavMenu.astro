@@ -7,7 +7,7 @@ import ProfileUser from "./ProfileUser";
 <div class="fixed w-full bg-white z-30">
     <div class="w-full border-b border-gray-200 pt-4">
         <div class="w-11/12 m-auto flex justify-between items-center pb-4">
-            <div class="flex-1">
+            <div class="md:flex-1">
                 <a href="/" class="w-max flex items-center gap-1">
                     <img
                         class="w-16 object-cover aspect-square"
@@ -19,11 +19,11 @@ import ProfileUser from "./ProfileUser";
                     </h2> -->
                 </a>
             </div>
-            <div class="flex-1 text-base md:text-xl hidden md:inline-block">
+            <div class="md:flex-1 text-center text-base md:text-xl hidden md:inline-block">
                 <h2>🏡 Tu próximo hogar, a un clic.</h2>
             </div>
             <!-- Esto hacerlo con React es un dropdown -->
-            <div class="flex gap-2.5">
+            <div class="md:flex-1 flex gap-2.5 justify-end">
                 <!-- <Dropdown client:load /> -->
                 <!-- Botón secundario más neutro -->
                 <ProfileUser client:load />
