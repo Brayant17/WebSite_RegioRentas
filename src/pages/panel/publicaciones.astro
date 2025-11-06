@@ -6,8 +6,8 @@ import Layout from "../../layouts/LayoutPanel.astro";
 
 <Layout title="Favoritos">
     <div class="flex items-center justify-between w-full">
-        <h1 class="text-xl">Mis Publicaciones</h1>
-        <a class="bg-neutral-900 text-white px-4 py-2 rounded-md" href="publicaciones/nueva">Crear publicacion</a>
+        <h1 class="text-sm md:text-xl">Mis Publicaciones</h1>
+        <a class="bg-neutral-800 hover:bg-neutral-900 text-white px-4 py-2 rounded-md text-sm" href="publicaciones/nueva">Crear publicacion</a>
     </div>
     <div class="py-8">
         <TableProperty client:load />
