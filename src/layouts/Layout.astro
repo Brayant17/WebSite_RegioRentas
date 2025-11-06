@@ -10,11 +10,85 @@ const { title } = Astro.props;
 <html lang="es" class="h-full">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>
+			{
+				title
+					? `${title} | Regio Rentas`
+					: "Regio Rentas – Tu marketplace inmobiliario en Monterrey"
+			}
+		</title>
+
+		<!-- 🔹 Descripción SEO -->
+		<meta
+			name="description"
+			content="Encuentra casas, departamentos, terrenos, bodegas y locales en renta o venta en Monterrey y su área metropolitana. En Regio Rentas conecta con propietarios y descubre las mejores oportunidades inmobiliarias."
+		/>
+
+		<!-- 🔹 Favicon principal -->
+		<link rel="icon" type="image/svg+xml" href="/logo.png" />
+		<meta name="theme-color" content="#1f2937" />
+
+		<!-- 🔹 Open Graph básico (para Facebook, WhatsApp, etc.) -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Regio Rentas" />
+		<meta
+			property="og:title"
+			content="Regio Rentas – Tu marketplace inmobiliario en Monterrey"
+		/>
+		<meta
+			property="og:description"
+			content="Regio Rentas es el marketplace inmobiliario de Monterrey. Descubre casas, depas, terrenos y bodegas en renta o venta. ¡Tu próxima propiedad te espera!"
+		/>
+		<meta property="og:url" content="https://regiorentas.mx" />
+		<meta
+			property="og:image"
+			content="https://regiorentas.mx/logo.png"
+		/>
+
+		<!-- 🔹 Twitter Card -->
+		<meta name="twitter:card" content="summary" />
+		<meta
+			name="twitter:title"
+			content="Regio Rentas – Tu marketplace inmobiliario en Monterrey"
+		/>
+		<meta
+			name="twitter:description"
+			content="Regio Rentas es el marketplace inmobiliario de Monterrey. Encuentra casas, depas, terrenos y bodegas en renta o venta."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://regiorentas.mx/logo.png"
+		/>
+
+		<!-- 🔹 SEO adicional -->
+		<meta name="author" content="Regio Rentas" />
+		<meta name="robots" content="index, follow" />
+		<meta
+			name="keywords"
+			content="casas en renta Monterrey, departamentos en renta Monterrey, terrenos, bodegas, locales, bienes raíces, Regio Rentas"
+		/>
+
+		<!-- 🔹 Schema.org JSON-LD -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				"name": "Regio Rentas",
+				"url": "https://regiorentas.mx",
+				"logo": "https://regiorentas.mx/logo.png",
+				"sameAs": [
+					"https://www.facebook.com/profile.php?id=100076174290263",
+					"https://www.instagram.com/regiorentas/"
+				],
+				"description": "Regio Rentas es el marketplace inmobiliario de Monterrey para encontrar casas, departamentos, terrenos y bodegas en renta o venta."
+			}
+		</script>
+
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
 	</head>
+
 	<body class="flex flex-col min-h-screen">
 		<NavMenu />
 		<main class="flex-1 pt-28">
