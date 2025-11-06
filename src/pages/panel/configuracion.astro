@@ -1,8 +1,12 @@
 ---
 // poner validacion con astro sobre si inicio session el usuario en supabase, para restringir esta pagina
 import Layout from "../../layouts/LayoutPanel.astro"
+import ConfigUser from "../../components/App/ConfigUser"
 --- 
 
 <Layout title="Favoritos">
-    <h1>Configuracion</h1>
+    <section class="md:w-8/12 m-auto pb-10">
+        <h1 class="text-xl mb-4">Preferencias</h1>
+        <ConfigUser client:load />
+    </section>
 </Layout>
