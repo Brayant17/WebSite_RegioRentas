@@ -7,7 +7,7 @@ export default function TableProperty() {
     const [error, setError] = useState(null);
 
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(12);
     const [totalCount, setTotalCount] = useState(0);
 
     // 🆕 Estado para el modal
@@ -177,7 +177,7 @@ export default function TableProperty() {
                         onChange={(e) => setPageSize(Number(e.target.value))}
                         className="border border-slate-300 px-1 py-0.5 rounded"
                     >
-                        {[5, 10, 20, 50].map((size) => (
+                        {[8, 12, 20, 52].map((size) => (
                             <option key={size} value={size}>
                                 {size}
                             </option>
