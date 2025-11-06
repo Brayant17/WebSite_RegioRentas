@@ -21,6 +21,7 @@ import Fechas from "./Fechas"
 import DropZone from "./DropZone";
 
 export default function NewProperty({ propertyId }) {
+    const [saveSuccess, setSaveSuccess] = useState(false);
     const [propertyData, setPropertyData] = useState(initialPropertyData);
     const [files, setFiles] = useState([]);
     const [saving, setSaving] = useState(false);
@@ -229,7 +230,8 @@ export default function NewProperty({ propertyId }) {
         if (!propertyId) {
             window.location.href = `/App/propiedad/editar/${currentPropertyId}`;
         } else {
-            alert("Propiedad actualizada con éxito");
+            setSaveSuccess(true);
+            setTimeout(() => setSaveSuccess(false), 3000);
         }
     };
 
@@ -276,24 +278,70 @@ export default function NewProperty({ propertyId }) {
                     <DropZone files={files} setFiles={setFiles} deletedFiles={deletedFiles} setDeletedFiles={setDeletedFiles} />
                 </div>
             </div>
-            <div className="flex-1/5 md:mx-4">
-                <div className="p-2 border border-gray-300 rounded flex flex-col gap-4">
-                    <Status status={propertyData.status} setterStatus={setPropertyData} />
-                    <Fechas availableFrom={propertyData.available_from} setterState={setPropertyData} />
-                    <button
-                        className="cursor-pointer border bg-neutral-800 text-white rounded-md p-2.5 hover:bg-neutral-950 duration-300 flex justify-center items-center gap-2"
-                        onClick={handleSave}
-                        disabled={saving}
-                    >
-                        {saving ? (
-                            <>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin icon icon-tabler icons-tabler-outline icon-tabler-loader-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3a9 9 0 1 0 9 9" /></svg>
-                                <span>Guardando</span>
-                            </>
-                        ) : (
-                            <span>Guardar</span>
-                        )}
-                    </button>
+            {/* Panel derecho */}
+            <div className="flex-1/4 md:mx-4">
+                <div className="md:sticky md:top-30 bg-gray-50 border border-slate-200 rounded-sm p-4 shadow-sm flex flex-col gap-5">
+                    <div className="flex flex-col gap-4">
+                        <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">
+                            Opciones de publicación
+                        </h3>
+
+                        {/* Estado */}
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-slate-700">Estado</label>
+                            <Status status={propertyData.status} setterStatus={setPropertyData} />
+                        </div>
+
+                        {/* Fecha */}
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-slate-700">Disponible desde</label>
+                            <Fechas availableFrom={propertyData.available_from} setterState={setPropertyData} />
+                        </div>
+
+                        {/* Línea divisoria */}
+                        <div className="border-t border-slate-200 my-2"></div>
+
+                        {/* Botón de guardar */}
+                        <button
+                            onClick={handleSave}
+                            disabled={saving}
+                            className={`w-full flex justify-center items-center gap-2 py-2.5 rounded-md font-medium transition-all duration-300 cursor-pointer 
+          ${saving
+                                    ? "bg-neutral-600 text-white opacity-80 cursor-not-allowed"
+                                    : "bg-neutral-900 hover:bg-neutral-950 text-white"
+                                }`}
+                        >
+                            {saving ? (
+                                <>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="animate-spin"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 3a9 9 0 1 0 9 9" />
+                                    </svg>
+                                    <span>Guardando...</span>
+                                </>
+                            ) : (
+                                <span>{propertyId ? "Guardar cambios" : "Crear propiedad"}</span>
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Mensaje de éxito visual (no bloqueante) */}
+                    {saveSuccess && (
+                        <div className="fixed bottom-5 right-5 bg-green-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg animate-fade-in">
+                            ✅ Propiedad guardada correctamente
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

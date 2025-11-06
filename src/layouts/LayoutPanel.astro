@@ -21,11 +21,11 @@ const { pathname } = Astro.url;
     <body class="flex flex-col min-h-screen">
         <AuthWatcher client:load />
         <NavMenu />
-        <main class="flex-1 flex pt-28 w-10/12 m-auto mt-4 gap-8">
+        <main class="flex-1 flex pt-28 w-11/12 m-auto mt-4 gap-8">
             <aside
                 class="hidden md:flex h-full relative"
             >
-                <div class="sticky top-30 flex flex-col bg-slate-100 p-4 rounded-lg h-max gap-3">
+                <div class="sticky top-30 bg-gray-50 border border-slate-200 rounded-sm p-4 shadow-sm flex flex-col gap-5 h-max">
                     <a
                         href="/panel/favoritos"
                         class=`ring-1 ring-gray-300 hover:ring-gray-600 py-2 px-3 rounded-md text-sm w-3xs flex justify-between items-center ${pathname == "/panel/favoritos" ? "bg-white" : ""}`
