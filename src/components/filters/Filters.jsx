@@ -124,7 +124,7 @@ export default function Filters() {
                 <div>
                     <div>
                         <a
-                            href="/login"
+                            href="/panel/publicaciones/nueva"
                             className="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
                         >
                             Publicar propiedad
