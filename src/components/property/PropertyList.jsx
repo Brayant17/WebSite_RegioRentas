@@ -45,6 +45,7 @@ export default function PropertyList({ limit = 24 }) {
           area,
           bedrooms,
           bathrooms,
+          operation,
           slug,
           property_type,
           operation,

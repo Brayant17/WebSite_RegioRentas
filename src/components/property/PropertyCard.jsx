@@ -39,15 +39,22 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
                 {/* Título y tipo */}
                 <div className="flex justify-between items-start">
                     <h3 className="text-sm font-semibold text-black truncate">{property.title}</h3>
-                    <span className="text-xs font-medium text-gray-600">{property.type || "Departamento"}</span>
+                    <span className="text-xs font-medium text-gray-600">{property.property_type || "Departamento"}</span>
                 </div>
 
                 {/* Ubicación */}
                 <p className="text-xs text-gray-500 truncate">{property.municipio} • {property.colonia}</p>
 
-                <div className="flex justify-between items-start">
-                    {/* Precio */}
+                {/* Precio */}
+                <div className="flex items-center gap-2">
                     <p className="font-bold text-md truncate">{priceNormalized}</p>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded ${property.operation === "Renta" ? "bg-red-50 text-red-600 border border-red-100" : "bg-neutral-900 text-white"}`}>
+                        {property.operation}
+                    </span>
+                </div>
+
+                <div className="flex justify-between items-start">
+
                     {/* Detalles rápidos compactos */}
                     <div className="flex items-center gap-3 text-xs text-gray-600 mt-1 flex-wrap">
                         <span className="flex items-center gap-1">
