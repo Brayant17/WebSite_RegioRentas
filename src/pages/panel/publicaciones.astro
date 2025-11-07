@@ -1,15 +1,72 @@
 ---
-// poner validacion con astro sobre si inicio session el usuario en supabase, para restringir esta pagina
 import TableProperty from "../../components/App/TableProperty";
 import Layout from "../../layouts/LayoutPanel.astro";
+import { supabaseServer } from "../../lib/supabaseServer";
+import brokerIllustration from "../../assets/brokerIlustration.svg"
+
+const supabase = supabaseServer(Astro.cookies);
+const {
+    data: { user },
+    error: userError,
+} = await supabase.auth.getUser();
+
+if (userError) {
+    console.error("Error obteniendo usuario:", userError.message);
+    throw Astro.redirect("/login");
+}
+
+if (!user) {
+    throw Astro.redirect("/login");
+}
+const { data: approvalData, error: approvalError } = await supabase
+    .from("users")
+    .select("approval_status")
+    .eq("id", user.id)
+    .single();
+
+if (approvalError) {
+    console.log("Error consultando approval_status ", approvalError.message);
+}
+
+const approvalStatus = approvalData?.approval_status ?? null;
 ---
 
 <Layout title="Favoritos">
-    <div class="flex items-center justify-between w-full">
-        <h1 class="text-sm md:text-xl">Mis Publicaciones</h1>
-        <a class="bg-neutral-800 hover:bg-neutral-900 text-white px-4 py-2 rounded-md text-sm" href="publicaciones/nueva">Crear publicacion</a>
-    </div>
-    <div class="py-8">
-        <TableProperty client:load />
-    </div>
+    {
+        approvalStatus === "approved" ? (
+            <div>
+                <div class="flex items-center justify-between w-full">
+                    <h1 class="text-sm md:text-xl">Mis Publicaciones</h1>
+                    <a
+                        class="bg-neutral-800 hover:bg-neutral-900 text-white px-4 py-2 rounded-md text-sm"
+                        href="publicaciones/nueva"
+                    >
+                        Crear publicación
+                    </a>
+                </div>
+                <div class="py-8">
+                    <TableProperty client:load />
+                </div>
+            </div>
+        ) : (
+            <div class="w-full p-6 flex md:flex-col flex-row items-center justify-center gap-4 sm:gap-6 bg-gray-100 rounded-md shadow-sm">
+                <!-- 🏠 Ícono o ilustración -->
+                <div class="flex-shrink-0">
+                    <img
+                        src={brokerIllustration.src}
+                        alt="Ilustración de broker"
+                        class="w-24 h-24 md:w-56 md:h-56"
+                        loading="lazy"
+                    />
+                </div>
+
+                <!-- 💬 Texto -->
+                <p class="text-sm sm:text-base text-gray-600 text-center sm:text-left max-w-sm sm:max-w-md leading-relaxed">
+                    Conviértete en <span class="font-medium text-gray-800">broker</span> para
+                    publicar tus propiedades. Es gratis, solicítalo desde la sección de{" "}
+                    <span class="font-medium text-gray-800"><a href="/panel/configuracion">configuración</a></span>.
+                </p>
+            </div>
+        )
+    }
 </Layout>
