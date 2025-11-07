@@ -27,7 +27,7 @@ export default function SliderGalleryProperty({ listImages }) {
         {listImages.map((image, idx) => (
           <SwiperSlide
             key={idx}
-            className="flex justify-center items-center"
+            className="flex justify-center items-center self-center"
           >
             <img
               src={image.url}
@@ -54,7 +54,7 @@ export default function SliderGalleryProperty({ listImages }) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
+          className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
           <path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" />
         </svg>
       </button>
@@ -73,7 +73,7 @@ export default function SliderGalleryProperty({ listImages }) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right">
+          className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right">
           <path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6l6 6l-6 6" />
         </svg>
       </button>
