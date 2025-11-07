@@ -114,7 +114,7 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
                                 <path d="M12 4l0 3" />
                                 <path d="M16 4l0 2" />
                             </svg>
-                            {property.area || 75} m²
+                            {property.area || 0} m²
                         </span>
                     </div>
                 </div>
