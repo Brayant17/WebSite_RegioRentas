@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import NotFoundIllustration from "../assets/404.svg";
+---
+
+<Layout title="Página no encontrada">
+    <section
+        class="w-full min-h-screen flex flex-col justify-center items-center text-center px-4 py-8"
+    >
+        <!-- Contenedor de ilustración con tamaño máximo -->
+        <div class="w-full max-w-md md:max-w-lg mb-8">
+            <img
+                src={NotFoundIllustration.src}
+                alt="Página no encontrada"
+                class="w-full h-auto object-contain"
+                loading="lazy"
+            />
+        </div>
+
+        <!-- Mensaje -->
+         <div class="flex flex-col gap-5">
+             <p class="text-base md:text-lg text-gray-600 mb-6">
+                 Oops! La página que buscas no existe.
+             </p>
+     
+             <!-- Botón para volver al inicio -->
+             <a
+                 href="/"
+                 class="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
+             >
+                 Volver al inicio
+             </a>
+         </div>
+    </section>
+</Layout>
