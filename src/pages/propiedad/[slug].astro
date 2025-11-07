@@ -32,6 +32,10 @@ interface Property {
   services: string[];
   amenities?: string[];
   property_images?: PropertyImage[];
+  users?: {
+    full_name: string,
+    whatsapp: string
+  }
 }
 
 const slugPropiedad = Astro.params.slug;
@@ -55,7 +59,11 @@ const { data, error } = await supabase
     property_type,
     services,
     amenities, 
-    property_images ( url, order )
+    property_images ( url, order ),
+    users (
+      full_name,
+      whatsapp
+    )
   `,
   )
   .eq("slug", slugPropiedad)
@@ -83,6 +91,10 @@ const propiedad: Property = data ?? {
   services: [],
   amenities: [],
   property_images: [],
+  users: {
+    full_name: "",
+    whatsapp: ""
+  }
 };
 
 const fiveImages: string[] = Array.isArray(propiedad.property_images)
@@ -121,12 +133,16 @@ const priceNormalized = propiedad.price.toLocaleString("es-MX", {
   minimumFractionDigits: 0,
 });
 
+const mensaje = encodeURIComponent(`Hola 👋, vi tu publicación en Regio Rentas sobre la propiedad "${propiedad.title}". Me gustaría obtener más información, ¿sigue disponible?`);
+
 ---
 
 <Layout title={propiedad.title}>
   <section class="w-11/12 md:w-10/12 lg:w-8/12 mx-auto">
     <div class="w-full flex justify-end py-2.5 px-3">
-      <FavoriteButtonDetail idProperty={propiedad.id} client:load />
+      {propiedad.id &&
+        <FavoriteButtonDetail idProperty={propiedad.id} client:load />
+      }
     </div>
     <header
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px] animate-[fadeIn_1s_ease-in-out_forwards]"
@@ -240,7 +256,9 @@ const priceNormalized = propiedad.price.toLocaleString("es-MX", {
               {priceNormalized} MXN
             </p>
             <a
-              href="#"
+              href={`https://wa.me/${propiedad.users?.whatsapp}?text=${mensaje}`}
+              target="_blank"
+              rel="noopener noreferrer"
               class="border rounded-xl w-full flex items-center gap-4 py-3 px-4 bg-green-700 hover:bg-green-500 transition duration-200 text-white text-xl font-semibold"
             >
               <svg
