@@ -1,0 +1,83 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import Sidebar from "../../components/admin/Sidebar.astro";
+import Navbar from "../../components/admin/Navbar.astro";
+---
+
+<AdminLayout title="Dashboard">
+    <div class="space-y-6">
+        <!-- Tarjetas -->
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="border border-border rounded-lg p-4 bg-card">
+                <p class="text-xs text-muted-foreground mb-1">Total Revenue</p>
+                <h2 class="text-2xl font-semibold">$1,250.00</h2>
+                <p class="text-xs text-muted-foreground mt-1">
+                    +12.5% this month
+                </p>
+            </div>
+
+            <div class="border border-border rounded-lg p-4 bg-card">
+                <p class="text-xs text-muted-foreground mb-1">New Customers</p>
+                <h2 class="text-2xl font-semibold">1,234</h2>
+                <p class="text-xs text-muted-foreground mt-1">
+                    -20% this period
+                </p>
+            </div>
+
+            <div class="border border-border rounded-lg p-4 bg-card">
+                <p class="text-xs text-muted-foreground mb-1">
+                    Active Accounts
+                </p>
+                <h2 class="text-2xl font-semibold">45,678</h2>
+                <p class="text-xs text-muted-foreground mt-1">
+                    +12.5% retention
+                </p>
+            </div>
+
+            <div class="border border-border rounded-lg p-4 bg-card">
+                <p class="text-xs text-muted-foreground mb-1">Growth Rate</p>
+                <h2 class="text-2xl font-semibold">4.5%</h2>
+                <p class="text-xs text-muted-foreground mt-1">Steady growth</p>
+            </div>
+        </div>
+
+        <!-- Gráfico placeholder -->
+        <div class="border border-border rounded-lg p-6 bg-card">
+            <p class="text-sm font-medium mb-2">Total Visitors</p>
+            <div class="h-48 bg-muted rounded-md"></div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="border border-border rounded-lg bg-card overflow-hidden">
+            <table class="w-full text-sm">
+                <thead class="border-b border-border bg-muted/50">
+                    <tr>
+                        <th class="text-left p-3 font-medium">Header</th>
+                        <th class="text-left p-3 font-medium">Section Type</th>
+                        <th class="text-left p-3 font-medium">Status</th>
+                        <th class="text-left p-3 font-medium">Target</th>
+                        <th class="text-left p-3 font-medium">Reviewer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="p-3">Cover Page</td>
+                        <td class="p-3 text-muted-foreground">Cover page</td>
+                        <td class="p-3 text-green-600 font-medium"
+                            >In Process</td
+                        >
+                        <td class="p-3">18</td>
+                        <td class="p-3">Eddie Lake</td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="p-3">Executive Summary</td>
+                        <td class="p-3 text-muted-foreground">Narrative</td>
+                        <td class="p-3 text-green-600 font-medium">Done</td>
+                        <td class="p-3">13</td>
+                        <td class="p-3">Eddie Lake</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</AdminLayout>
