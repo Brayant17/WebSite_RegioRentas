@@ -8,28 +8,31 @@ export const onRequest = defineMiddleware(async (context, next) => {
         data: { user },
     } = await supabase.auth.getUser();
 
-    // rutas que requieren autenticación
+    const currentPath = context.url.pathname;
+
+    // 🔒 rutas que requieren autenticación
     const protectedRoutes = [
         "/panel/favoritos",
         "/panel/publicaciones",
         "/panel/configuracion",
     ];
 
-    // rutas que requieren autorización (broker)
+    // 🔒 rutas que requieren permiso broker
     const protectedRoutesBroker = [
         "/panel/publicaciones/nueva",
         "/panel/publicaciones/editar",
     ];
 
-    const currentPath = context.url.pathname;
+    // 🔒 rutas exclusivas del administrador
+    const protectedRoutesAdmin = ["/admin"];
 
-    // Bloquear rutas protegidas si no hay usuario
+    // 1️⃣ Bloquear rutas protegidas si no hay usuario
     if (!user && protectedRoutes.some((route) => currentPath.startsWith(route))) {
         console.log("⛔ Sin usuario, redirigiendo a /login");
         return context.redirect("/login");
     }
 
-    // ✅ Si hay usuario, verificamos si necesita permiso de broker
+    // 2️⃣ Verificar aprobación de broker
     if (user && protectedRoutesBroker.some((route) => currentPath.startsWith(route))) {
         const { data: approvalData, error: approvalError } = await supabase
             .from("users")
@@ -38,13 +41,41 @@ export const onRequest = defineMiddleware(async (context, next) => {
             .single();
 
         if (approvalError) {
+            console.error("Error al verificar aprobación:", approvalError);
             return context.redirect("/panel/favoritos"); // fallback seguro
         }
 
         const isApproved = approvalData?.approval_status === "approved";
-
         if (!isApproved) {
+            console.log("⛔ Usuario no aprobado, redirigiendo a /panel/publicaciones");
             return context.redirect("/panel/publicaciones");
+        }
+    }
+
+    // 3️⃣ Verificar rol de administrador desde tu tabla users
+    if (protectedRoutesAdmin.some((route) => currentPath.startsWith(route))) {
+        if (!user) {
+            console.log("⛔ Sin usuario, redirigiendo a /login");
+            return context.redirect("/login");
+        }
+
+        // 🔍 Consultar el rol del usuario en la tabla users
+        const { data: roleData, error: roleError } = await supabase
+            .from("users")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+        if (roleError) {
+            console.error("Error al obtener rol del usuario:", roleError);
+            return context.redirect("/"); // fallback seguro
+        }
+
+        const role = roleData?.role;
+
+        if (role !== "admin") {
+            console.log("⛔ Acceso denegado: usuario sin rol admin");
+            return context.redirect("/");
         }
     }
 
