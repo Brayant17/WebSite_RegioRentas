@@ -91,8 +91,9 @@ export const columns: ColumnDef<Property>[] = [
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Editar</DropdownMenuItem>
-                    <DropdownMenuItem>Ver detalles</DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <a href={`/panel/publicaciones/editar/${row.original.id}`}>Editar</a>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>Despublicar</DropdownMenuItem>
                     <DropdownMenuItem className="text-red-500">Eliminar</DropdownMenuItem>
                 </DropdownMenuContent>

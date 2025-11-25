@@ -16,7 +16,8 @@ import {
   IconSettings,
   IconUsers,
   IconUsersGroup,
-  IconBuildingCommunity
+  IconBuildingCommunity,
+  IconArrowBackUp
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -64,6 +65,11 @@ const data = {
       title: "Team",
       url: "#",
       icon: IconUsersGroup,
+    },
+    {
+      title: "Volver a la app",
+      url: "/",
+      icon: IconArrowBackUp,
     },
   ],
   navClouds: [
