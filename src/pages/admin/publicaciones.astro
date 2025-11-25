@@ -1,0 +1,10 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import Page from "@/components/admin/Publicaciones/Page"
+---
+
+<AdminLayout title="Dashboard">
+    <div class="p-6">
+        <Page client:load />
+    </div>
+</AdminLayout>

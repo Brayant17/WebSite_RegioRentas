@@ -9,13 +9,21 @@ interface NavbarProps {
             full_name?: string;
             avatar_url?: string;
         };
+        app_metadata?: {
+            role?: string | null
+        }
     } | null;
 }
 
 export default function ProfileUser({ initialUser }: NavbarProps) {
     const [user, setUser] = useState(initialUser);
+    const [isAdmin, setIsAdmin] = useState(null)
     const [open, setOpen] = useState(false);
     const ProfileUserRef = useRef(null);
+
+    useEffect(() => {
+        setIsAdmin(user?.app_metadata?.role);
+    }, [user])
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -123,6 +131,18 @@ export default function ProfileUser({ initialUser }: NavbarProps) {
                                     <span className='text-sm'>Configuración</span>
                                 </a>
                             </div>
+                            {
+                                isAdmin && (
+                                    <div className="p-1">
+                                        <a
+                                            href="/admin/dashboard"
+                                            className='flex items-center gap-2 p-2 rounded-sm hover:bg-gray-100'
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" /><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" /><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" /><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" /></svg><span className='text-sm'>Panel de administracion</span>
+                                        </a>
+                                    </div>
+                                )
+                            }
                             <div className="p-1">
                                 <button
                                     onClick={handleLogout}

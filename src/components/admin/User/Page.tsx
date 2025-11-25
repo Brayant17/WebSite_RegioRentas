@@ -1,0 +1,73 @@
+"use client";
+
+import { supabase } from "@/lib/supabaseClient";
+import { useEffect, useState } from "react";
+import { DataTable } from "@/components/admin/User/data-table";
+import { columns } from "@/components/admin/User/columns";
+import { UserFilters } from "@/components/admin/User/UserFilters";
+import { CSVExportButton } from "@/components/admin/User/CSVExportButton";
+import { PaginationControls } from "@/components/admin/User/PaginationControls";
+
+export default function UsersPage() {
+    const [users, setUsers] = useState<any[]>([]);
+    const [filters, setFilters] = useState({ email: "", role: "", status: "" });
+    const [page, setPage] = useState(1);
+
+    const limit = 10; // registros por página
+    const [totalPages, setTotalPages] = useState(1);
+
+    useEffect(() => {
+        loadUsers();
+    }, [filters, page]);
+
+    async function loadUsers() {
+        let query = supabase
+            .from("users")
+            .select("*", { count: "exact" });
+
+        if (filters.email) query = query.ilike("email", `%${filters.email}%`);
+        if (filters.role) query = query.eq("role", filters.role);
+        if (filters.status) query = query.eq("approval_status", filters.status);
+
+        const start = (page - 1) * limit;
+        const end = start + limit - 1;
+
+        const { data, count, error } = await query.range(start, end);
+
+        if (error) {
+            console.error("Error al cargar usuarios:", error);
+            return;
+        }
+
+        setUsers(data);
+        setTotalPages(Math.ceil(count! / limit));
+    }
+
+    return (
+        <div className="p-6 space-y-4">
+            <h1 className="text-2xl font-bold">Usuarios</h1>
+
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <UserFilters
+                    onFilter={(f: any) => {
+                        setPage(1);
+                        setFilters(f);
+                    }}
+                    className="w-full md:w-auto"
+                />
+
+                <CSVExportButton data={users} className="w-full md:w-auto" />
+            </div>
+
+            <div className="overflow-hidden rounded-lg border">
+                <DataTable columns={columns} data={users} />
+            </div>
+
+            <PaginationControls
+                page={page}
+                totalPages={totalPages}
+                onPageChange={(p) => setPage(p)}
+            />
+        </div>
+    );
+}
