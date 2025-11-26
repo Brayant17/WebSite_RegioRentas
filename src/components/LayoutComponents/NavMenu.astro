@@ -6,40 +6,54 @@ import ProfileUser from "./ProfileUser";
 
 // Obtener el usuario autenticado en el servidor
 const supabase = supabaseServer(Astro.cookies);
-const { data: { user } } = await supabase.auth.getUser();
+const {
+    data: { user },
+} = await supabase.auth.getUser();
 ---
 
-<div class="fixed w-full bg-white z-30">
-    <div class="w-full border-b border-gray-200 pt-4">
-        <div class="w-11/12 m-auto flex justify-between items-center pb-4">
-            <div class="md:flex-1">
-                <a href="/" class="w-max flex items-center gap-1">
+<div class="fixed w-full bg-white z-30 shadow-sm">
+    <div class="w-full border-b border-gray-200 py-2 bg-white">
+        <div class="w-11/12 m-auto flex items-center justify-between gap-10">
+            <!-- LOGO + ESLOGAN -->
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <a href="/" class="flex items-center gap-2">
                     <img
-                        class="w-16 object-cover aspect-square"
+                        class="w-20 h-20 object-contain"
                         src={logo.src}
-                        alt="Logo Regio Rentas servicios de inmobiliaria"
+                        alt="Logo Regio Rentas"
                     />
-                    <!-- <h2 class="font-bold">
-                        <span class="text-red-700">Regio</span> Rentas
-                    </h2> -->
+
+                    <!-- Eslogan -->
+                    <h2
+                        class="hidden md:block text-base md:text-xl leading-none"
+                    >
+                        Tu renta segura en Monterrey
+                    </h2>
                 </a>
             </div>
-            <div
-                class="md:flex-1 text-center text-base md:text-xl hidden md:inline-block"
-            >
-                <h2>🏡 Tu próximo hogar, a un clic.</h2>
+
+            <!-- BANNER RESPONSIVO -->
+            <div class="flex-1 hidden md:block">
+                <div class="w-full max-w-2xl m-auto aspect-[16/3] max-h-20 overflow-hidden rounded-sm ">
+                    <img
+                        src="/Banner1.png"
+                        class="w-full h-full object-cover object-top"
+                        alt="Banner Regio Rentas"
+                    />
+                </div>
             </div>
-            <!-- Esto hacerlo con React es un dropdown -->
-            <div class="md:flex-1 flex gap-2.5 justify-end">
-                <!-- <Dropdown client:load /> -->
-                <!-- Botón secundario más neutro -->
+
+            <!-- PERFIL + WHATSAPP -->
+            <div class="flex items-center gap-3 flex-shrink-0">
                 <ProfileUser initialUser={user} client:load />
+
+                <!-- Botón WhatsApp -->
                 <a
                     href="https://wa.me/5218119995314?text=¡Hola!%20Estoy%20interesado%20en%20más%20información%20sobre%20las%20propiedades."
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Contactar por WhatsApp"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 md:py-2 bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors duration-200 ease-in-out rounded-lg text-white text-sm md:text-sm font-medium shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 cursor-pointer"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 active:bg-green-800
+                           transition-colors text-white rounded-lg text-sm shadow-md hover:shadow-lg"
                 >
                     <svg
                         width="20"
@@ -52,15 +66,13 @@ const { data: { user } } = await supabase.auth.getUser();
                         stroke-linejoin="round"
                         class="icon icon-tabler icon-tabler-brand-whatsapp"
                     >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"
-                        ></path>
-                        <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"
-                        ></path>
+                        <path stroke="none" d="M0 0h24v24H0z"></path>
+                        <path d="M3 21l1.65-3.8a9 9 0 113.4 2.9l-5.05.9"></path>
                         <path
-                            d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"
+                            d="M9 10a.5.5 0 001 0v-1a.5.5 0 00-1 0v1a5 5 0 005 5h1a.5.5 0 000-1h-1a.5.5 0 000 1"
                         ></path>
                     </svg>
-                    <span>Contactar</span>
+                    <span class="hidden md:inline">Contactar</span>
                 </a>
             </div>
         </div>
