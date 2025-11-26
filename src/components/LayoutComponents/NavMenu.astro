@@ -1,7 +1,12 @@
 ---
 // navbar
+import { supabaseServer } from "@/lib/supabaseServer";
 import logo from "../../assets/logo_regio_rentas-removebg.webp";
 import ProfileUser from "./ProfileUser";
+
+// Obtener el usuario autenticado en el servidor
+const supabase = supabaseServer(Astro.cookies);
+const { data: { user } } = await supabase.auth.getUser();
 ---
 
 <div class="fixed w-full bg-white z-30">
@@ -19,14 +24,16 @@ import ProfileUser from "./ProfileUser";
                     </h2> -->
                 </a>
             </div>
-            <div class="md:flex-1 text-center text-base md:text-xl hidden md:inline-block">
+            <div
+                class="md:flex-1 text-center text-base md:text-xl hidden md:inline-block"
+            >
                 <h2>🏡 Tu próximo hogar, a un clic.</h2>
             </div>
             <!-- Esto hacerlo con React es un dropdown -->
             <div class="md:flex-1 flex gap-2.5 justify-end">
                 <!-- <Dropdown client:load /> -->
                 <!-- Botón secundario más neutro -->
-                <ProfileUser client:load />
+                <ProfileUser initialUser={user} client:load />
                 <a
                     href="https://wa.me/5218119995314?text=¡Hola!%20Estoy%20interesado%20en%20más%20información%20sobre%20las%20propiedades."
                     target="_blank"
