@@ -1,28 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from "../../lib/supabaseClient";
+import type { User } from '@supabase/supabase-js';
 
 interface NavbarProps {
-    initialUser?: {
-        id: string;
-        email?: string;
-        user_metadata?: {
-            full_name?: string;
-            avatar_url?: string;
-        };
-        app_metadata?: {
-            role?: string | null
-        }
-    } | null;
+    initialUser: User | null;
 }
 
 export default function ProfileUser({ initialUser }: NavbarProps) {
     const [user, setUser] = useState(initialUser);
-    const [isAdmin, setIsAdmin] = useState(null)
+    const [isAdmin, setIsAdmin] = useState(false);
     const [open, setOpen] = useState(false);
     const ProfileUserRef = useRef(null);
 
     useEffect(() => {
-        setIsAdmin(user?.app_metadata?.role);
+        setIsAdmin(user?.app_metadata?.role == 'admin');
     }, [user])
 
     useEffect(() => {
