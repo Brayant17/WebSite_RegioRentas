@@ -212,12 +212,11 @@ export default function ConfigUser() {
             </section>
 
             {/* --- Sección Broker --- */}
-            {/* --- Sección Broker --- */}
             <section className="bg-gray-100 rounded-md shadow-sm">
                 <header className="border-b border-gray-300 py-4 px-6">
-                    <h2 className="text-gray-700 text-base font-medium">Broker</h2>
+                    <h2 className="text-gray-700 text-base font-medium">Premium</h2>
                     <p className="text-sm text-gray-600">
-                        Solicita tu cuenta de broker para poder publicar propiedades.
+                        Obtén tu cuenta Premium gratis y publica tus propiedades hoy mismo.
                     </p>
                 </header>
 
@@ -225,13 +224,13 @@ export default function ConfigUser() {
                     <div className="p-2">
                         <h3 className="text-base">
                             {formData.broker === "approved"
-                                ? "Cuenta de broker activa ✅"
-                                : "Cuenta de broker no activa"}
+                                ? "Cuenta de premium activa ✅"
+                                : "Cuenta de premium no activa"}
                         </h3>
                         <p className="text-sm">
                             {formData.broker === "approved"
                                 ? "Ya puedes publicar tus propiedades en la plataforma."
-                                : "Solicita la activación de tu cuenta de broker para comenzar a publicar."}
+                                : "Solicita la activación de tu cuenta Premium para comenzar a publicar."}
                             {formData.broker === "pending" && (
                                 <span className="text-sm text-yellow-600 ml-2">
                                     Solicitud en revisión ⏳
@@ -244,10 +243,10 @@ export default function ConfigUser() {
                         onClick={solicitarBroker}
                         disabled={!!formData.broker}
                         className={`px-3 py-1.5 text-sm md:text-base rounded text-white cursor-pointer transition ${formData.broker === "approved"
-                                ? "bg-green-600 cursor-not-allowed"
-                                : formData.broker === "pending"
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-neutral-700 hover:bg-neutral-900"
+                            ? "bg-green-600 cursor-not-allowed"
+                            : formData.broker === "pending"
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-neutral-700 hover:bg-neutral-900"
                             }`}
                     >
                         {formData.broker === "approved"
