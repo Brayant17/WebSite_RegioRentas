@@ -228,7 +228,7 @@ export default function NewProperty({ propertyId }) {
 
         // 7. Redirección o alerta según corresponda
         if (!propertyId) {
-            window.location.href = `/App/propiedad/editar/${currentPropertyId}`;
+            window.location.href = `/panel/propiedad/editar/${currentPropertyId}`;
         } else {
             setSaveSuccess(true);
             setTimeout(() => setSaveSuccess(false), 3000);
