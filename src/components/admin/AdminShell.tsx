@@ -3,17 +3,18 @@
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/admin/app-sidebar"
 import { Navbar } from "@/components/admin/Navbar"
+import { Toaster } from "sonner";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
     return (
         <SidebarProvider>
-            <div className="flex min-h-screen w-full">
-                <AppSidebar />
-                <div className="flex flex-1 flex-col">
+            <AppSidebar />
+            <div className="flex flex-col w-full min-h-screen ">
+                <div className="@container/main flex flex-1 flex-col gap-2">
                     <Navbar />
-                    <main className="flex-1 p-6 bg-muted/10 rounded-t-lg">
-                        {children}
-                    </main>
+                    {children}
+                    {/* sonner */}
+                    <Toaster />
                 </div>
             </div>
         </SidebarProvider>
