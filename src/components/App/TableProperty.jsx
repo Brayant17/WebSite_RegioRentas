@@ -62,28 +62,51 @@ export default function TableProperty() {
 
     // 🗑️ Confirmar eliminación (llamada real)
     const handleClickDelete = async (idProperty) => {
-        try {
-            const session = await supabase.auth.getSession();
-            const token = session.data.session?.access_token;
+        console.log(propertyToDelete)
+        const userId = propertyToDelete.user_id; // Usa el user_id de la propiedad a eliminar
+        console.log("Eliminar propiedad con ID:", idProperty);
+        console.log("User ID del propietario:", userId);
+        // try {
+        //     // 1) Obtener los filenames antes de borrar nada
+        //     const { data: imgs, error: imgErr } = await supabase
+        //         .from("property_images")
+        //         .select("filename")
+        //         .eq("property_id", idProperty);
 
-            const res = await fetch("/api/delete-property", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ propiedadId: idProperty }),
-            });
+        //     if (imgErr) throw imgErr;
 
-            if (!res.ok) throw new Error("Error al eliminar la propiedad");
+        //     const filePaths = imgs.map(img => `${userId}/${idProperty}/${img.filename}`);
 
-            // Refrescar lista
-            fetchProperties();
-            setPropertyToDelete(null); // cerrar modal
-        } catch (err) {
-            console.error(err);
-            setError("Error al eliminar la propiedad");
-        }
+        //     // 2) Borrar archivos del bucket
+        //     const { error: bucketErr } = await supabase
+        //         .storage
+        //         .from("properties")
+        //         .remove(filePaths);
+
+        //     if (bucketErr) throw bucketErr;
+
+        //     // 3) Borrar registros de property_images
+        //     const { error: deleteImgsErr } = await supabase
+        //         .from("property_images")
+        //         .delete()
+        //         .eq("property_id", idProperty);
+
+        //     if (deleteImgsErr) throw deleteImgsErr;
+
+        //     // 4) Borrar la propiedad
+        //     const { error: deletePropErr } = await supabase
+        //         .from("properties")
+        //         .delete()
+        //         .eq("id", idProperty);
+
+        //     if (deletePropErr) throw deletePropErr;
+
+        //     toast.success("Propiedad eliminada exitosamente");
+
+        // } catch (err) {
+        //     console.error(err);
+        //     toast.error("Error al eliminar la propiedad");
+        // }
     };
 
     useEffect(() => {
