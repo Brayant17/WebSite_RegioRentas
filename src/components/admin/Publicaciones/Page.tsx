@@ -7,6 +7,7 @@ import { columns } from "@/components/admin/Publicaciones/columns";
 import { PropertyFilters } from "@/components/admin/Publicaciones/PropertyFilters";
 import { CSVExportButton } from "@/components/admin/Publicaciones/CSVExportButton";
 import { PaginationControls } from "@/components/admin/Publicaciones/PaginationControls";
+import { Button } from "@/components/ui/button";
 
 export default function PropertiesPage() {
     const [properties, setProperties] = useState<any[]>([]);
@@ -29,7 +30,7 @@ export default function PropertiesPage() {
     async function loadProperties() {
         let query = supabase
             .from("properties")
-            .select("*", { count: "exact" });
+            .select("id, id_owner:user_id, title, slug, property_type, price, status, published_at", { count: "exact" });
 
         // filtros opcionales (cámbialos según tus columnas)
         if (filters.title) query = query.ilike("title", `%${filters.title}%`);
@@ -65,7 +66,12 @@ export default function PropertiesPage() {
                     className="w-full md:w-auto"
                 />
 
-                <CSVExportButton data={properties} className="w-full md:w-auto" />
+                <div className="flex gap-2 w-full md:w-auto flex-col md:flex-row">
+                    <Button asChild variant="default" className="w-full md:w-auto">
+                        <a href="/panel/publicaciones/nueva">Nueva Publicación</a>
+                    </Button>
+                    <CSVExportButton data={properties} className="w-full md:w-auto" />
+                </div>
             </div>
 
             <div className="rounded-md border w-full overflow-x-auto">
