@@ -2,36 +2,18 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Property } from "./types";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { IconDotsVertical } from "@tabler/icons-react";
 import { StatusBadge } from "./StatusBadge";
-
-// Colores por estado (ajusta según tus estados reales)
-const statusColor: Record<Property["status"], string> = {
-    published: "bg-green-100 text-green-700 border-green-300",
-    draft: "bg-yellow-100 text-yellow-700 border-yellow-300",
-    archived: "bg-gray-100 text-gray-700 border-gray-300",
-};
+import DropDownActions from "./DropDownActions";
 
 export const columns: ColumnDef<Property>[] = [
     {
         accessorKey: "title",
         header: "Título",
-        cell: ({ row }) => {
-            const property = row.original;
-            const initials = property.title.substring(0, 2).toUpperCase();
-
-            return (
-                <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8">
-                        <AvatarFallback>{initials}</AvatarFallback>
-                    </Avatar>
-                    <span className="font-medium">{property.title}</span>
-                </div>
-            );
-        },
+        cell: ({ row }) => (
+            <div className="flex items-center gap-3">
+                <span className="font-medium">{row.original.title}</span>
+            </div>
+        )
     },
 
     {
@@ -73,31 +55,22 @@ export const columns: ColumnDef<Property>[] = [
     },
 
     {
-        accessorKey: "created_at",
-        header: "Creado",
+        accessorKey: "published_at",
+        header: "Publicado",
         cell: ({ row }) => {
-            const date = new Date(row.original.created_at).toLocaleDateString();
+            const date = new Date(row.original.published_at).toLocaleDateString();
             return <span className="text-muted-foreground">{date}</span>;
         },
     },
 
     {
         id: "actions",
-        cell: ({ row }) => (
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <IconDotsVertical />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                        <a href={`/panel/publicaciones/editar/${row.original.id}`}>Editar</a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>Despublicar</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Eliminar</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        ),
+        cell: ({ row }) => {
+            const propertyName = row.original.title;
+            const idOwner = row.original.id_owner;
+            return (
+                <DropDownActions idProperty={row.original.id} propertyName={propertyName} idOwner={idOwner} />
+            )
+        },
     },
 ];
