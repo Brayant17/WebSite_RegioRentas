@@ -21,7 +21,7 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
     });
 
     return (
-        <div className="relative w-full overflow-x-auto">
+        <div className="">
             <Table className="w-full caption-bottom text-sm">
                 <TableHeader className="bg-muted/50">
                     {table.getHeaderGroups().map((headerGroup) => (
