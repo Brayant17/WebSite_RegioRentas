@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import { toast } from "sonner";
 
 export default function TableProperty() {
     const [properties, setProperties] = useState([]);
@@ -60,53 +61,52 @@ export default function TableProperty() {
         }
     };
 
-    // 🗑️ Confirmar eliminación (llamada real)
+    // Confirmar eliminación (llamada real)
     const handleClickDelete = async (idProperty) => {
-        console.log(propertyToDelete)
         const userId = propertyToDelete.user_id; // Usa el user_id de la propiedad a eliminar
-        console.log("Eliminar propiedad con ID:", idProperty);
-        console.log("User ID del propietario:", userId);
-        // try {
-        //     // 1) Obtener los filenames antes de borrar nada
-        //     const { data: imgs, error: imgErr } = await supabase
-        //         .from("property_images")
-        //         .select("filename")
-        //         .eq("property_id", idProperty);
+        try {
+            // 1) Obtener los filenames antes de borrar nada
+            const { data: imgs, error: imgErr } = await supabase
+                .from("property_images")
+                .select("filename")
+                .eq("property_id", idProperty);
 
-        //     if (imgErr) throw imgErr;
+            if (imgErr) throw imgErr;
 
-        //     const filePaths = imgs.map(img => `${userId}/${idProperty}/${img.filename}`);
+            const filePaths = imgs.map(img => `${userId}/${idProperty}/${img.filename}`);
 
-        //     // 2) Borrar archivos del bucket
-        //     const { error: bucketErr } = await supabase
-        //         .storage
-        //         .from("properties")
-        //         .remove(filePaths);
+            // 2) Borrar archivos del bucket
+            const { error: bucketErr } = await supabase
+                .storage
+                .from("properties")
+                .remove(filePaths);
 
-        //     if (bucketErr) throw bucketErr;
+            if (bucketErr) throw bucketErr;
 
-        //     // 3) Borrar registros de property_images
-        //     const { error: deleteImgsErr } = await supabase
-        //         .from("property_images")
-        //         .delete()
-        //         .eq("property_id", idProperty);
+            // 3) Borrar registros de property_images
+            const { error: deleteImgsErr } = await supabase
+                .from("property_images")
+                .delete()
+                .eq("property_id", idProperty);
 
-        //     if (deleteImgsErr) throw deleteImgsErr;
+            if (deleteImgsErr) throw deleteImgsErr;
 
-        //     // 4) Borrar la propiedad
-        //     const { error: deletePropErr } = await supabase
-        //         .from("properties")
-        //         .delete()
-        //         .eq("id", idProperty);
+            // 4) Borrar la propiedad
+            const { error: deletePropErr } = await supabase
+                .from("properties")
+                .delete()
+                .eq("id", idProperty);
 
-        //     if (deletePropErr) throw deletePropErr;
+            if (deletePropErr) throw deletePropErr;
 
-        //     toast.success("Propiedad eliminada exitosamente");
+            fetchProperties();
+            setPropertyToDelete(null);
+            toast.success("Propiedad eliminada exitosamente");
 
-        // } catch (err) {
-        //     console.error(err);
-        //     toast.error("Error al eliminar la propiedad");
-        // }
+        } catch (err) {
+            console.error(err);
+            toast.error("Error al eliminar la propiedad");
+        }
     };
 
     useEffect(() => {
