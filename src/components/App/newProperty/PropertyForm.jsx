@@ -286,7 +286,7 @@ export default function NewProperty({ propertyId }) {
                         </h3>
 
                         {/* {Estado de la publicacion} */}
-                        <PublicationStatus setterState={setPropertyData} />
+                        <PublicationStatus setterState={setPropertyData} status={propertyData.is_public} />
 
                         {/* Estado */}
                         <div className="space-y-2">

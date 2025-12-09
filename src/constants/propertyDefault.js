@@ -46,5 +46,5 @@ export const initialPropertyData = {
   status: "Disponible", // usar valores de STATUS
   user_id: "",
   available_from: null,  // Date o null
-  is_public: "FALSE"
+  is_public: false
 };
