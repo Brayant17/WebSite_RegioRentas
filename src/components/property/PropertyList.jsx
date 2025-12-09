@@ -51,6 +51,7 @@ export default function PropertyList({ limit = 24 }) {
           operation,
           property_images (url, order)
         `)
+        .eq("is_public", "TRUE")
         .order("order", { foreignTable: "property_images", ascending: true })
         .range(start, end);
 

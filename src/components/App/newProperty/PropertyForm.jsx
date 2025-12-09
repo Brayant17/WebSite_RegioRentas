@@ -1,6 +1,4 @@
-// ----- Validar antes de guardar la informacion, para que no se escapen datos vacios -----
-// ----- AL momento de editar mejorar le señal para mostrar que se edito correctamente -----
-// ----- Agregar para eliminar una propiedad tanto el registro como las imagenes asociadas a esa propiedad y los archivos del storage, asi como su carpeta de la propiedad
+// ----- Añadir funcionalidad para gestionar la visibilidad de las propiedades (público/privado) -----
 
 // utilidades
 import { useEffect, useState } from "react";
@@ -19,6 +17,7 @@ import Amenities from "./Amenities";
 import Status from "./Status";
 import Fechas from "./Fechas"
 import DropZone from "./DropZone";
+import PublicationStatus from "./PublicationStatus";
 
 export default function NewProperty({ propertyId }) {
     const [saveSuccess, setSaveSuccess] = useState(false);
@@ -285,6 +284,9 @@ export default function NewProperty({ propertyId }) {
                         <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">
                             Opciones de publicación
                         </h3>
+
+                        {/* {Estado de la publicacion} */}
+                        <PublicationStatus setterState={setPropertyData} />
 
                         {/* Estado */}
                         <div className="space-y-2">
