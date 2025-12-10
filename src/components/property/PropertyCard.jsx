@@ -1,5 +1,6 @@
 import PropertySlider from "./PropertySlider.jsx";
 import FavoriteButton from "./FavoriteButton.jsx";
+import BadgeVerified from "@/assets/badge_17460216.png";
 
 function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
     const dominio = window.location.origin;
@@ -8,6 +9,8 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
         currency: "MXN",
         minimumFractionDigits: 0,
     });
+
+    console.log(property)
 
     return (
         <article className="rounded-lg w-full overflow-hidden cursor-pointer">
@@ -25,6 +28,14 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
                 <div className="absolute top-0.5 right-0.5 z-10">
                     <FavoriteButton propertyId={id} isInitiallyFavorite={isFavorite} session={session} />
                 </div>
+
+                {/* Badge is verefied */}
+                {property.users?.is_verified && (
+                    <div className="absolute top-3 left-3 z-10 bg-white text-neutral-800 text-xs font-semibold px-1 py-0.5 rounded-xl flex items-center gap-1">
+                        <img src={BadgeVerified.src} alt="Verificado" className="w-6 h-6" />
+                        <span className="text-xs font-medium pr-1">Verificado</span>
+                    </div>
+                )}
 
                 {/* Badge opcional */}
                 {badge && (

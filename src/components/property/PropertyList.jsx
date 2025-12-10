@@ -37,6 +37,7 @@ export default function PropertyList({ limit = 24 }) {
         .from("properties")
         .select(`
           id,
+          users (is_verified),
           title,
           description,
           price,
