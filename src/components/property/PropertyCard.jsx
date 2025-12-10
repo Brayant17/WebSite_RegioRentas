@@ -10,8 +10,6 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
         minimumFractionDigits: 0,
     });
 
-    console.log(property)
-
     return (
         <article className="rounded-lg w-full overflow-hidden cursor-pointer">
             {/* Imagen / Slider */}
