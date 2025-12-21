@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
         const authHeader = request.headers.get('authorization');
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return new Response(JSON.stringify({ error: 'No autorizado. Token faltante.' }), {
+            return new Response(JSON.stringify({ error: 'No autorizado' }), {
                 status: 401,
             });
         }
@@ -36,7 +36,9 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        const userId = userData.user.id;
+        const user = userData.user;
+        const userId = user.id;
+        const isAdmin = user.user_metadata?.role === 'admin';
 
         // 1. Verificar que la propiedad le pertenece al usuario
         const { data: propiedad, error: propError } = await supabaseAdmin
@@ -51,7 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        if (propiedad.user_id !== userId) {
+        if (propiedad.user_id !== userId && !isAdmin) {
             return new Response(JSON.stringify({ error: 'No tienes permiso para eliminar esta propiedad.' }), {
                 status: 403,
             });
