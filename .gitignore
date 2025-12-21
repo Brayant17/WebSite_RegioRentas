@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 .vercel/output/
 .vercel/
+
+# local files
+Comentarios.txt
