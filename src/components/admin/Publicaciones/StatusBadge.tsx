@@ -3,37 +3,15 @@ import { IconCircleCheckFilled, IconLoader } from "@tabler/icons-react";
 import { CheckCircle, Loader2, Circle, XCircle } from "lucide-react";
 
 type Status =
-    | "approved"
-    | "pending"
-    | "rejected"
-    | "in_process"
-    | "done";
+    | "Disponible"
 
 export function StatusBadge({ status }: { status: Status }) {
     switch (status) {
-        case "approved":
-        case "done":
+        case "Disponible":
             return (
                 <Badge variant="outline" className="text-muted-foreground px-1.5">
                     <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-                    Done
-                </Badge>
-            );
-
-        case "in_process":
-        case "pending":
-            return (
-                <Badge variant="outline" className="text-muted-foreground px-1.5">
-                    <IconLoader />
-                    In Process
-                </Badge>
-            );
-
-        case "rejected":
-            return (
-                <Badge variant="outline" className="bg-red-100 text-red-800 gap-1">
-                    <XCircle className="h-3 w-3" />
-                    Rejected
+                    Disponible
                 </Badge>
             );
 
