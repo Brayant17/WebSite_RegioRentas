@@ -27,13 +27,7 @@ export function PropertyFilters({ onFilter, className }: { onFilter: any, classN
 
     return (
         <div
-            className={`
-                flex flex-wrap items-center gap-3 mb-4 p-4 
-                bg-white dark:bg-neutral-900
-                border border-gray-200 dark:border-neutral-700
-                rounded-lg shadow-sm
-                ${className}
-            `}
+            className={`flex flex-wrap items-center gap-3 rounded-lg ${className}`}
         >
 
             {/* Buscar por título */}
