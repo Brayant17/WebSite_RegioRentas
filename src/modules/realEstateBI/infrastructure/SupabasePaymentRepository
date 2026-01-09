@@ -1,0 +1,36 @@
+import type { PaymentRepository } from "../domain/repositories/PaymentRepository"
+import { Payment } from "../domain/entities/Payment"
+import { supabase } from "../../../lib/supabaseClient"
+
+export class SupabasePaymentRepository implements PaymentRepository {
+    async exists(contractId: string, period: string): Promise<boolean> {
+        const { data, error } = await supabase
+            .from("payments")
+            .select('id')
+            .eq("contract_id", contractId)
+            .eq("period", period)
+            .limit(1);
+
+        if (error) {
+            throw new Error("Error checking payment existence")
+        }
+
+        return data.length > 0
+    }
+
+    async save(payment: Payment): Promise<void> {
+        const { error } = await supabase
+            .from("payments")
+            .insert({
+                contract_id: payment.contractId,
+                period: payment.period,
+                amount: payment.amount,
+                due_date: payment.dueDate,
+                paid_at: payment.paidAt ?? null
+            })
+
+        if (error) {
+            throw new Error("Error saving payment")
+        }
+    }
+}

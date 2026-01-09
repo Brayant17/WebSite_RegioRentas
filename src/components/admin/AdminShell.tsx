@@ -10,7 +10,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <SidebarProvider>
             <AppSidebar />
             <div className="flex flex-col w-full min-h-screen ">
-                <div className="@container/main flex flex-1 flex-col gap-2">
+                <div className="@container/main flex flex-1 flex-col">
                     <Navbar />
                     {children}
                     {/* sonner */}

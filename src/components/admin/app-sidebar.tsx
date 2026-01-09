@@ -17,7 +17,9 @@ import {
   IconUsers,
   IconUsersGroup,
   IconBuildingCommunity,
-  IconArrowBackUp
+  IconArrowBackUp,
+  IconBuildingSkyscraper,
+  IconChartHistogram
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -138,6 +140,16 @@ const data = {
     },
   ],
   documents: [
+    {
+      name: "Property Reports",
+      url: "/admin/realestatebi/dashboard",
+      icon: IconChartHistogram,
+    },
+    {
+      name: "Propiedades",
+      url: "/admin/realestatebi/propiedades",
+      icon: IconBuildingSkyscraper,
+    },
     {
       name: "Data Library",
       url: "#",
