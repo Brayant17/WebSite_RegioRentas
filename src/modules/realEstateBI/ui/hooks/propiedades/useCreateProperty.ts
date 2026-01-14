@@ -19,8 +19,7 @@ export const useCreateProperty = () => {
         setLoading(true);
         setError(null);
         try {
-            const property = new Property('', input.name, input.address, input.city, input.state, input.postalCode, input.active ?? true);
-            await createPropertyUseCase.execute(property);
+            await createPropertyUseCase.execute(input);
         } catch (err: any) {
             setError(err.message);
         } finally {
