@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 import { IconBuildingPlus } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
 import BuildingCard, { type Building } from './BuildingCard';
-import { useGetProperties } from '../../hooks/propiedades/useGetProperties';
 import BuildingCardSkeleton from './BuildingCardSkeleton';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { CreatePropertyDialog } from './CreatePropertyDialog';
 
-export default function Aside() {
-    const { properties, fetchProperties, loading, error } = useGetProperties();
+interface AsideProps {
+    properties: Building[],
+    loading: boolean,
+    error: string | null,
+    selectedProperty: string | null;
+    setSelectedProperty: (id: string | null) => void;
+    onPropertiesChanged: () => void
+}
+
+export default function Aside({ properties, loading, error, selectedProperty, setSelectedProperty, onPropertiesChanged }: AsideProps) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState<'Todos' | 'Residencial' | 'Comercial'>('Todos');
     const [open, setOpen] = useState(false);
@@ -26,16 +32,10 @@ export default function Aside() {
     //     return matchesSearch && matchesFilter;
     // });
 
-    // Fetch properties on component mount
-    useEffect(() => {
-        fetchProperties();
-    }, []);
-
-
     return (
-        <aside className="w-full lg:w-[380px] flex flex-col border-r border-[#dbe0e6] dark:border-[#2a3b4d] bg-white dark:bg-[#1a2634] shrink-0 z-10 h-full overflow-auto">
+        <aside className="w-full lg:w-[380px] h-full flex flex-col border-r border-[#dbe0e6] dark:border-[#2a3b4d] bg-white dark:bg-[#1a2634] shrink-0 z-10 overflow-auto">
             {/* Header & Search */}
-            <CreatePropertyDialog open={open} onOpenChange={setOpen} onCreated={() => fetchProperties()} />
+            <CreatePropertyDialog open={open} onOpenChange={setOpen} onCreated={onPropertiesChanged} />
             <div className="p-5 border-b border-[#dbe0e6] dark:border-[#2a3b4d] flex flex-col gap-4 shrink-0">
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold text-[#111418] dark:text-white">Propiedades</h2>
@@ -86,6 +86,8 @@ export default function Aside() {
                         key={prop.id}
                         building={prop}
                         isActive={false}
+                        selected={selectedProperty === prop.id}
+                        setSelectedProperty={setSelectedProperty}
                     />
                 ))}
                 {filteredProperties.length === 0 && (
