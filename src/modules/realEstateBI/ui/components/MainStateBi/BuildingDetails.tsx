@@ -1,6 +1,6 @@
 // BuildingDetails.tsx
 import { motion } from 'framer-motion';
-import UnitCard from './UnitCard';
+import UnitCard from './unit/UnitCard';
 import {
     MapPin,
     Edit3,
@@ -12,19 +12,23 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import type { PropertyDTO } from '@/modules/realEstateBI/application/dtos/PropertyDTO';
 import EditPropertyDialog from './EditPropertyDialog';
+import UnitCreateDialog from './unit/UnitCreateDialog';
 import { useState } from 'react';
+import BuildingUnits from './unit/BuildingUnits';
 
 //ocupado, disponible, mantenimiento seran calculados en base a las unidades de la propiedad
 
 // --- Componente Principal ---
-export default function BuildingDetails({ property, onPropertyUpdate }: { property: PropertyDTO | null, onPropertyUpdate: () => void }) {
+export default function BuildingDetails({ property, onPropertyUpdate }: { property: PropertyDTO, onPropertyUpdate: () => void }) {
     
     const [open, setOpen] = useState(false);
+    const [openCreateUnit, setOpenCreateUnit] = useState(false);
 
     return (
         <section className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-[#111827] overflow-hidden relative">
             {/* crear un modal */}
             <EditPropertyDialog open={open} onOpenChange={setOpen} property={property} onSaved={onPropertyUpdate} />
+            <UnitCreateDialog open={openCreateUnit} onOpenChange={setOpenCreateUnit} propertyID={property.id} />
             <header className="bg-white dark:bg-[#1a2634] border-b border-slate-200 dark:border-slate-800 px-6 py-5 shrink-0 z-10 shadow-sm">
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex items-start gap-4">
@@ -60,7 +64,7 @@ export default function BuildingDetails({ property, onPropertyUpdate }: { proper
                         <Button variant="outline" size="sm" className="gap-2 cursor-pointer" onClick={() => setOpen(true)}>
                             <Edit3 size={16} /> Editar
                         </Button>
-                        <Button size="sm" className="gap-2 bg-primary">
+                        <Button size="sm" className="gap-2 bg-primary" onClick={() => setOpenCreateUnit(true)}>
                             <Plus size={16} /> Nueva Unidad
                         </Button>
                     </div>
@@ -84,41 +88,7 @@ export default function BuildingDetails({ property, onPropertyUpdate }: { proper
                 </div>
             </header>
 
-            <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                    <UnitCard
-                        id="1A"
-                        name="Unidad 1-A"
-                        floor="Piso 1 • Vista Calle"
-                        status="Ocupado"
-                        tenant={{ name: "Elena Gomez", initials: "EG" }}
-                        expiry="Dic 2024"
-                        features="2 Hab • 85m²"
-                        rent="$1,200.00"
-                        paymentStatus="al día"
-                    />
-                    <UnitCard
-                        id="1B"
-                        name="Unidad 1-B"
-                        floor="Piso 1 • Interior"
-                        status="Ocupado"
-                        tenant={{ name: "Carlos Ruiz", initials: "CR" }}
-                        expiry="Ene 2025"
-                        features="1 Hab • 60m²"
-                        rent="$950.00"
-                        paymentStatus="pendiente"
-                    />
-                    <UnitCard
-                        id="2A"
-                        name="Unidad 2-A"
-                        floor="Piso 2 • Vista Calle"
-                        status="Disponible"
-                        features="2 Hab • 85m²"
-                        rent="$1,250.00"
-                        vacantDays={12}
-                    />
-                </div>
-            </div>
+            <BuildingUnits propertyID={property.id} />
         </section>
     );
 }

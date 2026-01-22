@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
+import { motion } from "framer-motion";
 import { IconBuildingPlus } from '@tabler/icons-react';
-import { Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import BuildingCard, { type Building } from './BuildingCard';
 import BuildingCardSkeleton from './BuildingCardSkeleton';
 import { CreatePropertyDialog } from './CreatePropertyDialog';
+import { Button } from '@/components/ui/button';
 
 interface AsideProps {
+    open: boolean;
+    onToggle: () => void;
     properties: Building[],
     loading: boolean,
     error: string | null,
@@ -14,10 +18,10 @@ interface AsideProps {
     onPropertiesChanged: () => void
 }
 
-export default function Aside({ properties, loading, error, selectedProperty, setSelectedProperty, onPropertiesChanged }: AsideProps) {
+export default function Aside({ open, onToggle, properties, loading, error, selectedProperty, setSelectedProperty, onPropertiesChanged }: AsideProps) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState<'Todos' | 'Residencial' | 'Comercial'>('Todos');
-    const [open, setOpen] = useState(false);
+    const [openCreatePropertyDialog, setOpenCreatePropertyDialog] = useState(false);
 
     // searchTerm
     const filteredProperties = properties.filter((prop) => {
@@ -33,16 +37,31 @@ export default function Aside({ properties, loading, error, selectedProperty, se
     // });
 
     return (
-        <aside className="w-full lg:w-[380px] h-full flex flex-col border-r border-[#dbe0e6] dark:border-[#2a3b4d] bg-white dark:bg-[#1a2634] shrink-0 z-10 overflow-auto">
+        <motion.aside
+            animate={{ x: open ? 0 : -260 }}
+            transition={{ type: "spring", stiffness: 260, damping: 30 }}
+            className="w-full lg:w-[380px] h-full flex flex-col border-r border-[#dbe0e6] dark:border-[#2a3b4d] bg-white dark:bg-[#1a2634] shrink-0 z-10 overflow-auto relative">
             {/* Header & Search */}
-            <CreatePropertyDialog open={open} onOpenChange={setOpen} onCreated={onPropertiesChanged} />
+            <CreatePropertyDialog open={openCreatePropertyDialog} onOpenChange={setOpenCreatePropertyDialog} onCreated={onPropertiesChanged} />
+            {/* BOTÓN BANDERITA */}
+            <Button
+                variant="secondary"
+                size="icon"
+                onClick={onToggle}
+                className="
+                    absolute top-6 -right-4
+                    h-8 w-8 rounded-full shadow-md z-50
+                "
+            >
+                {open ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+            </Button>
             <div className="p-5 border-b border-[#dbe0e6] dark:border-[#2a3b4d] flex flex-col gap-4 shrink-0">
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold text-[#111418] dark:text-white">Propiedades</h2>
                     <button
                         className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer"
                         title="Añadir Edificio"
-                        onClick={() => setOpen(true)}
+                        onClick={() => setOpenCreatePropertyDialog(true)}
                     >
                         <span className="material-symbols-outlined"><IconBuildingPlus stroke={2} /></span>
                     </button>
@@ -107,6 +126,6 @@ export default function Aside({ properties, loading, error, selectedProperty, se
                     Ver Mapa de Ubicaciones
                 </button>
             </div> */}
-        </aside>
+        </motion.aside>
     );
 }
