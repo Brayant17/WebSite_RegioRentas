@@ -1,12 +1,16 @@
-// infrastructure/mappers/mapToContract.ts
-import { Contract } from "@/modules/realEstateBI/domain/entities/Contract"
+// infrastructure/supabase/mappers/rentalContractMapper.ts
+import { RentalContract } from "@/modules/realEstateBI/domain/entities/RentalContract";
 
-export function mapToContract(row: any): Contract {
-    return new Contract(
-        row.id,
-        row.unit_id,
-        new Date(row.fecha_inicio),
-        new Date(row.fecha_fin),
-        row.renta_mensual
-    )
+export function mapRentalContractFromDb(row: any): RentalContract {
+  return new RentalContract(
+    row.id,
+    row.unit_id,
+    new Date(row.start_date),
+    row.end_date ? new Date(row.end_date) : null,
+    row.monthly_rent,
+    row.payment_day,
+    row.status,
+    new Date(row.created_at),
+    new Date(row.updated_at)
+  );
 }
