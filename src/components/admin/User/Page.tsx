@@ -2,11 +2,11 @@
 
 import { supabase } from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
-import { DataTable } from "@/components/admin/User/data-table";
-import { columns } from "@/components/admin/User/columns";
-import { UserFilters } from "@/components/admin/User/UserFilters";
-import { CSVExportButton } from "@/components/admin/User/CSVExportButton";
-import { PaginationControls } from "@/components/admin/User/PaginationControls";
+import { DataTable } from "@/components/admin/User/table/data-table";
+import { columns } from "@/components/admin/User/table/columns";
+import { UserFilters } from "@/components/admin/User/filters/UserFilters";
+import { CSVExportButton } from "@/components/admin/User/table/CSVExportButton";
+import { PaginationControls } from "@/components/admin/User/table/PaginationControls";
 
 export default function UsersPage() {
     const [users, setUsers] = useState<any[]>([]);
