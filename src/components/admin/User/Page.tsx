@@ -3,18 +3,43 @@
 import { supabase } from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { DataTable } from "@/components/admin/User/table/data-table";
-import { columns } from "@/components/admin/User/table/columns";
+import { getColumns } from "@/components/admin/User/table/columns";
 import { UserFilters } from "@/components/admin/User/filters/UserFilters";
 import { CSVExportButton } from "@/components/admin/User/table/CSVExportButton";
 import { PaginationControls } from "@/components/admin/User/table/PaginationControls";
+import { UserDetailsModal } from "@/components/admin/User/modals/UserDetailsModal"
+
 
 export default function UsersPage() {
+
+    const [selectedUser, setSelectedUser] = useState<User | null>(null)
+    const [openModal, setOpenModal] = useState<null | "details" | "edit" | "delete" | "suspend">(null)
+
     const [users, setUsers] = useState<any[]>([]);
     const [filters, setFilters] = useState({ email: "", role: "", status: "" });
     const [page, setPage] = useState(1);
 
     const limit = 10; // registros por página
     const [totalPages, setTotalPages] = useState(1);
+
+    const columns = getColumns({
+        onEdit: (user) => {
+            setSelectedUser(user)
+            setOpenModal("edit")
+        },
+        onViewDetails: (user) => {
+            setSelectedUser(user)
+            setOpenModal("details")
+        },
+        onSuspend: (user) => {
+            setSelectedUser(user)
+            setOpenModal("suspend")
+        },
+        onDelete: (user) => {
+            setSelectedUser(user)
+            setOpenModal("delete")
+        },
+    })
 
     useEffect(() => {
         loadUsers();
@@ -68,6 +93,13 @@ export default function UsersPage() {
                 totalPages={totalPages}
                 onPageChange={(p) => setPage(p)}
             />
+
+            <UserDetailsModal
+                open={openModal === "details"}
+                user={selectedUser}
+                onClose={() => setOpenModal(null)}
+            />
+
         </div>
     );
 }

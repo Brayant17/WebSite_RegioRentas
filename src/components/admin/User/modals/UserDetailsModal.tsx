@@ -1,64 +1,67 @@
-"use client";
+"use client"
 
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
+import type { User } from "../types"
 
-export function useUserModals() {
-  const [open, setOpen] = useState(false);
-  const [type, setType] = useState("");
-  const [user, setUser] = useState(null);
+type Props = {
+  open: boolean
+  user: User | null
+  onClose: () => void
+}
 
-  function openModal(modalType, modalUser) {
-    setType(modalType);
-    setUser(modalUser);
-    setOpen(true);
-  }
+export function UserDetailsModal({ open, user, onClose }: Props) {
+  if (!user) return null
 
-  function closeModal() {
-    setOpen(false);
-  }
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Detalles del usuario</DialogTitle>
+        </DialogHeader>
 
-  function Modal() {
-    return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {type === "edit" && "Editar usuario"}
-              {type === "details" && "Detalles del usuario"}
-              {type === "suspend" && "Suspender usuario"}
-              {type === "delete" && "Eliminar usuario"}
-            </DialogTitle>
-          </DialogHeader>
+        <div className="space-y-4 text-sm">
+          <Detail label="Email" value={user.email} />
+          <Detail label="Nombre" value={user.full_name} />
+          <Detail label="Rol" value={user.role} />
+          <Detail
+            label="WhatsApp"
+            value={user.whatsapp ?? "No registrado"}
+          />
+          <Detail
+            label="Estado"
+            value={
+              <Badge variant="outline">
+                {user.approval_status}
+              </Badge>
+            }
+          />
+          <Detail
+            label="Creado"
+            value={new Date(user.created_at).toLocaleString()}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
-          <div className="py-4">
-            {type === "details" && <pre>{JSON.stringify(user, null, 2)}</pre>}
-
-            {type === "delete" && (
-              <p>¿Seguro que quieres eliminar este usuario?</p>
-            )}
-          </div>
-
-          {type === "delete" && (
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
-              onClick={() => {
-                console.log("Eliminar:", user);
-                closeModal();
-              }}
-            >
-              Eliminar
-            </button>
-          )}
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
-  return { openModal, closeModal, Modal };
+function Detail({
+  label,
+  value,
+}: {
+  label: string
+  value: React.ReactNode
+}) {
+  return (
+    <div className="flex justify-between gap-4">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium text-right">{value}</span>
+    </div>
+  )
 }
