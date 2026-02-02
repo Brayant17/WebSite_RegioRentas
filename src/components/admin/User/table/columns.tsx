@@ -100,7 +100,9 @@ export const getColumns = ({
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => onEdit(user)}>
+                            <DropdownMenuItem
+                                disabled={true}
+                                onClick={() => onEdit(user)}>
                                 Editar
                             </DropdownMenuItem>
 
@@ -111,12 +113,14 @@ export const getColumns = ({
                             </DropdownMenuItem>
 
                             <DropdownMenuItem
+                                disabled={true}
                                 onClick={() => onSuspend(user)}
                             >
                                 Suspender
                             </DropdownMenuItem>
 
                             <DropdownMenuItem
+                                disabled={true}
                                 className="text-red-500"
                                 onClick={() => onDelete(user)}
                             >
