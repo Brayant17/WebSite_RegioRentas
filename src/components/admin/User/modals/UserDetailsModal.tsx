@@ -1,13 +1,10 @@
 "use client"
 
-import * as React from "react"
 import { X, Lock, User as UserIcon, ChevronDown } from "lucide-react"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
@@ -44,7 +41,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent showCloseButton={false} className="max-w-[500px] p-0 overflow-hidden border-none shadow-2xl">
+      <DialogContent showCloseButton={false} className="max-w-[600px] p-0 overflow-hidden border-none shadow-2xl">
         {/* Header personalizado */}
         <div className="p-6 pb-2 flex justify-between items-start">
           <div className="flex gap-4 items-center">
@@ -75,7 +72,8 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-bold text-slate-800 leading-none">{user.email}</p>
-                <p className="text-xs text-slate-400">User ID: #USR-251125</p>
+                <p className="text-xs text-slate-400">User ID:</p>
+                <p className="text-xs text-slate-400">#{user.id}</p>
                 <Badge variant="secondary" className="bg-slate-200/50 text-[10px] uppercase tracking-wider h-5 px-2 font-bold text-slate-600">
                   <Lock className="w-3 h-3 mr-1" /> Perfil bloqueado
                 </Badge>
@@ -84,7 +82,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
             <div className="text-right flex flex-col items-end gap-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Estado de la cuenta</span>
               <div className="flex items-center gap-2">
-                <Switch checked={true} className="data-[state=checked]:bg-blue-500" />
+                <Switch id="userStatus" defaultChecked={user.user_status} className="data-[state=checked]:bg-blue-500" />
                 <span className="text-sm font-medium text-slate-700">Activo</span>
               </div>
             </div>
@@ -135,7 +133,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
                   <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                   <Input
                     readOnly
-                    value={user.whatsapp ?? "8119995314"}
+                    value={user.whatsapp ?? "Sin registrar"}
                     className="pl-9 bg-slate-50/50 border-slate-200 text-slate-500"
                   />
                 </div>
@@ -144,6 +142,8 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
 
             <div className="space-y-3">
               <Label className="text-sm font-bold text-slate-700">Broker Status</Label>
+              {/* Proceso del estado de solicitud del broker */}
+              {/* Pendiente por hacer */}
               <div className="grid grid-cols-3 gap-2">
                 <StatusButton label="In Process" color="bg-blue-500" active />
                 <StatusButton label="Done" color="bg-green-500" />
