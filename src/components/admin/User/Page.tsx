@@ -8,6 +8,7 @@ import { UserFilters } from "@/components/admin/User/filters/UserFilters";
 import { CSVExportButton } from "@/components/admin/User/table/CSVExportButton";
 import { PaginationControls } from "@/components/admin/User/table/PaginationControls";
 import { UserDetailsModal } from "@/components/admin/User/modals/UserDetailsModal"
+import type { User } from "./types";
 
 
 export default function UsersPage() {
