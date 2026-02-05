@@ -61,10 +61,10 @@ export const getColumns = ({
             header: "Whatsapp",
         },
         {
-            accessorKey: "approval_status",
-            header: "Broker",
+            accessorKey: "account_type",
+            header: "Tipo de cuenta",
             cell: ({ row }) => (
-                <StatusBadge status={row.original.approval_status} />
+                <StatusBadge status={row.original.account_type} />
             ),
         },
         {
