@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { User } from "../types"
+import { useEffect, useState } from "react"
 
 type Props = {
   open: boolean
@@ -30,6 +31,23 @@ type Props = {
 
 export function UserDetailsModal({ open, user, onClose }: Props) {
   if (!user) return null
+
+  // Estados locales para el formulario
+  const [userStatus, setUserStatus] = useState<boolean>(user.user_status);
+  const [role, setRole] = useState<string>(user.role);
+
+  useEffect(() => {
+    // Actualizamos los estados cuando el usuario cambia
+    setUserStatus(user.user_status);
+    setRole(user.role);
+  }, [user]);
+
+  const handleUserChanges = () => {
+    // Lógica para guardar los cambios del usuario
+    // aqui puedes hacer una llamada a la API
+    console.log("Guardando cambios con estado:", userStatus, "y rol:", role)
+    onClose()
+  }
 
   // Extraemos las iniciales para el avatar
   const initials = user.full_name
@@ -82,7 +100,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
             <div className="text-right flex flex-col items-end gap-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Estado de la cuenta</span>
               <div className="flex items-center gap-2">
-                <Switch id="userStatus" defaultChecked={user.user_status} className="data-[state=checked]:bg-blue-500" />
+                <Switch id="userStatus" checked={userStatus} onCheckedChange={(checked) => setUserStatus(checked)} className="data-[state=checked]:bg-blue-500" />
                 <span className="text-sm font-medium text-slate-700">Activo</span>
               </div>
             </div>
@@ -117,7 +135,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-bold text-slate-700">Rol del usuario</Label>
-                <Select defaultValue={user.role}>
+                <Select defaultValue={role} onValueChange={(value) => setRole(value)}>
                   <SelectTrigger className="bg-white border-slate-200">
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
@@ -159,7 +177,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
             <Button variant="ghost" onClick={onClose} className="font-bold text-slate-600">
               Cancelar
             </Button>
-            <Button className="">
+            <Button className="" onClick={handleUserChanges}>
               Guardar cambios
             </Button>
           </div>
