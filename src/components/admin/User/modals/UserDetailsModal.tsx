@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select"
 import type { User } from "../types"
 import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabaseClient"
 
 type Props = {
   open: boolean
@@ -42,12 +43,34 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
     setRole(user.role);
   }, [user]);
 
-  const handleUserChanges = () => {
-    // Lógica para guardar los cambios del usuario
-    // aqui puedes hacer una llamada a la API
-    console.log("Guardando cambios con estado:", userStatus, "y rol:", role)
-    onClose()
-  }
+  const handleUserChanges = async () => {
+    try {
+      const userId = user.id;
+      const newRole = role;
+      const newStatus = userStatus;
+
+      const { data, error } = await supabase.functions.invoke("update-user-admin", {
+        body: {
+          userId: userId,
+          role: newRole,
+          status: newStatus, // active | inactive
+        },
+      });
+       console.log(error)
+
+      if (error) throw error;
+
+     
+
+      console.log("Respuesta edge function:", data);
+
+      onClose();
+    } catch (err) {
+      console.error("Error actualizando usuario:", err);
+    }
+  };
+
+
 
   // Extraemos las iniciales para el avatar
   const initials = user.full_name
