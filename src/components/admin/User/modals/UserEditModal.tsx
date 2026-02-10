@@ -1,13 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -18,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
 import { Lock } from "lucide-react"
 import type { User } from "../types"
 
@@ -25,19 +25,27 @@ type Props = {
   open: boolean
   user: User | null
   onClose: () => void
-  sessionToken: string
 }
 
-export function UserEdit({ open, user, onClose, sessionToken }: Props) {
-  if (!user) return null
-
-  const [role, setRole] = useState(user.role || "user")
-  const [active, setActive] = useState(user.active ?? true)
-  const [brokerStatus, setBrokerStatus] = useState<
-    "in_process" | "done" | "unknown"
-  >(user.broker_status || "in_process")
+export function UserEditModal({ open, user, onClose }: Props) {
+  const [role, setRole] = useState<User["role"]>("user")
+  const [accountType, setAccountType] = useState<User["account_type"]>("basic")
+  const [active, setActive] = useState(true)
+  const [verified, setVerified] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!user) return
+
+    setRole(user.role)
+    setAccountType(user.account_type)
+    setActive(user.user_status)
+    setVerified(user.is_verified)
+    setMessage(null)
+  }, [user])
+
+  if (!user) return null
 
   const initials =
     user.full_name
@@ -47,29 +55,30 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
       .slice(0, 2)
       .toUpperCase() || "U"
 
-  const whatsapp = user.whatsapp || user.phone || "No registrado"
-
   const handleSave = async () => {
     setLoading(true)
-    setMessage("")
+    setMessage(null)
 
     try {
-      const res = await fetch("/api/update-user", {
-        method: "PATCH",
+      const res = await fetch("/functions/v1/update-user-admin", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: user.id,
+          user_id: user.id,
           role,
-          status: active ? "active" : "inactive",
-          broker_status: brokerStatus,
-          token: sessionToken,
+          account_type: accountType,
+          user_status: active,
+          is_verified: verified,
         }),
       })
 
-      const data = await res.json()
-      setMessage(data.ok ? "Usuario actualizado correctamente" : data.error)
-    } catch {
-      setMessage("Error al conectar con el servidor")
+      if (!res.ok) {
+        throw new Error("Error al actualizar el usuario")
+      }
+
+      setMessage("Usuario actualizado correctamente")
+    } catch (error) {
+      setMessage("No se pudo actualizar el usuario")
     } finally {
       setLoading(false)
     }
@@ -81,81 +90,98 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
         <DialogHeader>
           <DialogTitle>Editar usuario</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Actualizar la configuración de la cuenta y funciones
+            Configuración general de la cuenta
           </p>
         </DialogHeader>
 
-        <div className="flex items-center gap-4 rounded-xl border p-4">
+        {/* Header */}
+        <div className="flex items-center gap-4 rounded-lg border p-4">
           <Avatar className="h-12 w-12">
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
 
           <div className="flex-1">
             <p className="font-medium">{user.email}</p>
-            <p className="text-xs text-muted-foreground">User ID: {user.id}</p>
-            <Badge variant="secondary" className="mt-1 flex w-fit items-center gap-1">
-              <Lock size={12} /> Perfil bloqueado
+            <p className="text-xs text-muted-foreground">
+              ID: {user.id}
+            </p>
+
+            <Badge variant="secondary" className="mt-1 w-fit">
+              <Lock size={12} className="mr-1" />
+              Solo admins
             </Badge>
           </div>
 
           <div className="flex items-center gap-2">
             <Switch checked={active} onCheckedChange={setActive} />
-            <span className="text-sm">{active ? "Activo" : "Inactivo"}</span>
+            <span className="text-sm">
+              {active ? "Activo" : "Inactivo"}
+            </span>
           </div>
         </div>
 
+        {/* Body */}
         <div className="mt-6 space-y-5">
           <ReadOnly label="Nombre completo" value={user.full_name} />
           <ReadOnly label="Email" value={user.email} />
+          <ReadOnly label="WhatsApp" value={user.whatsapp} />
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Rol del usuario</Label>
+              <Label>Rol</Label>
               <Select value={role} onValueChange={setRole}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="user">User</SelectItem>
+                  <SelectItem value="collaborator">Collaborator</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <ReadOnly label="WhatsApp" value={whatsapp} />
+            <div>
+              <Label>Tipo de cuenta</Label>
+              <Select
+                value={accountType}
+                onValueChange={setAccountType}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="basic">Basic</SelectItem>
+                  <SelectItem value="premium">Premium</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div>
-            <Label>Broker Status</Label>
-            <div className="mt-2 flex gap-2">
-              <StatusButton
-                active={brokerStatus === "in_process"}
-                onClick={() => setBrokerStatus("in_process")}
-              >
-                In Process
-              </StatusButton>
-              <StatusButton
-                active={brokerStatus === "done"}
-                onClick={() => setBrokerStatus("done")}
-              >
-                Done
-              </StatusButton>
-              <StatusButton
-                active={brokerStatus === "unknown"}
-                onClick={() => setBrokerStatus("unknown")}
-              >
-                Unknown
-              </StatusButton>
+          <div className="flex items-center justify-between rounded-lg border p-3">
+            <div>
+              <p className="text-sm font-medium">Usuario verificado</p>
+              <p className="text-xs text-muted-foreground">
+                Control interno del sistema
+              </p>
             </div>
+            <Switch checked={verified} onCheckedChange={setVerified} />
           </div>
         </div>
 
         {message && (
-          <p className={`mt-4 text-sm ${message.includes("Error") ? "text-red-500" : "text-green-600"}`}>
+          <p
+            className={`mt-4 text-sm ${
+              message.includes("No")
+                ? "text-red-500"
+                : "text-green-600"
+            }`}
+          >
             {message}
           </p>
         )}
 
+        {/* Footer */}
         <div className="flex justify-end gap-2 pt-6">
           <Button variant="ghost" onClick={onClose}>
             Cancelar
@@ -171,38 +197,28 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-1 text-xs font-medium text-muted-foreground">{children}</p>
+    <p className="mb-1 text-xs font-medium text-muted-foreground">
+      {children}
+    </p>
   )
 }
 
-function ReadOnly({ label, value }: { label: string; value?: string | null }) {
+function ReadOnly({
+  label,
+  value,
+}: {
+  label: string
+  value?: string | null
+}) {
   return (
     <div>
       <Label>{label}</Label>
       <div className="flex items-center gap-2 rounded-md border bg-muted px-3 py-2 text-sm">
         <Lock size={14} className="text-muted-foreground" />
-        <span className="text-muted-foreground">{value || "—"}</span>
+        <span className="text-muted-foreground">
+          {value || "—"}
+        </span>
       </div>
     </div>
-  )
-}
-
-function StatusButton({
-  active,
-  children,
-  onClick,
-}: {
-  active: boolean
-  children: React.ReactNode
-  onClick: () => void
-}) {
-  return (
-    <Button
-      size="sm"
-      variant={active ? "default" : "outline"}
-      onClick={onClick}
-    >
-      {children}
-    </Button>
   )
 }
