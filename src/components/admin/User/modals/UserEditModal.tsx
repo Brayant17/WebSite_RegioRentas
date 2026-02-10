@@ -18,13 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Lock } from "lucide-react"
 import type { User } from "../types"
 
 type Props = {
   open: boolean
   user: User | null
   onClose: () => void
-  sessionToken: string // token de Supabase
+  sessionToken: string
 }
 
 export function UserEdit({ open, user, onClose, sessionToken }: Props) {
@@ -49,35 +50,26 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
   const whatsapp = user.whatsapp || user.phone || "No registrado"
 
   const handleSave = async () => {
-    if (!user) return
     setLoading(true)
     setMessage("")
-
-    const payload = {
-      userId: user.id,
-      role,
-      status: active ? "active" : "inactive",
-      broker_status: brokerStatus,
-      token: sessionToken,
-    }
 
     try {
       const res = await fetch("/api/update-user", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          userId: user.id,
+          role,
+          status: active ? "active" : "inactive",
+          broker_status: brokerStatus,
+          token: sessionToken,
+        }),
       })
 
       const data = await res.json()
-
-      if (data.ok) {
-        setMessage("Usuario actualizado con éxito ")
-      } else {
-        setMessage("Error: " + data.error)
-      }
-    } catch (err) {
-      setMessage("Error al conectarse al servidor")
-      console.error(err)
+      setMessage(data.ok ? "Usuario actualizado correctamente" : data.error)
+    } catch {
+      setMessage("Error al conectar con el servidor")
     } finally {
       setLoading(false)
     }
@@ -85,40 +77,40 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg backdrop-blur-xl bg-background/80">
+      <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
+          <DialogTitle>Editar usuario</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Manage account status, role and internal workflow
+            Actualizar la configuración de la cuenta y funciones
           </p>
         </DialogHeader>
 
-        <div className="flex items-center gap-4 rounded-lg border p-4">
-          <Avatar>
+        <div className="flex items-center gap-4 rounded-xl border p-4">
+          <Avatar className="h-12 w-12">
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
 
           <div className="flex-1">
             <p className="font-medium">{user.email}</p>
             <p className="text-xs text-muted-foreground">User ID: {user.id}</p>
-            <Badge variant="secondary" className="mt-1">
-              Managed Account
+            <Badge variant="secondary" className="mt-1 flex w-fit items-center gap-1">
+              <Lock size={12} /> Perfil bloqueado
             </Badge>
           </div>
 
           <div className="flex items-center gap-2">
             <Switch checked={active} onCheckedChange={setActive} />
-            <span className="text-sm">Active</span>
+            <span className="text-sm">{active ? "Activo" : "Inactivo"}</span>
           </div>
         </div>
 
-        <div className="space-y-5 mt-4">
-          <ReadOnlyField label="Full Name" value={user.full_name} />
-          <ReadOnlyField label="Email Address" value={user.email} />
+        <div className="mt-6 space-y-5">
+          <ReadOnly label="Nombre completo" value={user.full_name} />
+          <ReadOnly label="Email" value={user.email} />
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>User Role</Label>
+              <Label>Rol del usuario</Label>
               <Select value={role} onValueChange={setRole}>
                 <SelectTrigger>
                   <SelectValue />
@@ -130,12 +122,12 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
               </Select>
             </div>
 
-            <ReadOnlyField label="WhatsApp" value={whatsapp} />
+            <ReadOnly label="WhatsApp" value={whatsapp} />
           </div>
 
           <div>
             <Label>Broker Status</Label>
-            <div className="flex gap-2 mt-2">
+            <div className="mt-2 flex gap-2">
               <StatusButton
                 active={brokerStatus === "in_process"}
                 onClick={() => setBrokerStatus("in_process")}
@@ -159,17 +151,17 @@ export function UserEdit({ open, user, onClose, sessionToken }: Props) {
         </div>
 
         {message && (
-          <p className={`mt-4 text-sm ${message.includes("Error") ? "text-red-500" : "text-green-500"}`}>
+          <p className={`mt-4 text-sm ${message.includes("Error") ? "text-red-500" : "text-green-600"}`}>
             {message}
           </p>
         )}
 
-        <div className="flex justify-end gap-2 pt-4">
+        <div className="flex justify-end gap-2 pt-6">
           <Button variant="ghost" onClick={onClose}>
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={handleSave} disabled={loading}>
-            {loading ? "Guardando..." : "Save Changes"}
+            {loading ? "Guardando..." : "Guardar cambios"}
           </Button>
         </div>
       </DialogContent>
@@ -183,21 +175,29 @@ function Label({ children }: { children: React.ReactNode }) {
   )
 }
 
-function ReadOnlyField({ label, value }: { label: string; value?: string | null }) {
+function ReadOnly({ label, value }: { label: string; value?: string | null }) {
   return (
     <div>
       <Label>{label}</Label>
-      <div className="rounded-md border bg-muted px-3 py-2 text-sm text-muted-foreground">
-        {value || "—"}
+      <div className="flex items-center gap-2 rounded-md border bg-muted px-3 py-2 text-sm">
+        <Lock size={14} className="text-muted-foreground" />
+        <span className="text-muted-foreground">{value || "—"}</span>
       </div>
     </div>
   )
 }
 
-function StatusButton({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) {
+function StatusButton({
+  active,
+  children,
+  onClick,
+}: {
+  active: boolean
+  children: React.ReactNode
+  onClick: () => void
+}) {
   return (
     <Button
-      type="button"
       size="sm"
       variant={active ? "default" : "outline"}
       onClick={onClick}
