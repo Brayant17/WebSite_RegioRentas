@@ -47,7 +47,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
     try {
       const userId = user.id;
       const newRole = role;
-      const newStatus = userStatus;
+      const newStatus = userStatus
 
       const { data, error } = await supabase.functions.invoke("update-user-admin", {
         body: {
@@ -56,14 +56,8 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
           status: newStatus, // active | inactive
         },
       });
-       console.log(error)
-
+      
       if (error) throw error;
-
-     
-
-      console.log("Respuesta edge function:", data);
-
       onClose();
     } catch (err) {
       console.error("Error actualizando usuario:", err);
@@ -123,7 +117,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
             <div className="text-right flex flex-col items-end gap-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Estado de la cuenta</span>
               <div className="flex items-center gap-2">
-                <Switch id="userStatus" checked={userStatus} onCheckedChange={(checked) => setUserStatus(checked)} className="data-[state=checked]:bg-blue-500" />
+                <Switch id="userStatus" checked={userStatus} onCheckedChange={(checked: boolean) => setUserStatus(checked)} className="data-[state=checked]:bg-blue-500" />
                 <span className="text-sm font-medium text-slate-700">Activo</span>
               </div>
             </div>
