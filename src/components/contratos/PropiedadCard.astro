@@ -1,0 +1,81 @@
+---
+import { MapPin, ArrowRight, Home, Circle } from "lucide-react";
+import type { Propiedad } from "@/pages/contratos/index.astro";
+
+interface Props extends Propiedad {}
+
+const { id, name, address, city, state, postalCode, active } = Astro.props;
+---
+
+<div
+    class="group relative bg-white border border-slate-200 p-6 transition-all duration-300 hover:border-blue-500 hover:shadow-sm"
+>
+    <div class="flex flex-col h-full">
+        <div class="flex justify-between items-start mb-6">
+            <div
+                class:list={[
+                    "flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-semibold uppercase tracking-wider",
+                    active
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-slate-50 text-slate-500",
+                ]}
+            >
+                <Circle
+                    size={8}
+                    fill="currentColor"
+                    className={active ? "animate-pulse" : ""}
+                />
+                {active ? "Activo" : "Inactivo"}
+            </div>
+
+            <div
+                class="text-slate-300 group-hover:text-blue-500 transition-colors"
+            >
+                <Home size={20} strokeWidth={1.5} />
+            </div>
+        </div>
+
+        <div class="flex-grow">
+            <h3 class="text-lg font-semibold text-slate-900 leading-tight mb-1">
+                {name}
+            </h3>
+
+            <div class="flex items-start gap-1.5 text-slate-500">
+                <MapPin size={14} className="mt-0.5 shrink-0" />
+                <div class="text-[13px] leading-relaxed">
+                    <p class="font-medium text-slate-600">{address}</p>
+                    <p class="text-slate-400">
+                        {city}{state ? `, ${state}` : ""}
+                        {postalCode && `· ${postalCode}`}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="mt-8 pt-4 border-t border-slate-50 flex items-center justify-between"
+        >
+            <a
+                href={`/contratos/${id}`}
+                class="text-[13px] font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1 transition-colors"
+            >
+                Gestionar propiedad
+                <ArrowRight
+                    size={14}
+                    className="transition-transform group-hover:translate-x-1"
+                />
+            </a>
+
+            <span class="text-[11px] font-mono text-slate-300 uppercase">
+                ID-{id.slice(0, 5)}
+            </span>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Tipografía refinada */
+    div {
+        font-family: "Inter Variable", "-apple-system", sans-serif;
+    }
+</style>

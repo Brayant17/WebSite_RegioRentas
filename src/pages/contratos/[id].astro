@@ -1,0 +1,12 @@
+---
+const { id } = Astro.params;
+console.log(id);
+
+import Layout from "@/layouts/Layout.astro";
+// Proceso de arrendamiento
+// utilizar un componente de react y pasarle la ID o tomar la idde la url
+---
+
+<Layout>
+    <h1>propiedad id: {id}</h1>
+</Layout>
