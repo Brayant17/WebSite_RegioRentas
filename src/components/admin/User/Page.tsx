@@ -100,6 +100,7 @@ export default function UsersPage() {
                 open={openModal === "details"}
                 user={selectedUser}
                 onClose={() => setOpenModal(null)}
+                onUserUpdated={loadUsers}
             />
 
         </div>

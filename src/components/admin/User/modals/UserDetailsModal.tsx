@@ -29,9 +29,10 @@ type Props = {
   open: boolean
   user: User | null
   onClose: () => void
+  onUserUpdated: () => void
 }
 
-export function UserDetailsModal({ open, user, onClose }: Props) {
+export function UserDetailsModal({ open, user, onClose, onUserUpdated }: Props) {
   if (!user) return null
 
   // Estados locales para el formulario
@@ -59,8 +60,11 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
           status: newStatus, // active | inactive
         },
       });
+    
       if (error) throw error;
+      // Mostrar notificación de éxito
       toast.success("Usuario actualizado correctamente.")
+      onUserUpdated(); // Llamamos a la función de actualización
       onClose();
     } catch (err) {
       toast.error("Error al actualizar el usuario. Inténtalo de nuevo mas tarde.")
