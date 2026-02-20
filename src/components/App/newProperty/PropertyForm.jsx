@@ -1,5 +1,3 @@
-// ----- Añadir funcionalidad para gestionar la visibilidad de las propiedades (público/privado) -----
-
 // utilidades
 import { useEffect, useState } from "react";
 import { initialPropertyData } from "../../../constants/propertyDefault"

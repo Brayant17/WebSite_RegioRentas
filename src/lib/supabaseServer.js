@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL
-const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY
+const supabaseServiceKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
 export function supabaseServer(cookies) {
     return createServerClient(
