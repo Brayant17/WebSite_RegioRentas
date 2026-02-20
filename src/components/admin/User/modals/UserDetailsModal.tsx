@@ -23,6 +23,7 @@ import {
 import type { User } from "../types"
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
+import { toast } from "sonner"
 
 type Props = {
   open: boolean
@@ -56,11 +57,11 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
           status: newStatus, // active | inactive
         },
       });
-      
       if (error) throw error;
+      toast.success("Usuario actualizado correctamente.")
       onClose();
     } catch (err) {
-      console.error("Error actualizando usuario:", err);
+      toast.error("Error al actualizar el usuario. Inténtalo de nuevo mas tarde.")
     }
   };
 

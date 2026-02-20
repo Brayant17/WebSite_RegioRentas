@@ -9,6 +9,7 @@ import { CSVExportButton } from "@/components/admin/User/table/CSVExportButton";
 import { PaginationControls } from "@/components/admin/User/table/PaginationControls";
 import { UserDetailsModal } from "@/components/admin/User/modals/UserDetailsModal"
 import type { User } from "./types";
+import { Toaster } from "@/components/ui/sonner";
 
 
 export default function UsersPage() {
