@@ -35,6 +35,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
   if (!user) return null
 
   // Estados locales para el formulario
+  const [loading, setLoading] = useState(false);
   const [userStatus, setUserStatus] = useState<boolean>(user.user_status);
   const [role, setRole] = useState<string>(user.role);
 
@@ -45,6 +46,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
   }, [user]);
 
   const handleUserChanges = async () => {
+    setLoading(true);
     try {
       const userId = user.id;
       const newRole = role;
@@ -62,6 +64,8 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
       onClose();
     } catch (err) {
       toast.error("Error al actualizar el usuario. Inténtalo de nuevo mas tarde.")
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,7 +199,7 @@ export function UserDetailsModal({ open, user, onClose }: Props) {
             <Button variant="ghost" onClick={onClose} className="font-bold text-slate-600">
               Cancelar
             </Button>
-            <Button className="" onClick={handleUserChanges}>
+            <Button className="" disabled={loading} onClick={handleUserChanges}>
               Guardar cambios
             </Button>
           </div>
