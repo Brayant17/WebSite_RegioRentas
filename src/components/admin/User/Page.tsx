@@ -9,6 +9,9 @@ import { CSVExportButton } from "@/components/admin/User/table/CSVExportButton";
 import { PaginationControls } from "@/components/admin/User/table/PaginationControls";
 import { UserDetailsModal } from "@/components/admin/User/modals/UserDetailsModal"
 import type { User } from "./types";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AllUsersTab from "./table/tabs/AllUsersTab";
+import BrokerTab from "./table/tabs/BrokerTab";
 
 
 export default function UsersPage() {
@@ -73,20 +76,42 @@ export default function UsersPage() {
         <div className="p-6 space-y-4">
             <h1 className="text-2xl font-bold">Usuarios</h1>
 
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <UserFilters
-                    onFilter={(f: any) => {
-                        setPage(1);
-                        setFilters(f);
-                    }}
-                    className="w-full md:w-auto"
-                />
+            <div className="mb-4">
+                <Tabs defaultValue="all">
+                    <div className="flex justify-between mb-4">
+                        <TabsList>
+                            <TabsTrigger value="all">Todos</TabsTrigger>
+                            <TabsTrigger value="broker">Solicitud Brokers</TabsTrigger>
+                            <TabsTrigger value="verified">Solicitud Verificado</TabsTrigger>
+                            <TabsTrigger value="team">Equipo</TabsTrigger>
+                        </TabsList>
+                        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-end">
+                            <UserFilters
+                                onFilter={(f: any) => {
+                                    setPage(1);
+                                    setFilters(f);
+                                }}
+                                className="w-full md:w-auto"
+                            />
 
-                <CSVExportButton data={users} className="w-full md:w-auto" />
-            </div>
-
-            <div className="overflow-hidden rounded-lg border">
-                <DataTable columns={columns} data={users} />
+                            <CSVExportButton data={users} className="w-full md:w-auto" />
+                        </div>
+                    </div>
+                    <TabsContent value="all">
+                        {/* <DataTable columns={columns} data={users} /> */}
+                        <AllUsersTab setSelectedUser={setSelectedUser} setOpenModal={setOpenModal} />
+                    </TabsContent>
+                    <TabsContent value="broker">
+                        <BrokerTab />
+                        <DataTable columns={columns} data={users} />
+                    </TabsContent>
+                    <TabsContent value="team">
+                        <DataTable columns={columns} data={users} />
+                    </TabsContent>
+                    <TabsContent value="verified">
+                        <DataTable columns={columns} data={users} />
+                    </TabsContent>
+                </Tabs>
             </div>
 
             <PaginationControls
@@ -99,6 +124,7 @@ export default function UsersPage() {
                 open={openModal === "details"}
                 user={selectedUser}
                 onClose={() => setOpenModal(null)}
+                onUserUpdated={loadUsers}
             />
 
         </div>
