@@ -1,10 +1,9 @@
 "use client"
+import { Badge } from "@/components/ui/badge"
 // TODO: hacer que en action aparecza la opcion del modal o colocar boton para modal
 
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import type { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
 
 
 export type RequestPremium = {
@@ -14,7 +13,11 @@ export type RequestPremium = {
     created_at: string,
 }
 
-export const columns: ColumnDef<RequestPremium>[] = [
+export type ColumnActions = {
+    onViewDetails: (request: RequestPremium) => void
+}
+
+export const getColumns = ({ onViewDetails }: ColumnActions): ColumnDef<RequestPremium>[] => [
     // {
     //     accessorKey: "id",
     //     header: "id"
@@ -25,7 +28,16 @@ export const columns: ColumnDef<RequestPremium>[] = [
     },
     {
         accessorKey: "status",
-        header: "Estado"
+        header: "Estado",
+        cell: ({ row }) => {
+            const status = row.original.status
+
+            return (
+                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300">
+                    {status}
+                </Badge>
+            )
+        }
     },
     {
         accessorKey: "created_at",
@@ -42,25 +54,9 @@ export const columns: ColumnDef<RequestPremium>[] = [
             const solicitud = row.original
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(solicitud.id)}
-                        >
-                            copiar solicitud id 
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <Button variant="outline" size="sm" onClick={() => onViewDetails(solicitud)}>
+                    Ver detalles
+                </Button>
             )
         }
     }

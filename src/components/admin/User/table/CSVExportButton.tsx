@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 
-export function CSVExportButton({ data, className }: { data: any[], className: string }) {
+export function CSVExportButton({ data, className, fileName }: { data: any[], className: string, fileName: string }) {
     const exportCSV = () => {
         if (!data || data.length === 0) return;
 
@@ -25,7 +25,7 @@ export function CSVExportButton({ data, className }: { data: any[], className: s
         // Forzar descarga
         const link = document.createElement("a");
         link.href = url;
-        link.download = "usuarios.csv";
+        link.download = fileName + ".csv" || "export.csv";
         link.click();
 
         URL.revokeObjectURL(url);

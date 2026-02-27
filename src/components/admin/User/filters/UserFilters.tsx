@@ -32,7 +32,7 @@ export function UserFilters({ onFilter, className }: { onFilter: any, className?
                     setEmail(e.target.value);
                     onFilter({ email: e.target.value, role, status });
                 }}
-                className="w-52"
+                className="w-64"
             />
 
             {/* Role */}
