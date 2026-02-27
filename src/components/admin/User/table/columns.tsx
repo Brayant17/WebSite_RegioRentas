@@ -68,6 +68,17 @@ export const getColumns = ({
             ),
         },
         {
+            accessorKey: "is_verified",
+            header: "Verificado",
+            cell: ({row}) => {
+                return (
+                    <span className="text-muted-foreground">
+                        si
+                    </span>
+                )
+            }
+        },
+        {
             accessorKey: "created_at",
             header: "Creado",
             cell: ({ row }) => {

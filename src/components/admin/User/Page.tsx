@@ -1,5 +1,8 @@
 "use client";
 
+// Encapsular las opcones de filtrado y busqueda 
+// o refactorizar para reutilizar los filtros con sus propios parametros de cada TAB
+
 import { supabase } from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { DataTable } from "@/components/admin/User/table/data-table";
@@ -11,7 +14,7 @@ import { UserDetailsModal } from "@/components/admin/User/modals/UserDetailsModa
 import type { User } from "./types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AllUsersTab from "./table/tabs/AllUsersTab";
-import BrokerTab from "./table/tabs/BrokerTab";
+import BrokerTab from "./table/tabs/brokers/BrokerTab";
 
 
 export default function UsersPage() {
@@ -76,9 +79,9 @@ export default function UsersPage() {
         <div className="p-6 space-y-4">
             <h1 className="text-2xl font-bold">Usuarios</h1>
 
-            <div className="mb-4">
+            <div className="mb-4 ">
                 <Tabs defaultValue="all">
-                    <div className="flex justify-between mb-4">
+                    <div className="flex flex-wrap gap-2 justify-between mb-4">
                         <TabsList>
                             <TabsTrigger value="all">Todos</TabsTrigger>
                             <TabsTrigger value="broker">Solicitud Brokers</TabsTrigger>
@@ -103,7 +106,6 @@ export default function UsersPage() {
                     </TabsContent>
                     <TabsContent value="broker">
                         <BrokerTab />
-                        <DataTable columns={columns} data={users} />
                     </TabsContent>
                     <TabsContent value="team">
                         <DataTable columns={columns} data={users} />

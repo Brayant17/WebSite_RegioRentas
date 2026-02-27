@@ -60,6 +60,7 @@ export function ProfileSection({ profile, loading, onSave }: Props) {
                         {profile.avatar_url ? (
                             <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
                         ) : (
+                            //no entra los initial al no tener cambios verificar
                             <span className="text-primary font-bold text-2xl">{initials}</span>
                         )}
                     </div>
