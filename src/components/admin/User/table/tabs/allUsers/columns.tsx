@@ -1,7 +1,7 @@
 "use client"
 
 import type { ColumnDef } from "@tanstack/react-table"
-import type { User } from "../types"
+import type { User } from "../../../types"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
     DropdownMenu,
@@ -10,8 +10,10 @@ import {
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { IconDotsVertical } from "@tabler/icons-react"
-import { StatusBadge } from "./StatusBadge"
+import { IconCircleCheckFilled, IconDotsVertical, IconLoader } from "@tabler/icons-react"
+import { StatusBadge } from "../../StatusBadge"
+import { Badge } from "@/components/ui/badge"
+import { BadgeCheck } from "lucide-react"
 
 type ColumnsActions = {
     onEdit: (user: User) => void
@@ -59,6 +61,11 @@ export const getColumns = ({
         {
             accessorKey: "whatsapp",
             header: "Whatsapp",
+                cell: ({ row }) => (
+                    <span className="text-muted-foreground">
+                        {row.original.whatsapp || "-"}
+                    </span>
+                ),
         },
         {
             accessorKey: "account_type",
@@ -66,6 +73,28 @@ export const getColumns = ({
             cell: ({ row }) => (
                 <StatusBadge status={row.original.account_type} />
             ),
+        },
+        {
+            accessorKey: "is_verified",
+            header: "Verificación",
+            cell: ({ row }) => {
+                return (
+                    <Badge variant="outline">
+                        {row.original.is_verified ? (
+                            <>
+                                <BadgeCheck data-icon="inline-start" />
+                                <span className="">Verificado</span>
+                            </>
+                        ) : (
+                            <>
+                                <IconLoader />
+                                <span>No verificado</span>
+                            </>
+                        )
+                        }
+                    </Badge>
+                )
+            }
         },
         {
             accessorKey: "created_at",
