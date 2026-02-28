@@ -1,15 +1,14 @@
-// TODO: verificar que solo aparezcan datos de los usuarios ue tienen solicitud de brokerñ
-
+// Verificar si aqui debemos de mostrar la alerta al completar el dialog o o si el Toast se muestra al hacer click en aprobar o rechazar, para eso se puede retornar un mensaje desde la función de supabase y mostrarlo en el Toast
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { DataTable } from "../../data-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
-import { getColumns } from "./columns";
+import { getColumns, type RequestPremium } from "./columns";
 import RequestDetailsModal from "./RequestDetailsModal";
 
 export default function BrokerTab() {
-    const [users, setUsers] = useState<any[]>([]);
+    const [requests, setRequests] = useState<RequestPremium[]>([]);
     const [openModal, setOpenModalState] = useState<null | "details">(null) //
     const [selectedRequest, setSelectedRequest] = useState<any>(null) //
 
@@ -33,7 +32,7 @@ export default function BrokerTab() {
             return
         }
 
-        setUsers(data)
+        setRequests(data)
     }
 
     return (
@@ -52,7 +51,7 @@ export default function BrokerTab() {
                     </AlertDescription>
                 </Alert>
 
-                <DataTable columns={columns} data={users} />
+                <DataTable columns={columns} data={requests} />
             </div>
         </>
     )
