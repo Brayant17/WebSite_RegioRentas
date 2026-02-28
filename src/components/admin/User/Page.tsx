@@ -18,8 +18,8 @@ export default function UsersPage() {
                         <TabsList>
                             <TabsTrigger value="all">Todos</TabsTrigger>
                             <TabsTrigger value="broker">Solicitud Brokers</TabsTrigger>
-                            <TabsTrigger value="verified">Solicitud Verificado</TabsTrigger>
-                            <TabsTrigger value="team">Equipo</TabsTrigger>
+                            {/* <TabsTrigger value="verified">Solicitud Verificado</TabsTrigger> */}
+                            {/* <TabsTrigger value="team">Equipo</TabsTrigger> */}
                         </TabsList>
                     </div>
                     <TabsContent value="all">
