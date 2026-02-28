@@ -1,4 +1,3 @@
-// Verificar si aqui debemos de mostrar la alerta al completar el dialog o o si el Toast se muestra al hacer click en aprobar o rechazar, para eso se puede retornar un mensaje desde la función de supabase y mostrarlo en el Toast
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { DataTable } from "../../data-table";
@@ -37,7 +36,7 @@ export default function BrokerTab() {
 
     return (
         <>
-            <RequestDetailsModal open={openModal === "details"} request={selectedRequest} onClose={() => setOpenModalState(null)} />
+            <RequestDetailsModal open={openModal === "details"} request={selectedRequest} onClose={() => setOpenModalState(null)} refreshData={loadUsers} />
             <div className="flex flex-col gap-4">
                 <Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
                     <AlertTriangle />

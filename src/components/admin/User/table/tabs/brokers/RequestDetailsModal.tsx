@@ -1,4 +1,3 @@
-// TODO: Solo queda hacer de nuevo un fetch a la tabla de nuevo al cerrar el dialog para que se actualice el estado de la solicitud, o hacer un update del estado de la solicitud en el state local para evitar hacer otro fetch a la base de datos, lo mismo para mostrar el nuevo estado en el badge del modal
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,13 @@ import type { RequestPremium } from "./columns";
 import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
 import { toast } from "sonner";
+
+type Props = {
+    open: boolean;
+    request: RequestPremium;
+    onClose: () => void;
+    refreshData?: () => void;
+}
 
 const sendRequestDecision = async (
     request_id: string,
@@ -32,7 +38,7 @@ const sendRequestDecision = async (
 };
 
 
-export default function RequestDetailsModal({ open, request, onClose }: { open: boolean, request: RequestPremium, onClose: () => void }) {
+export default function RequestDetailsModal({ open, request, onClose, refreshData }: Props) {
 
     const [loading, setLoading] = useState(false);
 
@@ -44,6 +50,7 @@ export default function RequestDetailsModal({ open, request, onClose }: { open: 
 
             toast.success(`Solicitud de ${request.user_name} aprobada`, { position: "top-center" });
             onClose();
+            refreshData?.();
 
         } catch (err) {
             console.error(err);
@@ -61,7 +68,7 @@ export default function RequestDetailsModal({ open, request, onClose }: { open: 
 
             toast.success(`Solicitud de ${request.user_name} rechazada`, { position: "top-center" });
             onClose();
-
+            refreshData?.();
         } catch (err) {
             console.error(err);
             toast.error(`Error al rechazar solicitud de ${request.user_name}`, { position: "top-center" });
