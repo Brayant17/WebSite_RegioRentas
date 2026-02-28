@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { RequestPremium } from "./columns";
@@ -41,12 +41,13 @@ const sendRequestDecision = async (
 export default function RequestDetailsModal({ open, request, onClose, refreshData }: Props) {
 
     const [loading, setLoading] = useState(false);
+    const [comment, setComment] = useState("");
 
     const handleClickApprove = async () => {
         try {
             setLoading(true);
 
-            await sendRequestDecision(request.id, "approved");
+            await sendRequestDecision(request.id, "approved", comment);
 
             toast.success(`Solicitud de ${request.user_name} aprobada`, { position: "top-center" });
             onClose();
@@ -64,7 +65,7 @@ export default function RequestDetailsModal({ open, request, onClose, refreshDat
         try {
             setLoading(true);
 
-            await sendRequestDecision(request.id, "rejected");
+            await sendRequestDecision(request.id, "rejected", comment);
 
             toast.success(`Solicitud de ${request.user_name} rechazada`, { position: "top-center" });
             onClose();
@@ -120,7 +121,14 @@ export default function RequestDetailsModal({ open, request, onClose, refreshDat
                     <p className="text-neutral-500 mb-2">
                         Comentarios del admin (opcional)
                     </p>
-                    <Textarea name="comments" id="comments" className="w-full h-24 p-2 border rounded-md" placeholder="Escribe comentarios aquí..." />
+                    <Textarea
+                        name="comments"
+                        id="comments"
+                        className="w-full h-24 p-2 border rounded-md"
+                        placeholder="Escribe comentarios aquí..."
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
                 </section>
                 <DialogFooter>
                     <Button variant="outline" onClick={onClose}>Cancelar</Button>
