@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
 
-import { flexRender, useReactTable, getCoreRowModel } from "@tanstack/react-table";
+import { flexRender, useReactTable, getCoreRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[]; data: TData[] }) {
@@ -22,6 +22,7 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
     });
 
     return (

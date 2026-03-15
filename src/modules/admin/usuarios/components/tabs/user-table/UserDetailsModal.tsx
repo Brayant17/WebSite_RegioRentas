@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { User } from "../types"
+import type { User } from "../../../types"
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
 import { toast } from "sonner"

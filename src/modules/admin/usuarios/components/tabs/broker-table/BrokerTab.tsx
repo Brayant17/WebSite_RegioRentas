@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import { DataTable } from "../../data-table";
+import { useState } from "react";
+import useRequestPending from "../../../hooks/useRequestPending";
+import { DataTable } from "@/components/ui/DataTable/data-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
-import { getColumns, type RequestPremium } from "./columns";
+import { getColumns } from "./columns";
 import RequestDetailsModal from "./RequestDetailsModal";
 
 export default function BrokerTab() {
-    const [requests, setRequests] = useState<RequestPremium[]>([]);
+    const { requests, setRequests, fetchRequests } = useRequestPending()
     const [openModal, setOpenModalState] = useState<null | "details">(null) //
     const [selectedRequest, setSelectedRequest] = useState<any>(null) //
 
@@ -18,25 +18,9 @@ export default function BrokerTab() {
         }
     })
 
-    useEffect(() => {
-        loadUsers();
-    }, []);
-
-    async function loadUsers() {
-        const { data, error } = await supabase
-            .rpc("get_latest_pending_requests")
-
-        if (error) {
-            console.error(error)
-            return
-        }
-
-        setRequests(data)
-    }
-
     return (
         <>
-            <RequestDetailsModal open={openModal === "details"} request={selectedRequest} onClose={() => setOpenModalState(null)} refreshData={loadUsers} />
+            <RequestDetailsModal open={openModal === "details"} request={selectedRequest} onClose={() => setOpenModalState(null)} refreshData={fetchRequests} />
             <div className="flex flex-col gap-4">
                 <Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
                     <AlertTriangle />

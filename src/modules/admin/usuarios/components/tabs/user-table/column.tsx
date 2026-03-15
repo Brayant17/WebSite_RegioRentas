@@ -10,10 +10,9 @@ import {
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { IconCircleCheckFilled, IconDotsVertical, IconLoader } from "@tabler/icons-react"
-import { StatusBadge } from "../../StatusBadge"
+import { IconDotsVertical, IconLoader } from "@tabler/icons-react"
 import { Badge } from "@/components/ui/badge"
-import { BadgeCheck } from "lucide-react"
+import { BadgeCheck, Circle, Gem } from "lucide-react"
 
 type ColumnsActions = {
     onEdit: (user: User) => void
@@ -29,25 +28,25 @@ export const getColumns = ({
     onDelete,
 }: ColumnsActions): ColumnDef<User>[] => [
         {
-            accessorKey: "email",
-            header: "Usuario",
+            accessorKey: "full_name",
+            header: "Nombre",
             cell: ({ row }) => {
-                const user = row.original
-                const initials = user.email.substring(0, 2).toUpperCase()
+                const nombre = row.getValue<string>("full_name")
+                const initials = nombre.substring(0, 2).toUpperCase()
 
                 return (
                     <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
                             <AvatarFallback>{initials}</AvatarFallback>
                         </Avatar>
-                        <span className="font-medium">{user.email}</span>
+                        <span className="font-medium">{nombre}</span>
                     </div>
                 )
             },
         },
         {
-            accessorKey: "full_name",
-            header: "Full Name",
+            accessorKey: "email",
+            header: "email",
         },
         {
             accessorKey: "role",
@@ -61,37 +60,50 @@ export const getColumns = ({
         {
             accessorKey: "whatsapp",
             header: "Whatsapp",
-                cell: ({ row }) => (
-                    <span className="text-muted-foreground">
-                        {row.original.whatsapp || "-"}
-                    </span>
-                ),
+            cell: ({ row }) => (
+                <span className="text-muted-foreground">
+                    {row.original.whatsapp || "-"}
+                </span>
+            ),
         },
         {
             accessorKey: "account_type",
             header: "Tipo de cuenta",
-            cell: ({ row }) => (
-                <StatusBadge status={row.original.account_type} />
-            ),
+            cell: ({ row }) => {
+                const type = (row.getValue("account_type") as string).toUpperCase()
+
+                const isPremium = type === "PREMIUM"
+
+                const Icon = isPremium ? Gem : Circle
+                const label = isPremium ? "Premium" : "Basic"
+
+                return (
+                    <Badge
+                        variant="outline"
+                        className={isPremium ? "text-purple-600 border-purple-300" : "text-gray-600"}
+                    >
+                        <Icon data-icon="inline-start" />
+                        <span>{label}</span>
+                    </Badge>
+                )
+            },
         },
         {
             accessorKey: "is_verified",
             header: "Verificación",
             cell: ({ row }) => {
+                const isVerified = row.getValue<boolean>("is_verified")
+
+                const Icon = isVerified ? BadgeCheck : IconLoader
+                const label = isVerified ? "Verificado" : "No verificado"
+
                 return (
-                    <Badge variant="outline">
-                        {row.original.is_verified ? (
-                            <>
-                                <BadgeCheck data-icon="inline-start" />
-                                <span className="">Verificado</span>
-                            </>
-                        ) : (
-                            <>
-                                <IconLoader />
-                                <span>No verificado</span>
-                            </>
-                        )
-                        }
+                    <Badge
+                        variant="outline"
+                        className={isVerified ? "text-green-600 border-green-300" : "text-gray-600"}
+                    >
+                        <Icon data-icon="inline-start" />
+                        <span>{label}</span>
                     </Badge>
                 )
             }

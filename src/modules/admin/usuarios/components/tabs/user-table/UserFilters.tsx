@@ -4,17 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import type { UserFilters } from "../../../types";
 
-export function UserFilters({ onFilter, className }: { onFilter: any, className?: string }) {
+export function UserFilters({ onFilter, className }: { onFilter: (filters: UserFilters) => void, className?: string }) {
     const [email, setEmail] = useState("");
     const [role, setRole] = useState("");
-    const [status, setStatus] = useState("");
+    const [isVerified, setIsVerified] = useState("");
+    const [accountType, setAccountType] = useState("");
+
+    const filters: UserFilters = { email, role, is_verified: isVerified, account_type: accountType };
+
+    const handleFilterChange = (field: keyof UserFilters, value: string) => {
+        const newFilters = { ...filters, [field]: value };
+        onFilter(newFilters);
+    }
 
     const clearFilters = () => {
         setEmail("");
         setRole("");
-        setStatus("");
-        onFilter({ email: "", role: "", status: "" });
+        setIsVerified("");
+        setAccountType("");
+        onFilter({ email: "", role: "", is_verified: "", account_type: "" });
     };
 
     return (
@@ -30,7 +40,7 @@ export function UserFilters({ onFilter, className }: { onFilter: any, className?
                 value={email}
                 onChange={(e) => {
                     setEmail(e.target.value);
-                    onFilter({ email: e.target.value, role, status });
+                    handleFilterChange("email", e.target.value);
                 }}
                 className="w-64"
             />
@@ -40,7 +50,7 @@ export function UserFilters({ onFilter, className }: { onFilter: any, className?
                 value={role}
                 onValueChange={(value) => {
                     setRole(value);
-                    onFilter({ email, role: value, status });
+                    handleFilterChange("role", value);
                 }}
             >
                 <SelectTrigger className="w-40">
@@ -52,21 +62,37 @@ export function UserFilters({ onFilter, className }: { onFilter: any, className?
                 </SelectContent>
             </Select>
 
-            {/* Status */}
-            <Select
-                value={status}
+            {/* account_tpye */}
+                <Select
+                value={accountType}
                 onValueChange={(value) => {
-                    setStatus(value);
-                    onFilter({ email, role, status: value });
+                    setAccountType(value);
+                    handleFilterChange("account_type", value);
                 }}
             >
                 <SelectTrigger className="w-40">
-                    <SelectValue placeholder="Estado" />
+                    <SelectValue placeholder="Tipo de cuenta" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="approved">Aprobado</SelectItem>
-                    <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="rejected">Rechazado</SelectItem>
+                    <SelectItem value="basic">Basic</SelectItem>
+                    <SelectItem value="premium">Premium</SelectItem>
+                </SelectContent>
+            </Select>
+
+            {/* Status */}
+            <Select
+                value={isVerified}
+                onValueChange={(value) => {
+                    setIsVerified(value);
+                    handleFilterChange("is_verified", value);
+                }}
+            >
+                <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Verificación" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="true">Verificado</SelectItem>
+                    <SelectItem value="false">No verificado</SelectItem>
                 </SelectContent>
             </Select>
 
