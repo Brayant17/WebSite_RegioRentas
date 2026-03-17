@@ -1,0 +1,58 @@
+// ----- Validar antes de guardar la informacion, para que no se escapen datos vacios -----
+// ----- AL momento de editar mejorar le señal para mostrar que se edito correctamente -----
+// ----- Agregar para eliminar una propiedad tanto el registro como las imagenes asociadas a esa propiedad y los archivos del storage, asi como su carpeta de la propiedad
+// ----- Mejorar el manejo de errores y mostrar alertas visuales en lugar de solo console.error -----
+// ----- Optimizar la carga de imagenes para que no se demore tanto al subir muchas imagenes -----
+// ----- Agregar carga de videos -----
+// ----- Mejorar la UI/UX del formulario -----
+// ----- Agregar soporte para mapas en la sección de ubicación -----
+// ----- Añadir funcionalidad para previsualizar la propiedad antes de publicarla -----
+// ----- Implementar un sistema de etiquetas o categorías para las propiedades -----
+// ----- Añadir validaciones más robustas para los campos del formulario -----
+// ----- Implementar un sistema de guardado automático para evitar pérdida de datos -----
+// ----- Mejorar la accesibilidad del formulario para usuarios con discapacidades -----
+// ----- Añadir soporte para múltiples idiomas en el formulario -----
+// ----- Optimizar el rendimiento del formulario para dispositivos móviles -----
+// ----- Añadir funcionalidad para duplicar propiedades existentes para facilitar la creación de nuevas -----
+// ----- Implementar un sistema de revisión o aprobación para las propiedades antes de su publicación -----
+// ----- Añadir soporte para diferentes tipos de moneda en el campo de precio -----
+// ----- Mejorar la gestión de estados de carga y errores durante las operaciones asincrónicas -----
+// ----- Añadir funcionalidad para programar la publicación de propiedades en una fecha futura -----
+// ----- Implementar un sistema de notificaciones para informar a los usuarios sobre el estado de sus propiedades -----
+// ----- Añadir funcionalidad para importar/exportar propiedades en formatos comunes como CSV o JSON -----
+// ----- Mejorar la seguridad del formulario para prevenir ataques como XSS o CSRF -----
+// ----- Añadir soporte para la integración con redes sociales para compartir propiedades -----
+// ----- Implementar un sistema de análisis o estadísticas para las propiedades publicadas -----
+// ----- Añadir funcionalidad para gestionar comentarios o reseñas de las propiedades -----
+// ----- Mejorar la documentación del código para facilitar el mantenimiento futuro -----
+// ----- Añadir pruebas unitarias e integrales para asegurar la calidad del código -----
+// ----- Implementar un sistema de control de versiones para las propiedades -----
+// ----- Añadir funcionalidad para gestionar múltiples usuarios y permisos en el sistema de propiedades -----
+// ----- Mejorar la integración con otros servicios o APIs externas -----
+// ----- Añadir soporte para la personalización del formulario por parte de los usuarios -----
+// ----- Implementar un sistema de respaldo y recuperación de datos para las propiedades -----
+// ----- Añadir funcionalidad para gestionar ofertas o descuentos en las propiedades -----
+// ----- Mejorar la experiencia de usuario mediante animaciones y transiciones suaves -----
+// ----- Implementar un sistema de búsqueda avanzada para las propiedades -----
+// ----- Añadir soporte para la integración con sistemas de pago para propiedades premium -----
+// ----- Mejorar la gestión de archivos multimedia para soportar diferentes formatos y tamaños -----
+// ----- Añadir funcionalidad para gestionar la expiración automática de propiedades -----
+// ----- Implementar un sistema de etiquetas SEO para mejorar la visibilidad de las propiedades en buscadores -----
+// ----- Añadir funcionalidad para gestionar la colaboración entre múltiples usuarios en una misma propiedad -----
+// ----- Mejorar la experiencia de usuario mediante la optimización del tiempo de carga del formulario -----
+// ----- Añadir funcionalidad para gestionar la integración con CRM u otros sistemas de gestión de clientes -----
+// ----- Implementar un sistema de auditoría para rastrear cambios en las propiedades -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de mensajería para notificaciones en tiempo real -----
+// ----- Mejorar la experiencia de usuario mediante la optimización del diseño responsive del formulario -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de análisis de datos para obtener insights sobre las propiedades -----
+// ----- Implementar un sistema de recomendaciones para sugerir propiedades similares a los usuarios -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de geolocalización para mejorar la precisión de la ubicación -----
+// ----- Mejorar la experiencia de usuario mediante la optimización de la navegación dentro del formulario -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de autenticación externa (OAuth, SSO) -----
+// ----- Implementar un sistema de feedback para recoger opiniones de los usuarios sobre el formulario -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de almacenamiento en la nube para archivos multimedia -----
+// ----- Mejorar la experiencia de usuario mediante la optimización de la usabilidad del formulario -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de marketing por correo electrónico para promociones de propiedades -----
+// ----- Implementar un sistema de gamificación para incentivar la creación y gestión de propiedades -----
+// ----- Añadir funcionalidad para gestionar la integración con servicios de análisis de rendimiento para optimizar el formulario -----
+// ----- Mejorar la experiencia de usuario mediante la optimización de la accesibilidad del formulario -----

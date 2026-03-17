@@ -5,6 +5,6 @@ export type Property = {
     slug: string;
     property_type: string;
     price: number;
-    status: "published" | "draft" | "archived";
+    status: string;
     published_at: string;
 };

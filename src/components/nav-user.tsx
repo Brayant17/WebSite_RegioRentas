@@ -1,3 +1,7 @@
+import { supabase } from "@/lib/supabaseClient"
+
+// TODO: Error de persistencai al cerrar sesion, te deja volver atras con el boton de volver atras del navegador, revisar esto despues
+
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -37,6 +41,17 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+
+  const handleLogout = async () => {
+    // Implement your logout logic here
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Error logging out:", error.message)
+    } else {
+      console.log("User logged out successfully")
+    }
+    location.href = "/login"
+  }
 
   return (
     <SidebarMenu>
@@ -86,17 +101,17 @@ export function NavUser({
                 <IconUserCircle />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <IconCreditCard />
                 Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
                 Notifications
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={handleLogout}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

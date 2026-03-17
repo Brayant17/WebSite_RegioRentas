@@ -1,9 +1,9 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Property } from "./types";
-import { StatusBadge } from "./StatusBadge";
+import type { Property } from "../types";
 import DropDownActions from "./DropDownActions";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Property>[] = [
     {
@@ -49,9 +49,16 @@ export const columns: ColumnDef<Property>[] = [
     {
         accessorKey: "status",
         header: "Estado",
-        cell: ({ row }) => (
-            <StatusBadge status={row.original.status as any} />
-        ),
+        cell: ({ row }) => {
+            const status = row.getValue("status") as string;
+            return (
+                <Badge variant="outline" className={`capitalize ${status === "Disponible"
+                        ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300" : "bg-gray-50 text-gray-700 dark:bg-gray-950 dark:text-gray-300"
+                    }`}>
+                    {status}
+                </Badge>
+            );
+        },
     },
 
     {
