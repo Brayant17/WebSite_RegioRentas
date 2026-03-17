@@ -16,13 +16,30 @@ import { IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight 
 import { flexRender, useReactTable, getCoreRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 
-export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[]; data: TData[] }) {
+type DataTableProps<TData> = {
+    columns: ColumnDef<TData>[];
+    data: TData[];
+    page: number;
+    setPage: (page: number) => void;
+    rowsPerPage: number;
+    setRowsPerPage: (size: number) => void;
+    totalPages: number;
+};
+
+export function DataTable<TData>({ columns, data, page, setPage, rowsPerPage, setRowsPerPage, totalPages }: DataTableProps<TData>) {
 
     const table = useReactTable({
         data,
         columns,
+        pageCount: totalPages,
+        state: {
+            pagination: {
+                pageIndex: page - 1,
+                pageSize: rowsPerPage,
+            },
+        },
+        manualPagination: true,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
     });
 
     return (
@@ -72,7 +89,8 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
                         <Select
                             value={`${table.getState().pagination.pageSize}`}
                             onValueChange={(value) => {
-                                table.setPageSize(Number(value))
+                                setRowsPerPage(Number(value));
+                                setPage(1);
                             }}
                         >
                             <SelectTrigger size="sm" className="w-20" id="rows-per-page">
@@ -90,14 +108,13 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
                         </Select>
                     </div>
                     <div className="flex w-fit items-center justify-center text-sm font-medium">
-                        Page {table.getState().pagination.pageIndex + 1} of{" "}
-                        {table.getPageCount()}
+                        Page {page} of {totalPages}
                     </div>
                     <div className="ml-auto flex items-center gap-2 lg:ml-0">
                         <Button
                             variant="outline"
                             className="hidden h-8 w-8 p-0 lg:flex"
-                            onClick={() => table.setPageIndex(0)}
+                            onClick={() => setPage(1)}
                             disabled={!table.getCanPreviousPage()}
                         >
                             <span className="sr-only">Go to first page</span>
@@ -107,7 +124,7 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
                             variant="outline"
                             className="size-8"
                             size="icon"
-                            onClick={() => table.previousPage()}
+                            onClick={() => setPage(page - 1)}
                             disabled={!table.getCanPreviousPage()}
                         >
                             <span className="sr-only">Go to previous page</span>
@@ -117,7 +134,7 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
                             variant="outline"
                             className="size-8"
                             size="icon"
-                            onClick={() => table.nextPage()}
+                            onClick={() => setPage(page + 1)}
                             disabled={!table.getCanNextPage()}
                         >
                             <span className="sr-only">Go to next page</span>
@@ -127,7 +144,7 @@ export function DataTable<TData>({ columns, data }: { columns: ColumnDef<TData>[
                             variant="outline"
                             className="hidden size-8 lg:flex"
                             size="icon"
-                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                            onClick={() => setPage(totalPages)}
                             disabled={!table.getCanNextPage()}
                         >
                             <span className="sr-only">Go to last page</span>
