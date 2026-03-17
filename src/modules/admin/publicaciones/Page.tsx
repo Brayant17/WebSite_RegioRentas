@@ -1,7 +1,5 @@
 "use client";
 
-import { supabase } from "@/lib/supabaseClient";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/ui/DataTable/data-table";
 import { columns } from "@/modules/admin/publicaciones/components/columns";
 import { PropertyFilters } from "@/modules/admin/publicaciones/components/PropertyFilters";
@@ -10,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useProperties } from "./hooks/useProperties";
 
 export default function PropertiesPage() {
-    const { properties, loading, error, filters, setFilters, loadProperties, setPage } = useProperties();    
+    const { properties, page, setPage, rowsPerPage, setRowsPerPage, totalPages, loading, error, filters, setFilters, loadProperties } = useProperties();
 
     return (
         <div className="p-6 space-y-4">
@@ -32,7 +30,15 @@ export default function PropertiesPage() {
                     <CSVExportButton data={properties} fileName="Publicaciones" className="w-full md:w-auto" />
                 </div>
             </div>
-            <DataTable columns={columns} data={properties} />
+            <DataTable
+                columns={columns}
+                data={properties}
+                page={page}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                totalPages={totalPages}
+             />
         </div>
     );
 }

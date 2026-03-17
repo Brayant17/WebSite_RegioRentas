@@ -9,7 +9,7 @@ import { getColumns } from "./column";
 import { useUsers } from "../../../hooks/useUsers";
 
 export default function AllUsersTab() {
-    const { users, loading, error, setFilters, setPage, loadUsers } = useUsers()
+    const { users, page, setPage, rowsPerPage, setRowsPerPage, totalPages, loading, error, filters, setFilters, loadUsers } = useUsers()
     const [openModal, setOpenModalState] = useState<null | "details" | "edit" | "delete" | "suspend">(null)
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
@@ -50,7 +50,15 @@ export default function AllUsersTab() {
                 />
                 <CSVExportButton fileName="all-Users" data={users} className="w-full md:w-auto" />
             </div>
-            <DataTable columns={columns} data={users} />
+            <DataTable
+                columns={columns}
+                data={users}
+                page={page}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                totalPages={totalPages}
+             />
         </div>
     );
 }

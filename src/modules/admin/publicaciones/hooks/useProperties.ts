@@ -39,16 +39,16 @@ export function useProperties() {
     }
 
     return {
+        loadProperties,
         properties,
-        loading,
-        error,
         page,
         setPage,
-        totalPages,
         rowsPerPage,
         setRowsPerPage,
+        totalPages,
+        loading,
+        error,
         filters,
         setFilters,
-        loadProperties
     }
 }
