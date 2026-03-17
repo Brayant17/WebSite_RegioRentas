@@ -22,7 +22,7 @@ const {navMain, navSecondary} = adminNavigation
 
 export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sidebar> & { user: { name: string; email: string; avatar: string } }) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -31,7 +31,7 @@ export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sideb
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
+                {/* <IconInnerShadowTop className="!size-5" /> */}
                 <span className="text-base font-semibold">Regio Rentas</span>
               </a>
             </SidebarMenuButton>
