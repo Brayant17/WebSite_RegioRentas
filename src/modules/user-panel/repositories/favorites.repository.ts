@@ -1,7 +1,6 @@
 // favorites.repository.ts
 import { supabase } from "@/lib/supabaseClient";
 import type { FavoriteFromDB } from "../types/FavoriteFromDB";
-import type { Favorite } from "../types/favorite";
 
 export async function getPropertyFavorites({ userId }: { userId: string }): Promise<FavoriteFromDB[]> {
     const { data, error } = await supabase

@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import type { UserProfile } from "./hooks/useUserProfile";
+import type { UserProfile } from "../../types/UserProfile";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 

@@ -1,13 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Clock, Crown } from "lucide-react"; // Opcional: Iconos para mejor UX
+import type { UserProfile } from "../../types/UserProfile";
 
 // TODO: Revisar como se comporta con el brokerRequestStatus y el verificado, hay errores
-
-interface UserProfile {
-    account_type: "basic" | "premium";
-    brokerRequestStatus: "pending" | "approved" | "rejected";
-    is_verified: boolean;
-}
 
 type Props = {
     profile: UserProfile;
