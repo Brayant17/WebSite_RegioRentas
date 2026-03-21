@@ -1,8 +1,17 @@
-import PropertySlider from "./PropertySlider.jsx";
-import FavoriteButton from "./FavoriteButton.jsx";
+import PropertySlider from "../PropertySlider.jsx";
+import FavoriteButton from "../FavoriteButton.jsx";
 import BadgeVerified from "@/assets/badge_17460216.png";
+import type { Property } from "@/types/property.js";
 
-function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
+type PropertyCardProps = {
+    property: Property;
+    isFavorite: boolean;
+    badge?: string;
+};
+
+
+function PropertyCard({ property, isFavorite, badge }: PropertyCardProps) {
+    console.log('Property in PropertyCard:', property);
     const dominio = window.location.origin;
     const priceNormalized = property.price.toLocaleString("es-MX", {
         style: "currency",
@@ -14,9 +23,9 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
         <article className="rounded-lg w-full overflow-hidden cursor-pointer">
             {/* Imagen / Slider */}
             <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] flex items-center justify-center">
-                <a href={`${dominio}/propiedad/${slug}`} className="block w-full h-full">
-                    {property.images && property.images.length > 0 ? (
-                        <PropertySlider client:visible images={property.images} name={property.title} />
+                <a href={`${dominio}/propiedad/${property.slug}`} className="block w-full h-full">
+                    {property.property_images && property.property_images.length > 0 ? (
+                        <PropertySlider images={property.property_images} name={property.title} />
                     ) : (
                         <span className="text-slate-400 text-sm">Sin imagen</span>
                     )}
@@ -24,7 +33,7 @@ function PropertyCard({ id, property, slug, isFavorite, session, badge }) {
 
                 {/* Botón de favorito */}
                 <div className="absolute top-0.5 right-0.5 z-10">
-                    <FavoriteButton propertyId={id} isInitiallyFavorite={isFavorite} session={session} />
+                    <FavoriteButton propertyId={property.id} isInitiallyFavorite={isFavorite} />
                 </div>
 
                 {/* Badge is verefied */}

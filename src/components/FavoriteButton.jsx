@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../../lib/supabaseClient.js";
+import { supabase } from "../lib/supabaseClient.js";
+import { useUser } from "@/hooks/useUser.js";
 
-export default function FavoriteButton({ propertyId, isInitiallyFavorite, session, variant = 'feed' }) {
+// TODO: refactorizar el componente
+
+export default function FavoriteButton({ propertyId, isInitiallyFavorite, variant = 'feed' }) {
     // puede ser feed o detail
+    const { session } = useUser();
     const [favorite, setFavorite] = useState(isInitiallyFavorite); // Valor voleano
 
     useEffect(() => {
         setFavorite(isInitiallyFavorite);
+        console.log("ha cambiado")
     }, [isInitiallyFavorite]);
 
     const handleClick = async (e) => {
@@ -24,6 +29,7 @@ export default function FavoriteButton({ propertyId, isInitiallyFavorite, sessio
                     property_id: propertyId,
                 });
             } else {
+                console.log("ah cambiado")
                 await supabase
                     .from("favorites")
                     .delete()

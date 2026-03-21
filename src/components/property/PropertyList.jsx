@@ -1,10 +1,10 @@
 // PropertyList
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { PropertyCard } from "./PropertyCard.jsx";
+import { PropertyCard } from "../PropertyCard/PropertyCardOld.js";
 import { useFilters } from "../filters/FilterContext.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
-import SkeletonCard from "./SkeletonCard";
+import SkeletonCard from "../SkeletonCard.jsx";
 
 export default function PropertyList({ limit = 24 }) {
   const { filters } = useFilters();

@@ -5,7 +5,13 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import "swiper/css/lazy";
 
-export default function PropertySlider({ images, name }) {
+type PropertySlider = {
+    images: {url: string}[];
+    name: string;
+}
+
+export default function PropertySlider({ images, name }: PropertySlider) {
+    // console.log("PropertySlider rendered with images:", images);
     return (
         <Swiper
             modules={[Navigation, Pagination]}
@@ -20,10 +26,10 @@ export default function PropertySlider({ images, name }) {
             style={{ width: "100%", height: "100%" }}
             className="group"
         >
-            {images.map((src, idx) => (
+            {images.map((image, idx) => (
                 <SwiperSlide key={idx} className="overflow-hidden rounded-xl">
                     <img
-                        src={src}
+                        src={image.url}
                         className="swiper-lazy w-full h-full object-cover"
                         alt={`${name} - imagen ${idx + 1}`}
                         loading={"lazy"}
