@@ -1,0 +1,53 @@
+---
+// TODO: Revisar bien este componente
+import { PropertyCard } from "@/components/PropertyCard/PropertyCard.jsx";
+import { getSimilarProperties } from "@/modules/marketplace/propiedad/services/property.service";
+
+// Recibes property_type y propertyID desde Astro.props
+const { property_type, propertyID } = Astro.props as {
+    property_type: string;
+    propertyID: string;
+};
+
+interface Property {
+    id: string;
+    title: string;
+    price: number;
+    estado: string;
+    municipio: string;
+    colonia: string;
+    property_type: string;
+    property_images?: { url: string }[];
+    images?: string[];
+    slug: string;
+    operation: string;
+}
+
+const propiedadesSimilares = await getSimilarProperties(property_type);
+
+// Normalizamos, filtramos y limitamos a 3 propiedades
+const similaresNormalized = (propiedadesSimilares || [])
+    .filter((p: Property) => !propertyID || p.id !== propertyID)
+    .map((p: Property) => ({
+        ...p,
+        property_images: p.property_images ?? [], // 👈 clave
+        images: (p.property_images ?? []).map((img) => img.url),
+    }))
+    .slice(0, 3);
+---
+
+<section>
+    {
+        similaresNormalized.length > 0 ? (
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {similaresNormalized.map((prop) => (
+                    <PropertyCard property={prop} isFavorite client:only />
+                ))}
+            </div>
+        ) : (
+            <p class="text-gray-600">
+                No se encontraron propiedades relacionadas.
+            </p>
+        )
+    }
+</section>

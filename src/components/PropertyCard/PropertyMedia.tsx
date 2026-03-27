@@ -1,5 +1,5 @@
 import PropertySlider from "@/components/PropertySlider";
-import FavoriteButton from "@/components/FavoriteButton";
+import FavoriteButton from "@/modules/marketplace/saved/components/FavoriteButton";
 import PropertyBadges from "./PropertyBadge";
 import type { Property } from "@/types/property";
 
@@ -21,7 +21,7 @@ export default function PropertyMedia({ property, isFavorite }: Props) {
             </a>
 
             <div className="absolute top-0.5 right-0.5 z-10">
-                <FavoriteButton propertyId={property.id} isInitiallyFavorite={isFavorite} />
+                <FavoriteButton propertyId={property.id} isInitiallyFavorite={isFavorite} variant={'feed'} />
             </div>
 
             <PropertyBadges property={property} />

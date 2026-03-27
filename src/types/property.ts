@@ -1,7 +1,7 @@
 export type Property = {
     id: string;
     title: string;
-    description: string;
+    description?: string;
     price: number;
     municipio: string;
     colonia: string;

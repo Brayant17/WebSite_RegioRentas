@@ -3,7 +3,7 @@
 import { DataTable } from "@/components/ui/DataTable/data-table";
 import { columns } from "@/modules/admin/publicaciones/components/columns";
 import { PropertyFilters } from "@/modules/admin/publicaciones/components/PropertyFilters";
-import { CSVExportButton } from "@/components/CSVExportButton";
+import { CSVExportButton } from "@/modules/admin/components/CSVExportButton";
 import { Button } from "@/components/ui/button";
 import { useProperties } from "./hooks/useProperties";
 

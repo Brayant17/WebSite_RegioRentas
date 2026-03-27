@@ -3,7 +3,7 @@ import type { User, UserFilters as filters } from "../../../types";
 import { useState } from "react";
 import { UserDetailsModal } from "./UserDetailsModal";
 import { UserFilters } from "@/modules/admin/usuarios/components/tabs/user-table/UserFilters";
-import { CSVExportButton } from "@/components/CSVExportButton";
+import { CSVExportButton } from "@/modules/admin/components/CSVExportButton";
 import { DataTable } from "@/components/ui/DataTable/data-table";
 import { getColumns } from "./column";
 import { useUsers } from "../../../hooks/useUsers";
