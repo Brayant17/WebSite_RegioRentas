@@ -1,65 +1,23 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+// TODO problema con el numero de paginas solo cuenta 1
+// TODO hcaer funcion en supababase para eliminar propiedad e imagenes en un solo llamado
+
+
+import { useProperty } from "../hooks/useProperty";
+import { useState } from "react";
+import { supabase } from "../../../../lib/supabaseClient";
 import { toast } from "sonner";
 
-export default function TableProperty() {
-    const [properties, setProperties] = useState([]);
+export default function PropertyList() {
+
+    const { properties, fetchUserProperties, page, setPage, perPage, setPerPage } = useProperty();
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(12);
-    const [totalCount, setTotalCount] = useState(0);
 
     // 🆕 Estado para el modal
     const [propertyToDelete, setPropertyToDelete] = useState(null);
 
-    // 🚀 Cargar propiedades
-    const fetchProperties = async () => {
-        setLoading(true);
-        setError(null);
 
-        try {
-            const {
-                data: { user },
-                error: userError,
-            } = await supabase.auth.getUser();
-
-            if (userError) throw userError;
-            if (!user) throw new Error("Usuario no autenticado");
-
-            const from = (page - 1) * pageSize;
-            const to = from + pageSize - 1;
-
-            const { data, error, count } = await supabase
-                .from("properties")
-                .select(
-                    `
-          *,
-          property_images:property_images(url, order)
-        `,
-                    { count: "exact" }
-                )
-                .eq("user_id", user.id)
-                .order("id", { ascending: false })
-                .range(from, to);
-
-            if (error) throw error;
-
-            const propertiesWithImage = data.map((p) => ({
-                ...p,
-                image_url: p.property_images?.find((img) => img.order === 1)?.url || null,
-            }));
-
-            setProperties(propertiesWithImage);
-            setTotalCount(count || 0);
-        } catch (err) {
-            console.error(err);
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     // Confirmar eliminación (llamada real)
     const handleClickDelete = async (idProperty) => {
@@ -99,7 +57,7 @@ export default function TableProperty() {
 
             if (deletePropErr) throw deletePropErr;
 
-            fetchProperties();
+            fetchUserProperties();
             setPropertyToDelete(null);
             toast.success("Propiedad eliminada exitosamente");
 
@@ -109,11 +67,7 @@ export default function TableProperty() {
         }
     };
 
-    useEffect(() => {
-        fetchProperties();
-    }, [page, pageSize]);
-
-    const totalPages = Math.ceil(totalCount / pageSize);
+    const totalPages = Math.ceil(properties.length / perPage);
 
     return (
         <div className="w-full relative">
@@ -131,9 +85,9 @@ export default function TableProperty() {
                         >
                             {/* Imagen */}
                             <div className="relative w-full h-48 bg-slate-100 flex items-center justify-center">
-                                {property.image_url ? (
+                                {property.property_images && property.property_images.length > 0 ? (
                                     <img
-                                        src={property.image_url}
+                                        src={property.property_images[0].url}
                                         alt={property.title}
                                         className="w-full h-full object-cover"
                                     />
@@ -196,8 +150,8 @@ export default function TableProperty() {
                 <div className="flex gap-1 items-center text-sm">
                     <span>Mostrar por página:</span>
                     <select
-                        value={pageSize}
-                        onChange={(e) => setPageSize(Number(e.target.value))}
+                        value={perPage}
+                        onChange={(e) => setPerPage(Number(e.target.value))}
                         className="border border-slate-300 px-1 py-0.5 rounded"
                     >
                         {[8, 12, 20, 52].map((size) => (
