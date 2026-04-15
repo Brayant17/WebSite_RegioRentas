@@ -7,9 +7,9 @@ export function useProperty() {
 
     const { idUser } = useUser(); // Assuming you have a useAuth hook to get the user ID
     const [properties, setProperties] = useState<Property[]>([]);
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(12); // You can adjust this as needed
-    const [totalProperties, setTotalProperties] = useState<number>(1);
+    const [totalProperties, setTotalProperties] = useState<number>(0);
 
     useEffect(() => {
         if (idUser) {
