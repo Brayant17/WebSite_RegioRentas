@@ -1,21 +1,21 @@
 // utilidades
 import { useEffect, useState } from "react";
-import { initialPropertyData } from "../../../constants/propertyDefault"
-import { supabase } from "../../../lib/supabaseClient";
+import { initialPropertyData } from "./constants/propertyDefault"
+import { supabase } from "@/lib/supabaseClient";
 
 // Componentes
-import TitleSlug from "./TitleSlug";
-import Description from "./Description";
-import TypePropertyOperation from "./TypePropertyOperation"
-import Features from "./Features";
-import PhysicalState from "./PhysicalState";
-import Services from "./Services";
-import Location from "./Location";
-import Amenities from "./Amenities";
-import Status from "./Status";
-import Fechas from "./Fechas"
-import DropZone from "./DropZone";
-import PublicationStatus from "./PublicationStatus";
+import TitleSlug from "./components/TitleSlug";
+import Description from "./components/Description";
+import TypePropertyOperation from "./components/TypePropertyOperation"
+import Features from "./components/Features";
+import PhysicalState from "./components/PhysicalState";
+import Services from "./components/Services";
+import Location from "./components/Location";
+import Amenities from "./components/Amenities";
+import Status from "./components/Status";
+import Fechas from "./components/Fechas"
+import DropZone from "./components/DropZone";
+import PublicationStatus from "./components/PublicationStatus";
 
 export default function NewProperty({ propertyId }) {
     const [saveSuccess, setSaveSuccess] = useState(false);
@@ -26,6 +26,7 @@ export default function NewProperty({ propertyId }) {
     const [deletedFiles, setDeletedFiles] = useState([]);
 
     useEffect(() => {
+        // TODO: Refactorizar esta función para que sea más limpia y modular, evitando anidar tantas llamadas a Supabase y manejando mejor los errores. Mover a un hook personalizado o a un endpoint API si es necesario.
         if (propertyId) {
             const fetchProperty = async () => {
                 const { data: property, error: propertyError } = await supabase
@@ -67,6 +68,7 @@ export default function NewProperty({ propertyId }) {
 
     // Revisar esta funcion asincrona para subir las imagenes a supabase
     // Guardar (Editar o Crear)
+    // TODO Refactorizar esta función para que sea más limpia y modular, evitando anidar tantas llamadas a Supabase y manejando mejor los errores. Mover a un hook personalizado o a un endpoint API si es necesario.
     const handleSave = async () => {
         setSaving(true);
 
