@@ -1,78 +1,50 @@
-// TODO problema con el numero de paginas solo cuenta 1
-// TODO hcaer funcion en supababase para eliminar propiedad e imagenes en un solo llamado
-
-
-import { useProperty } from "../hooks/useProperty";
+// PropertyList.tsx
 import { useState } from "react";
-import { supabase } from "../../../../lib/supabaseClient";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/lib/supabaseClient";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useProperty } from "../hooks/useProperty";
+
+type PropertyToDelete = {
+    id: string;
+    title: string;
+}
 
 export default function PropertyList() {
 
-    const { properties, fetchUserProperties, page, setPage, perPage, setPerPage } = useProperty();
-
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
+    const { properties, fetchUserProperties, page, setPage, perPage, setPerPage, totalProperties } = useProperty();
+    const [deleting, setDeleting] = useState(false); // Estado para indicar que se está eliminando
     // 🆕 Estado para el modal
-    const [propertyToDelete, setPropertyToDelete] = useState(null);
-
-
+    const [propertyToDelete, setPropertyToDelete] = useState<PropertyToDelete | null>(null);
 
     // Confirmar eliminación (llamada real)
-    const handleClickDelete = async (idProperty) => {
-        const userId = propertyToDelete.user_id; // Usa el user_id de la propiedad a eliminar
-        try {
-            // 1) Obtener los filenames antes de borrar nada
-            const { data: imgs, error: imgErr } = await supabase
-                .from("property_images")
-                .select("filename")
-                .eq("property_id", idProperty);
+    const handleClickDelete = async (idProperty: string) => {
 
-            if (imgErr) throw imgErr;
+        if (!propertyToDelete) return; // Seguridad extra
 
-            const filePaths = imgs.map(img => `${userId}/${idProperty}/${img.filename}`);
+        setDeleting(true);
 
-            // 2) Borrar archivos del bucket
-            const { error: bucketErr } = await supabase
-                .storage
-                .from("properties")
-                .remove(filePaths);
+        const { error } = await supabase.functions.invoke("deletePropertyWithImages", {
+            body: { idProperty: idProperty }
+        });
 
-            if (bucketErr) throw bucketErr;
+        setDeleting(false);
 
-            // 3) Borrar registros de property_images
-            const { error: deleteImgsErr } = await supabase
-                .from("property_images")
-                .delete()
-                .eq("property_id", idProperty);
-
-            if (deleteImgsErr) throw deleteImgsErr;
-
-            // 4) Borrar la propiedad
-            const { error: deletePropErr } = await supabase
-                .from("properties")
-                .delete()
-                .eq("id", idProperty);
-
-            if (deletePropErr) throw deletePropErr;
-
-            fetchUserProperties();
-            setPropertyToDelete(null);
-            toast.success("Propiedad eliminada exitosamente");
-
-        } catch (err) {
-            console.error(err);
-            toast.error("Error al eliminar la propiedad");
+        if (error) {
+            toast.error("Error al eliminar la propiedad. Intenta nuevamente.");
+        } else {
+            toast.success("Propiedad eliminada exitosamente.");
+            setPropertyToDelete(null); // Cerrar modal
+            fetchUserProperties(); // Refrescar lista después de eliminar
         }
+
     };
 
-    const totalPages = Math.ceil(properties.length / perPage);
+    const totalPages = Math.max(1, Math.ceil(totalProperties / perPage));
 
     return (
         <div className="w-full relative">
-            {loading && <p className="text-center text-slate-500">Cargando propiedades...</p>}
-            {error && <p className="text-red-500 text-center">Error: {error}</p>}
 
             {properties.length === 0 ? (
                 <p className="text-center py-8 text-slate-500">No hay propiedades disponibles.</p>
@@ -133,7 +105,8 @@ export default function PropertyList() {
                                         Editar
                                     </a>
                                     <button
-                                        onClick={() => setPropertyToDelete(property)} // 🆕 Abrir modal
+                                        disabled={deleting} // Deshabilitar mientras se elimina
+                                        onClick={() => setPropertyToDelete({ id: property.id, title: property.title })} // 🆕 Abrir modal
                                         className="flex-1 text-center text-red-600 border border-red-500 hover:bg-red-50 transition-colors text-sm font-medium py-1.5 rounded cursor-pointer"
                                     >
                                         Eliminar
@@ -195,35 +168,32 @@ export default function PropertyList() {
             </div>
 
             {/* 🧩 Modal de confirmación */}
-            {propertyToDelete && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
-                        <h2 className="text-lg font-semibold text-slate-800 mb-2">
-                            ¿Eliminar propiedad?
-                        </h2>
-                        <p className="text-slate-600 text-sm mb-4">
-                            Estás a punto de eliminar{" "}
-                            <span className="font-medium">{propertyToDelete.title}</span>.
-                            <br />
-                            Esta acción no se puede deshacer.
-                        </p>
-                        <div className="flex gap-3 justify-center">
-                            <button
-                                onClick={() => setPropertyToDelete(null)}
-                                className="px-4 py-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-medium cursor-pointer"
-                            >
-                                Cancelar
-                            </button>
-                            <button
-                                onClick={() => handleClickDelete(propertyToDelete.id)}
-                                className="px-4 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-sm font-medium cursor-pointer"
-                            >
-                                Eliminar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <Dialog open={!!propertyToDelete} onOpenChange={(open) => !open && setPropertyToDelete(null)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Eliminar {propertyToDelete?.title}</DialogTitle>
+                        <DialogDescription>
+                            Estás a punto de eliminar {propertyToDelete?.title}. Esta acción no se puede deshacer.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setPropertyToDelete(null)} style={{cursor: "pointer"}}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={() => {
+                                if (propertyToDelete) {
+                                    handleClickDelete(propertyToDelete.id);
+                                }
+                            }}
+                            style={{cursor: "pointer"}}
+                        >
+                            Eliminar
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

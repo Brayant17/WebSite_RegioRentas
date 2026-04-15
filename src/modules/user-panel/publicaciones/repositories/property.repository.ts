@@ -4,18 +4,16 @@ export async function fetchUserProperties({ userId, from, to }: { userId: string
     const { data, error, count } = await supabase
         .from("properties")
         .select(`
-    *,
-    property_images:property_images(url, order)
-  `, { count: "exact" })
+            *,
+            property_images:property_images(url, order)
+        `, { count: "exact" })
         .eq("user_id", userId)
-        .order("id", { ascending: false })
+        .order("published_at", { ascending: false })
         .range(from, to)
         .limit(1, { foreignTable: "property_images" });
-
 
     if (error) {
         throw error;
     }
-
-    return data;
+    return {data, count};
 }

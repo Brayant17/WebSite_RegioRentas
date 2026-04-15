@@ -9,6 +9,7 @@ export function useProperty() {
     const [properties, setProperties] = useState<Property[]>([]);
     const [page, setPage] = useState<number>(0);
     const [perPage, setPerPage] = useState<number>(12); // You can adjust this as needed
+    const [totalProperties, setTotalProperties] = useState<number>(1);
 
     useEffect(() => {
         if (idUser) {
@@ -26,18 +27,23 @@ export function useProperty() {
         }
 
         try {
-            const properties = await getUserProperties(idUser, page * perPage, (page + 1) * perPage - 1);
-            setProperties(properties);
-            console.log("Fetched properties:", properties);
-            return properties;
+            const { data, count } = await getUserProperties(
+                idUser,
+                (page - 1) * perPage,
+                page * perPage - 1
+            );
+
+            setProperties(data || []);
+            setTotalProperties(count || 0);
         } catch (error) {
-            console.error("Error fetching user properties:", error);
-            throw error;
+            console.error(error);
         }
     };
 
     return {
         properties,
+        setProperties,
+        totalProperties,
         fetchUserProperties,
         page,
         setPage,
