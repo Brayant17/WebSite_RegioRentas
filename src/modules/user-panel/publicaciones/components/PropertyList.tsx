@@ -18,10 +18,6 @@ export default function PropertyList() {
     // 🆕 Estado para el modal
     const [propertyToDelete, setPropertyToDelete] = useState<PropertyToDelete | null>(null);
 
-    console.log("Properties:", properties);
-    console.log("Current page:", page);
-    console.log("Total properties:", totalProperties);
-
     // Confirmar eliminación (llamada real)
     const handleClickDelete = async (idProperty: string) => {
 
