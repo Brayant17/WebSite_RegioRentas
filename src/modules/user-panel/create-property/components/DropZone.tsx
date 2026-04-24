@@ -1,19 +1,25 @@
 //DropZone.jsx
 import { useCallback, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
+import { useDropzone, type FileRejection } from "react-dropzone";
 import pkg from "react-sortablejs";
 const { ReactSortable } = pkg;
+import type { ImageItem } from "../types/ImageItem.type";
 
-export default function DropZone({ files, setFiles, deletedFiles, setDeletedFiles }) {
+type DropZoneProps = {
+  files: ImageItem[];
+  setFiles: React.Dispatch<React.SetStateAction<ImageItem[]>>;
+};
+
+export default function DropZone({ files, setFiles }: DropZoneProps) {
   // Al soltar archivos nuevos
   const onDrop = useCallback(
-    (acceptedFiles) => {
-      const newFiles = acceptedFiles.map((file, index) => ({
-        id: Date.now() + "-" + index, // ID único
-        file,
-        preview: URL.createObjectURL(file),
-        isExisting: false,
-        filename: file.name,
+    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      // Crear objetos para cada archivo nuevo
+      const newFiles: ImageItem[] = acceptedFiles.map((file) => ({
+        id: crypto.randomUUID(), // ID único
+        file: file,
+        url: URL.createObjectURL(file),
+        status: "new" as const,
       }));
       setFiles((prev) => [...prev, ...newFiles]);
     },
@@ -30,23 +36,34 @@ export default function DropZone({ files, setFiles, deletedFiles, setDeletedFile
   useEffect(() => {
     return () => {
       files.forEach((f) => {
-        if (!f.isExisting && f.preview.startsWith("blob:")) {
-          URL.revokeObjectURL(f.preview);
+        // Solo revocar blobs de archivos nuevos, no de los existentes
+        if (f.status === "new" && f.url.startsWith("blob:")) {
+          URL.revokeObjectURL(f.url);
         }
       });
     };
-  }, [files]);
+  }, []);
 
   // Eliminar una imagen
-  const handleDelete = (file) => {
-    if (!file.isExisting && file.preview.startsWith("blob:")) {
-      URL.revokeObjectURL(file.preview);
-    }
-    setFiles((prev) => prev.filter((f) => f.id !== file.id));
-    if (file.isExisting) {
-      setDeletedFiles((prev) => [...prev, file]);
-    }
+  const handleDelete = (file: ImageItem) => {
+    setFiles((prev) => {
+      if (file.status === "new") {
+        URL.revokeObjectURL(file.url);
+        return prev.filter((f) => f.id !== file.id);
+      }
+
+      if (file.status === "existing") {
+        return prev.map((f) =>
+          f.id === file.id ? { ...f, status: "deleted" } : f
+        );
+      }
+
+      return prev;
+    });
   };
+
+  const visibleFiles = files.filter(f => f.status !== "deleted");
+
 
   return (
     <div>
@@ -64,10 +81,20 @@ export default function DropZone({ files, setFiles, deletedFiles, setDeletedFile
         )}
       </div>
 
-      {/* Previews */}
-
-      <ReactSortable list={files} setList={setFiles} animation={150} ghostClass="ghost" className="flex gap-2 flex-wrap mt-2">
-        {files.map((file) => (
+      {/* Preview de imágenes */}
+      <ReactSortable
+        list={visibleFiles}
+        setList={(newList) => {
+          setFiles((prevFiles) => {
+            const deleted = prevFiles.filter(f => f.status === "deleted");
+            return [...newList, ...deleted];
+          });
+        }}
+        animation={150}
+        ghostClass="ghost"
+        className="flex gap-2 flex-wrap mt-2"
+      >
+        {visibleFiles.map((file) => (
           <div key={file.id} className="w-28 h-28 relative">
             <span
               onClick={() => handleDelete(file)}
@@ -89,8 +116,8 @@ export default function DropZone({ files, setFiles, deletedFiles, setDeletedFile
               </svg>
             </span>
             <img
-              src={file.preview}
-              alt={file.filename || "Imagen"}
+              src={file.url}
+              alt={file.file?.name || "Imagen"}
               className="w-full h-full object-cover rounded cursor-grab"
             />
           </div>

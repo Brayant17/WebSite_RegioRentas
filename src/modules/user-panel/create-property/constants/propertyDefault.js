@@ -8,6 +8,7 @@ export const AMENITIES = ["pool", "gym", "garden", "security"];
 
 // Estado inicial para una nueva propiedad
 export const initialPropertyData = {
+  id: null,
   // Básico
   title: "",
   slug: "",
@@ -46,5 +47,7 @@ export const initialPropertyData = {
   status: "Disponible", // usar valores de STATUS
   user_id: "",
   available_from: null,  // Date o null
-  is_public: false
+  is_public: false,
+  year_built: null,
+  published_at: null, // Date o null
 };
