@@ -1,5 +1,5 @@
 ---
-import TableProperty from "../../components/App/TableProperty";
+import PropertyList from "../../modules/user-panel/publicaciones/components/PropertyList";
 import Layout from "../../layouts/LayoutPanel.astro";
 import { supabaseServer } from "../../lib/supabaseServer";
 import brokerIllustration from "../../assets/brokerIlustration.svg"
@@ -45,7 +45,7 @@ const approvalStatus = approvalData?.approval_status ?? null;
                     </a>
                 </div>
                 <div class="py-8">
-                    <TableProperty client:load />
+                    <PropertyList client:load />
                 </div>
             </div>
         ) : (

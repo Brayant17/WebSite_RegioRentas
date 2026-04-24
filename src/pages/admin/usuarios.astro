@@ -1,9 +1,11 @@
 ---
 // src/pages/admin/usuarios.astro
-import UsersPage from "@/components/admin/User/Page"
+// import UsersPage from "@/components/admin/User/Page"
 import AdminLayout from "@/layouts/AdminLayout.astro"
+import UsersPage from "@/modules/admin/usuarios/UsersPage"
 ---
 
-<AdminLayout>
+<AdminLayout title="Usuarios">
+    <!-- <UsersPage client:load /> -->
     <UsersPage client:load />
 </AdminLayout>

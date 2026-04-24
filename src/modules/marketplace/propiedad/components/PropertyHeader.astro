@@ -1,0 +1,40 @@
+---
+import ButtonGalleryModal from "@/modules/marketplace/propiedad/components/ButtonGalleryModal.jsx";
+import { getFirstImages } from "../utils/property";
+
+const { property_images, title } = Astro.props
+const fiveImages = getFirstImages(property_images)
+---
+
+<header
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px] animate-[fadeIn_1s_ease-in-out_forwards]"
+>
+    {
+        fiveImages.map((image: string, index: number) => (
+            <div
+                class={`bg-neutral-400 overflow-hidden rounded-xl aspect-[4/3] h-full ${
+                    index === 0 ? "md:col-span-2 md:row-span-2" : ""
+                }`}
+            >
+                <img
+                    src={image}
+                    alt={`Imagen ${index + 1} de ${title}`}
+                    class="w-full h-full object-cover"
+                />
+            </div>
+        ))
+    }
+    <div
+        class="border bg-white w-max rounded-md cursor-pointer absolute right-4 bottom-4 text-sm font-bold"
+    >
+        {
+            property_images &&
+                property_images.length > 5 && (
+                    <ButtonGalleryModal
+                        listImages={property_images}
+                        client:load
+                    />
+                )
+        }
+    </div>
+</header>
