@@ -1,7 +1,7 @@
 ---
 // AdminLayout.astro
 import "../styles/global.css";
-import { AdminShell } from "../components/admin/AdminShell";
+import { AdminShell } from "../modules/admin/layout/AdminShell";
 const { title } = Astro.props;
 ---
 
@@ -12,7 +12,7 @@ const { title } = Astro.props;
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body class="bg-background text-foreground">
-        <AdminShell client:load>
+        <AdminShell title={title} client:load>
             <slot />
         </AdminShell>
     </body>

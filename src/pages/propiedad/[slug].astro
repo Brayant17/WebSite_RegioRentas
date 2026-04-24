@@ -1,179 +1,63 @@
 ---
 export const prerender = false;
 
-import PropertyFeature from "../../components/property/PropertyFeature.astro";
+import PropertyFeature from "@/modules/marketplace/propiedad/components/PropertyFeature.astro";
 import Layout from "../../layouts/Layout.astro";
-import { supabase } from "../../lib/supabaseClient";
-import MainFeatures from "../../components/property/MainFeatures.astro";
-import OtherFeatures from "../../components/property/OtherFeatures.astro";
-import Map from "../../components/property/Map.astro";
-import RelatedProperties from "../../components/property/RelatedProperties.astro";
-import ButtonGalleryModal from "../../components/property/ButtonGalleryModal.jsx";
-import FavoriteButtonDetail from "../../components/property/FavoriteButtonDetail";
+import MainFeatures from "@/modules/marketplace/propiedad/components/MainFeatures.astro";
+import OtherFeatures from "@/modules/marketplace/propiedad/components/OtherFeatures.astro";
+import Map from "@/modules/marketplace/propiedad/components/Map.astro";
+import RelatedProperties from "@/modules/marketplace/propiedad/components/RelatedProperties.astro";
+import FavoriteButtonDetail from "../../modules/marketplace/propiedad/components/FavoriteButtonDetail.jsx";
 
-interface PropertyImage {
-  url: string;
-}
+import type { Detail } from "@/modules/marketplace/propiedad/types/DetailType"
 
-interface Property {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  estado: string;
-  bedrooms: number;
-  bathrooms: number;
-  area: number;
-  floors: number;
-  parking: number;
-  municipio: string;
-  colonia: string;
-  property_type: string;
-  services: string[];
-  amenities?: string[];
-  property_images?: PropertyImage[];
-  users?: {
-    full_name: string,
-    whatsapp: string
-  }
-}
+// service
+import { getPropertyBySlug } from "@/modules/marketplace/propiedad/services/property.service";
+import { buildWhatsappMessage, formatPrice } from "@/modules/marketplace/propiedad/utils/property";
+import PropertyHeader from "@/modules/marketplace/propiedad/components/PropertyHeader.astro";
 
 const slugPropiedad = Astro.params.slug;
 
-const { data, error } = await supabase
-  .from("properties")
-  .select(
-    `
-    id,
-    title,
-    description,
-    price,
-    bedrooms,
-    bathrooms,
-    area,
-    floors,
-    parking,
-    estado,
-    municipio,
-    colonia,
-    property_type,
-    services,
-    amenities, 
-    property_images ( url, order ),
-    users (
-      full_name,
-      whatsapp
-    )
-  `,
-  )
-  .eq("slug", slugPropiedad)
-  .order("order", { foreignTable: "property_images", ascending: true })
-  .maybeSingle<Property>();
-
-if (error) {
-  console.error("❌ Error fetching property:", error);
+if(!slugPropiedad){
+  return Astro.redirect("/404");
 }
 
-const propiedad: Property = data ?? {
-  id: "",
-  title: "",
-  description: "",
-  price: 0,
-  bedrooms: 0,
-  bathrooms: 0,
-  area: 0,
-  floors: 0,
-  parking: 0,
-  estado: "",
-  municipio: "",
-  colonia: "",
-  property_type: "",
-  services: [],
-  amenities: [],
-  property_images: [],
-  users: {
-    full_name: "",
-    whatsapp: ""
-  }
-};
+const propiedad = await getPropertyBySlug(slugPropiedad);
 
-const fiveImages: string[] = Array.isArray(propiedad.property_images)
-  ? propiedad.property_images.map((img) => img.url).slice(0, 5)
-  : [];
+if(!propiedad){
+  return Astro.redirect("/404");
+}
 
-// 🧩 2️⃣ Propiedades similares: mismas ubicación o tipo
-const { data: similares, error: errorSimilares } = await supabase
-  .from("properties")
-  .select(
-    `
-    id,
-    title,
-    price,
-    estado,
-    municipio,
-    colonia,
-    price,
-    property_type,
-    slug,
-    property_images ( url )
-  `,
-  )
-  // ❗ criterio: mismo municipio o tipo, distinto id
-  .or(
-    `municipio.eq.${propiedad.municipio},property_type.eq.${propiedad.property_type}`,
-  )
-  .neq("id", propiedad.id)
-  .limit(4);
 
-if (errorSimilares) console.error("Error fetching similares:", errorSimilares);
 
-const priceNormalized = propiedad.price.toLocaleString("es-MX", {
-  style: "currency",
-  currency: "MXN",
-  minimumFractionDigits: 0,
-});
+const priceNormalized = formatPrice(propiedad.price)
 
-const mensaje = encodeURIComponent(`Hola 👋, vi tu publicación en Regio Rentas sobre la propiedad "${propiedad.title}". Me gustaría obtener más información, ¿sigue disponible?`);
+const mensaje = buildWhatsappMessage(propiedad.title)
+
+const rawDetails: Detail[] = [
+  {type: "building", value: propiedad.property_type, label: "Tipo"},
+  {type: "bedrooms", value: propiedad.bedrooms, label: "Recamaras"},
+  {type: "bathrooms", value: propiedad.bathrooms, label: "Baños"},
+  {type: "parking", value: propiedad.parking, label: "Estacionamiento"},
+  {type: "area", value: propiedad.area, label: "Area (m²)"},
+  {type: "floors", value: propiedad.floors, label: "Pisos"},
+]
+
+const details = rawDetails.filter((item): item is Detail =>
+  item.value !== null &&
+  item.value !== 0
+)
+
+console.log(details)
 
 ---
 
 <Layout title={propiedad.title}>
   <section class="w-11/12 md:w-10/12 lg:w-8/12 mx-auto">
     <div class="w-full flex justify-end py-2.5 px-3">
-      {propiedad.id &&
-        <FavoriteButtonDetail idProperty={propiedad.id} client:load />
-      }
+      <FavoriteButtonDetail idProperty={propiedad.id} client:load />
     </div>
-    <header
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative lg:max-h-[600px] animate-[fadeIn_1s_ease-in-out_forwards]"
-    >
-      {
-        fiveImages.map((image, index) => (
-          <div
-            class={`bg-neutral-400 overflow-hidden rounded-xl aspect-[4/3] h-full ${
-              index === 0 
-                ? "md:col-span-2 md:row-span-2" 
-                : ""
-            }`}
-          >
-            <img
-              src={image}
-              alt={`Imagen ${index + 1} de ${propiedad.title}`}
-              class="w-full h-full object-cover"
-            />
-          </div>
-        ))
-      }
-      <div
-        class="border bg-white w-max rounded-md cursor-pointer absolute right-4 bottom-4 text-sm font-bold"
-      >
-      {
-        propiedad.property_images && propiedad.property_images.length > 5 && (
-          <ButtonGalleryModal listImages={propiedad.property_images} client:load />
-        )
-      }
-      </div>
-    </header>
+    <PropertyHeader property_images={propiedad.property_images} />
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 relative animate-[fadeIn_1s_ease-in-out_forwards]"
     >
@@ -184,36 +68,15 @@ const mensaje = encodeURIComponent(`Hola 👋, vi tu publicación en Regio Renta
         <!-- Component -->
         <div class="py-4 flex flex-col gap-4 border-b border-slate-300">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <PropertyFeature
-              label="Tipo"
-              type="building"
-              value={propiedad.property_type}
-            />
-            <PropertyFeature
-              label="Recamaras"
-              type="bedrooms"
-              value={propiedad.bedrooms}
-            />
-            <PropertyFeature
-              label="Baños"
-              type="bathrooms"
-              value={propiedad.bathrooms}
-            />
-            <PropertyFeature
-              label="Estacionamiento"
-              type="parking"
-              value={propiedad.parking}
-            />
-            <PropertyFeature
-              label="Area (m²)"
-              type="area"
-              value={propiedad.area}
-            />
-            <PropertyFeature
-              label="Pisos"
-              type="floors"
-              value={propiedad.floors}
-            />
+            {
+              details.map(detail => (
+                <PropertyFeature
+                  label={detail.label}
+                  type={detail.type}
+                  value={detail.value}
+                />    
+              ))
+            }
           </div>
         </div>
         <!-- COmponent -->
