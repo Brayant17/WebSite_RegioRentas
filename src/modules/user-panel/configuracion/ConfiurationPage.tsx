@@ -7,11 +7,12 @@ import { useUpdateUser } from "../hooks/useUpdateUser";
 
 export default function ConfigurationPage() {
 
-    const { profile, loading } = useUserProfile()
-    const { updateUser } = useUpdateUser()
+    const { profile, loading, refresh } = useUserProfile()
+    const { updateUser, requestPremium } = useUpdateUser()
 
-    const requestPremium = ()=>{
-        // TODO falta esto
+    const handleRequestPremium = async () => {
+        await requestPremium();
+        await refresh();
     }
 
     return (
@@ -27,7 +28,7 @@ export default function ConfigurationPage() {
             <PremiumSection
                 profile={profile}
                 loading={loading}
-                onRequest={requestPremium}
+                onRequest={handleRequestPremium}
             />
         </div>
     );

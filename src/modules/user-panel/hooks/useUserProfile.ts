@@ -4,6 +4,7 @@ import { getCurrentUserProfile } from "../services/configuration.service";
 import { useUser } from "@/hooks/useUser";
 
 export function useUserProfile() {
+    const { idUser } = useUser();
     const [loading, setLoading] = useState(false);
     const [profile, setProfile] = useState<UserProfile>({
         full_name: "",
@@ -13,19 +14,21 @@ export function useUserProfile() {
         is_verified: false,
         whatsapp: "",
         brokerRequestStatus: "none",
+        verificationRequestStatus: null,
     });
-    const { idUser } = useUser();
 
     useEffect(() => {
-        if (!idUser) return;
-        fetchPendingRequest(idUser);
+        fetchPendingRequest ();
     }, [idUser]);
-
-    const fetchPendingRequest = async (id: string) => {
+    
+    const fetchPendingRequest = async () => {
         setLoading(true);
-
+        if(!idUser){
+            setLoading(false);
+            return;
+        }
         try {
-            const data = await getCurrentUserProfile(id);
+            const data = await getCurrentUserProfile(idUser);
 
             if (data) {
                 setProfile(data);
@@ -39,6 +42,7 @@ export function useUserProfile() {
 
     return {
         profile,
+        refresh: fetchPendingRequest,
         loading,
     };
 }
