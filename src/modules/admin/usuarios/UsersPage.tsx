@@ -1,6 +1,7 @@
 import AllUsersTab from "@/modules/admin/usuarios/components/tabs/user-table/AllUsersTab";
 import BrokerTab from "@/modules/admin/usuarios/components/tabs/broker-table/BrokerTab";
 import { Tabs, TabsTrigger, TabsContent, TabsList} from "@/components/ui/tabs";
+import VerificationTab from "./components/tabs/verification-table/VerificationTab";
 
 export default function UsersPage() {
     return (
@@ -12,7 +13,7 @@ export default function UsersPage() {
                         <TabsList>
                             <TabsTrigger value="all">Todos</TabsTrigger>
                             <TabsTrigger value="broker">Solicitud Brokers</TabsTrigger>
-                            {/* <TabsTrigger value="verified">Solicitud Verificado</TabsTrigger> */}
+                            <TabsTrigger value="verified">Solicitud de verificaciones</TabsTrigger>
                             {/* <TabsTrigger value="team">Equipo</TabsTrigger> */}
                         </TabsList>
                     </div>
@@ -23,11 +24,8 @@ export default function UsersPage() {
                     <TabsContent value="broker">
                         <BrokerTab />
                     </TabsContent>
-                    <TabsContent value="team">
-                        <span>Proximamente tabla de team</span>
-                    </TabsContent>
                     <TabsContent value="verified">
-                        <span>Proximamente tabla de usuarios verificados</span>
+                        <VerificationTab />
                     </TabsContent>
                 </Tabs>
             </div>

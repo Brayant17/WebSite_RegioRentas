@@ -12,6 +12,27 @@ export async function getCurrentUser(userId: string) {
     return response
 }
 
+export async function getLatestBrokerRequest(userId: string) {
+    return supabase
+        .from("account_requests")
+        .select("status")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+}
+
+export async function getLatestVerificationRequest(userId: string) {
+    return supabase
+        .from("account_requests")
+        .select("status")
+        .eq("user_id", userId)
+        .eq("requested_type", "identity_verification")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+}
+
 export async function updateUserRepo(userId: string, data: {
     full_name: string;
     whatsapp: string;
@@ -30,4 +51,26 @@ export async function getLatestRequestStatus(userId: string) {
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
+}
+
+export async function getLatestRequest(
+    userId: string,
+    requestedType: string
+) {
+    return supabase
+        .from("account_requests")
+        .select("status")
+        .eq("user_id", userId)
+        .eq("requested_type", requestedType)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+}
+
+export async function requestAccountPremium() {
+    return supabase.functions.invoke("request_account_upgrade", {
+        body: {
+            requested_type: "premium"
+        }
+    });
 }

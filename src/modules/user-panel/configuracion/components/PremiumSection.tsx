@@ -11,8 +11,9 @@ type Props = {
 };
 
 export function PremiumSection({ profile, loading, onRequest }: Props) {
-    const { account_type, brokerRequestStatus, is_verified } = profile;
+    const { account_type, brokerRequestStatus, is_verified, verificationRequestStatus } = profile;
 
+    const hasPendingVerification = verificationRequestStatus === "pending";
     const isPremium = account_type === "premium";
     const isPending = brokerRequestStatus === "pending";
     const canRequest = !isPremium && !isPending && is_verified;
@@ -61,10 +62,10 @@ export function PremiumSection({ profile, loading, onRequest }: Props) {
                     onClick={onRequest}
                     disabled={!canRequest || loading}
                     className={`
-            relative flex items-center justify-center gap-2 px-6 py-2.5 
-            text-sm font-medium rounded-md border transition-all duration-200
-            ${variantStyles[config.variant as keyof typeof variantStyles]}
-          `}
+                        relative flex items-center justify-center gap-2 px-6 py-2.5 
+                        text-sm font-medium rounded-md border transition-all duration-200
+                        ${variantStyles[config.variant as keyof typeof variantStyles]}
+                    `}
                 >
                     {isPending && <Clock className="w-4 h-4 animate-pulse" />}
                     {loading ? "Procesando..." : config.text}
@@ -72,12 +73,31 @@ export function PremiumSection({ profile, loading, onRequest }: Props) {
             </div>
 
             {/* Footer informativo extra (opcional) */}
-            {!is_verified && !isPremium && (
-                <div className="bg-red-50 px-6 py-2 border-t border-red-100">
-                    <p className="text-[12px] text-red-600">
-                        * Debes verificar tu identidad en la sección de documentos antes de solicitar Premium.
-                    </p>
-                </div>
+            {!isPremium && (
+                <>
+                    {!is_verified && !hasPendingVerification && (
+                        <div className="bg-red-50 px-6 py-2 border-t border-red-100">
+                            <p className="text-xs text-red-600">
+                                Debes verificar tu identidad antes de solicitar una cuenta Premium.{" "}
+                                <a
+                                    href="/panel/verification"
+                                    className="underline hover:no-underline"
+                                >
+                                    Verificar ahora
+                                </a>
+                            </p>
+                        </div>
+                    )}
+
+                    {hasPendingVerification && (
+                        <div className="bg-amber-50 px-6 py-2 border-t border-amber-100">
+                            <p className="text-xs text-amber-700">
+                                Tu solicitud de verificación fue enviada y está siendo revisada.
+                                Una vez aprobada podrás solicitar una cuenta Premium.
+                            </p>
+                        </div>
+                    )}
+                </>
             )}
         </section>
     );

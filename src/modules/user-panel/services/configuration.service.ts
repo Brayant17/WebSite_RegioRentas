@@ -1,11 +1,16 @@
 import type { UserProfile } from "../types/UserProfile";
-import { getCurrentUser, getLatestRequestStatus, updateUserRepo } from "../repositories/configuration.respository";
+import { getCurrentUser, requestAccountPremium, getLatestBrokerRequest, updateUserRepo, getLatestVerificationRequest } from "../repositories/configuration.respository";
 
 export async function getCurrentUserProfile(idUser: string): Promise<UserProfile> {
 
-    const [{ data: user }, { data: request }] = await Promise.all([
+    const [
+        { data: user },
+        { data: brokerRequest },
+        { data: verificationRequest }
+    ] = await Promise.all([
         getCurrentUser(idUser),
-        getLatestRequestStatus(idUser)
+        getLatestBrokerRequest(idUser),
+        getLatestVerificationRequest(idUser)
     ]);
 
     if (!user) {
@@ -19,7 +24,11 @@ export async function getCurrentUserProfile(idUser: string): Promise<UserProfile
         account_type: user.account_type ?? null,
         is_verified: user.is_verified ?? false,
         whatsapp: user.whatsapp ?? "",
-        brokerRequestStatus: request?.status ?? "none",
+
+        brokerRequestStatus: brokerRequest?.status ?? "none",
+
+        verificationRequestStatus:
+            verificationRequest?.status ?? null,
     };
 
 }
@@ -35,3 +44,12 @@ export async function updateUser(idUser: string, data: { full_name: string, what
     return true;
 }
 
+
+export async function requestPremium() {
+    const { error } = await requestAccountPremium();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return true;
+}
