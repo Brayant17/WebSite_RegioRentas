@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { toast } from "sonner";
-import { updateUser } from "../services/configuration.service";
+import { updateUser, requestPremium } from "../services/configuration.service";
 import { useUser } from "@/hooks/useUser";
 
 export function useUpdateUser() {
@@ -42,8 +42,21 @@ export function useUpdateUser() {
         }
     }
 
+    const handleRequestPremium = async ()=>{
+        setLoading(true);
+        try {
+            await requestPremium();
+            toast.success("Solicitud de cuenta premium enviada")
+        } catch (error: any) {
+            toast.error(error.message || "Error al solicitar cuenta premium");
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
         updateUser: handleUpdateUser,
+        requestPremium: handleRequestPremium,
         loading,
     };
 }

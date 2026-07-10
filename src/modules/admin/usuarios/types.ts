@@ -27,3 +27,47 @@ export type RequestPremium = {
   requested_type: string,
   created_at: string,
 }
+
+// src/modules/admin/verification/types.ts
+
+export type VerificationStatus =
+  | "pending"
+  | "approved"
+  | "rejected";
+
+export type VerificationDocumentType =
+  | "id_front"
+  | "id_back"
+  | "selfie";
+
+export interface VerificationDocument {
+  id: string;
+  documentType: VerificationDocumentType;
+  storagePath: string;
+  fileName: string;
+  signedUrl: string | null;
+}
+
+export interface VerificationUser {
+  id: string;
+  fullName: string;
+  email: string;
+}
+
+export interface VerificationRequest {
+  id: string;
+
+  status: "pending" | "approved" | "rejected";
+
+  requestedType: string;
+
+  createdAt: string;
+
+  user: {
+    id: string;
+    fullName: string;
+    email: string;
+  };
+
+  documents: VerificationDocument[];
+}

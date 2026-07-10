@@ -61,3 +61,41 @@ export async function deleteUser(id: string) {
         throw new Error(error.message)
     }
 }
+
+export async function findPendingVerificationRequests() {
+    return await supabase
+        .from("account_requests")
+        .select(`
+            id,
+            status,
+            created_at,
+            requested_type,
+
+            user:users!account_requests_user_id_fkey(
+                id,
+                full_name,
+                email
+            ),
+
+            account_request_documents(
+                id,
+                document_type,
+                storage_path,
+                file_name
+            )
+        `)
+        .eq("requested_type", "identity_verification")
+        .eq("status", "pending")
+        .order("created_at", {
+            ascending: false
+        });
+}
+
+export async function createSignedDocumentUrls(
+    paths: string[],
+    expiresIn = 60 * 30
+) {
+    return await supabase.storage
+        .from("verification-documents")
+        .createSignedUrls(paths, expiresIn);
+}

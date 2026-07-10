@@ -6,4 +6,5 @@ export type UserProfile = {
     is_verified: boolean;
     whatsapp: string;
     brokerRequestStatus: "none" | "pending" | "approved" | "rejected";
+    verificationRequestStatus: "pending" | "approved" | "rejected" | null;
 };
