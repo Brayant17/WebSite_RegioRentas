@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import RentalFlow from "@/modules/arrendamiento/components/rental/RentalFlow.tsx";
+
+// Aquí obtienes el id de la URL
+const { unitId } = Astro.params;
+
+// TODO:
+// Obtener la unidad desde tu repository
+// const unit = await getUnitById(Number(unitId));
+
+const unit = {
+    id: Number(unitId),
+    nombre: "Departamento 204",
+    precio_renta: 12500,
+    edificio: "Torre Norte",
+    direccion: "Av. Universidad 123",
+};
+
+if (!unit) {
+    return Astro.redirect("/404");
+}
+---
+
+<Layout title="Solicitud de arrendamiento">
+    <RentalFlow client:load unit={unit} />
+</Layout>

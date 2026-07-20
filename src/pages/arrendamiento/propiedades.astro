@@ -1,0 +1,149 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+interface Building {
+    id: string;
+    nombre: string;
+    direccion: string | null;
+    ciudad: string | null;
+    estado: string | null;
+    codigo_postal: string | null;
+    estatus: "activo" | "inactivo";
+    created_at: string;
+    updated_at: string | null;
+    unidades: Array<{
+        id: string;
+        tipo: string | null;
+        nombre: string | null;
+        numero: string | null;
+        estatus: "DISPONIBLE" | "ocupado" | "mantenimiento";
+        created_at: string;
+        updated_at: string | null;
+        edificio_id: string;
+        precio_renta: number | null;
+    }>;
+}
+
+import { getBuildingsAndUnits } from "@/modules/arrendamiento/repositories/buildingsRepository";
+
+const buildingsAndUnits = await getBuildingsAndUnits();
+
+console.log("edificios", buildingsAndUnits[0].unidades);
+---
+
+<Layout title="Solicitud de arrendamiento">
+    <section class="mx-auto max-w-6xl px-6 py-10">
+        <div class="mb-10">
+            <h1 class="text-3xl font-bold tracking-tight">
+                Solicitud de arrendamiento
+            </h1>
+            <p class="mt-2 text-muted-foreground">
+                Selecciona la habitación o departamento para iniciar tu
+                solicitud.
+            </p>
+        </div>
+
+        {
+            buildingsAndUnits.map((edificio) => (
+                <div class="mb-12 last:mb-0">
+                    <div class="mb-4 flex items-baseline gap-3 border-b pb-2">
+                        <h2 class="text-lg font-semibold tracking-tight">
+                            {edificio.nombre}
+                        </h2>
+                        <span class="text-sm text-muted-foreground">
+                            {edificio.unidades.length}{" "}
+                            {edificio.unidades.length === 1
+                                ? "unidad"
+                                : "unidades"}{" "}
+                            disponibles
+                        </span>
+                    </div>
+
+                    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                        {edificio.unidades.map(
+                            (unidad: { nombre: string; id: string, precio_renta: number | null, tipo: string | null }) => (
+                                <div class="group flex h-full flex-col rounded-xl border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h3 class="text-xl font-semibold">
+                                                {unidad.nombre}
+                                            </h3>
+
+                                            <p class="text-sm text-muted-foreground">
+                                                {edificio.nombre}
+                                            </p>
+                                        </div>
+
+                                        {edificio.direccion && (
+                                            <div class="flex items-start gap-2 text-sm text-muted-foreground">
+                                                <span>📍</span>
+                                                <span>
+                                                    {edificio.direccion}
+                                                </span>
+                                            </div>
+                                        )}
+
+                                        <div class="grid gap-3">
+                                            {unidad.tipo && (
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-muted-foreground">
+                                                        Tipo
+                                                    </span>
+
+                                                    <span class="font-medium">
+                                                        {unidad.tipo}
+                                                    </span>
+                                                </div>
+                                            )}
+
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-muted-foreground">
+                                                    Renta mensual
+                                                </span>
+
+                                                <span class="text-lg font-semibold text-primary">
+                                                    {new Intl.NumberFormat(
+                                                        "es-MX",
+                                                        {
+                                                            style: "currency",
+                                                            currency: "MXN",
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    ).format(
+                                                        unidad.precio_renta ??
+                                                            0,
+                                                    )}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-muted-foreground">
+                                                    Estado
+                                                </span>
+
+                                                <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                                    Disponible
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a
+                                        href={`/arrendamiento/solicitud/${unidad.id}`}
+                                        class="mt-8 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                                    >
+                                        Iniciar solicitud
+                                    </a>
+                                </div>
+                            ),
+                        )}
+                    </div>
+                </div>
+            ))
+        }
+    </section>
+</Layout>
+
+<script>
+    // Aquí puedes agregar cualquier lógica adicional de JavaScript si es necesario
+</script>

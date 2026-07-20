@@ -5,7 +5,7 @@ import Dropdown from "../../../../components/ui/DropdownMenu";
 
 export default function Filters() {
     const { filters, setFilter, clearFilters } = useFilters();
-    const keysToCheck = ['zone', 'type' ];
+    const keysToCheck = ['zone', 'type'];
     const allSelectedNull = keysToCheck.every(key => filters[key] === null);
 
     const getCurrentFilterLabel = () => {
@@ -122,10 +122,17 @@ export default function Filters() {
                     }
                 </div>
                 <div>
-                    <div>
+                    <div className="flex gap-2.5">
+                        <a
+                            href="/arrendamiento/propiedades"
+                            className="block px-4 py-2 text-sm font-semibold text-[#B45309] bg-[#FEF3C7] border border-[#FCD34D] rounded hover:bg-[#FDE68A] transition"
+                        >
+                            Solicitar arrendamiento
+                        </a>
+
                         <a
                             href="/panel/publicaciones/nueva"
-                            className="block px-4 py-2 text-sm font-semibold text-[#C40001] bg-[#FAE4E4] border border-[#C40001]/10 rounded transition-all duration-200 hover:bg-[#FAD4D4] hover:shadow-md hover:-translate-y-0.5"
+                            className="block px-4 py-2 text-sm font-semibold text-white bg-[#C40001] border border-[#C40001] rounded hover:bg-[#A80000] transition"
                         >
                             Publicar propiedad
                         </a>
