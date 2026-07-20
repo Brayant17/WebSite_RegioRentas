@@ -1,0 +1,54 @@
+---
+import PropiedadCard from "@/components/contratos/PropiedadCard.astro";
+import Layout from "@/layouts/Layout.astro";
+import { supabaseServer } from "@/lib/supabaseServer";
+
+export type Propiedad = {
+    id: string;
+    name: string;
+    address: string;
+    city: string;
+    state?: string;
+    postalCode?: number;
+    active: boolean;
+};
+
+const supabase = supabaseServer(Astro.cookies);
+const { data, error } = await supabase.from("rental_properties").select("*");
+
+if (error) console.error(error);
+
+const propiedades = (data ?? []) as Propiedad[];
+---
+
+<Layout>
+    <main class="min-h-screen bg-slate-50/50 py-12 px-4 sm:px-6">
+        <header class="max-w-6xl mx-auto mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
+                Propiedades
+            </h1>
+            <p class="text-slate-500 mt-2">
+                Gestiona y visualiza el estado de tus activos inmobiliarios.
+            </p>
+        </header>
+
+        <div class="max-w-6xl mx-auto">
+            {
+                propiedades.length > 0 ? (
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {propiedades.map((propiedad) => (
+                            <PropiedadCard {...propiedad} />
+                        ))}
+                    </div>
+                ) : (
+                    /* Estado vacío minimalista */
+                    <div class="text-center py-20 border-2 border-dashed border-slate-200 rounded-3xl">
+                        <p class="text-slate-400 font-medium">
+                            No se encontraron propiedades registradas.
+                        </p>
+                    </div>
+                )
+            }
+        </div>
+    </main>
+</Layout>
