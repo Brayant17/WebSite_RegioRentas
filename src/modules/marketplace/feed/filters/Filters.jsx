@@ -122,7 +122,7 @@ export default function Filters() {
                     }
                 </div>
                 <div>
-                    <div className="flex gap-2.5">
+                    <div className="flex flex-col md:flex-row gap-2.5">
                         <a
                             href="/arrendamiento/propiedades"
                             className="block px-4 py-2 text-sm font-semibold text-[#B45309] bg-[#FEF3C7] border border-[#FCD34D] rounded hover:bg-[#FDE68A] transition"
