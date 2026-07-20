@@ -124,7 +124,7 @@ export default function Filters() {
                 <div>
                     <div className="flex gap-2.5">
                         <a
-                            href="/arrendamiento/solicitud"
+                            href="/arrendamiento/propiedades"
                             className="block px-4 py-2 text-sm font-semibold text-[#B45309] bg-[#FEF3C7] border border-[#FCD34D] rounded hover:bg-[#FDE68A] transition"
                         >
                             Solicitar arrendamiento

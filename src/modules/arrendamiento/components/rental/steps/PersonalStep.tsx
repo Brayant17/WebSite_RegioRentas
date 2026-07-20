@@ -1,0 +1,166 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+
+import { Input } from "@/components/ui/input";
+
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+
+import { Button } from "@/components/ui/button";
+
+import { User } from "lucide-react";
+
+import { useRentalStore } from "@/modules/arrendamiento/stores/rentalStore";
+
+import {
+    PersonalSchema,
+    type PersonalForm,
+} from "@/modules/arrendamiento/schemas/personal.schema";
+
+
+export default function PersonalStep() {
+    const {
+        application,
+        updatePersonal,
+        nextStep,
+    } = useRentalStore();
+
+    const form = useForm<PersonalForm>({
+        resolver: zodResolver(PersonalSchema),
+        defaultValues: application.personal,
+    });
+
+    const onSubmit = (values: PersonalForm) => {
+        updatePersonal(values);
+        nextStep();
+    };
+
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex items-center gap-3">
+                    <User className="size-6 text-primary" />
+                    <div>
+                        <CardTitle>
+                            Datos personales
+                        </CardTitle>
+                        <CardDescription>
+                            Ingresa la información del solicitante.
+                        </CardDescription>
+                    </div>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <Form {...form}>
+                    <form
+                        id="peronsalStep"
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-6"
+                    >
+                        {/* Campos */}
+                        <div className="grid gap-6 md:grid-cols-2">
+                            <FormField
+                                control={form.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Nombre</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Juan" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="paternalLastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Apellido paterno</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Juan" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="maternalLastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Apellido materno</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Juan" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Correo</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Juan" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Telefono</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Juan" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Domicilio de origen</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Cumbres 2534" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </form>
+                </Form>
+            </CardContent>
+            <CardFooter className="justify-end">
+                <Button type="submit" form="peronsalStep">
+                    Continuar
+                </Button>
+            </CardFooter>
+        </Card>
+    )
+}
