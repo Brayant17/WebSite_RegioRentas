@@ -5,8 +5,10 @@ export enum RentalStep {
     GUARANTOR = 3,
     REFERENCES = 4,
     DOCUMENTS = 5,
-    SUMMARY = 6,
-    SUCCESS = 7,
+    OCUPATION = 6,
+    SUMMARY = 7,
+    SUCCESS = 8,
+    ERROR = 9
 }
 
 export interface Person {
@@ -22,9 +24,14 @@ export interface Applicant extends Person {
 }
 
 export interface RentalApplication {
+
+    folio: string; 
+
     propertyId: number;
 
     personal: Applicant;
+
+    ocupationDate: string;
 
     employment: {
         company: string;
@@ -79,6 +86,10 @@ export const RENTAL_STEPS = [
     {
         id: RentalStep.DOCUMENTS,
         label: "Documentos",
+    },
+    {
+        id: RentalStep.OCUPATION,
+        label: "Fecha de ocupacion",
     },
     {
         id: RentalStep.SUMMARY,

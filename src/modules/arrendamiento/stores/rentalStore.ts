@@ -13,6 +13,10 @@ interface RentalStore {
 
     goToStep: (step: RentalStep) => void;
 
+    updateFolio: (
+        data: RentalApplication["folio"]
+    ) => void;
+
     updatePersonal: (
         data: RentalApplication["personal"]
     ) => void;
@@ -33,6 +37,10 @@ interface RentalStore {
         data: RentalApplication["documents"]
     ) => void;
 
+    updateOcupation: (
+        data: RentalApplication["ocupationDate"]
+    ) => void;
+
     reset: (propertyId: number) => void;
 
 }
@@ -41,7 +49,11 @@ const initialApplication = (
     propertyId: number
 ): RentalApplication => ({
 
+    folio: "",
+
     propertyId,
+
+    ocupationDate: "",
 
     // Estos son los datos que se pediran
     personal: {
@@ -126,6 +138,14 @@ export const useRentalStore = create<RentalStore>((set) => ({
             currentStep: step,
         }),
 
+    updateFolio: (data) =>
+        set((state) => ({
+            application: {
+                ...state.application,
+                folio: data,
+            }
+        })),
+
     updatePersonal: (data) =>
         set((state) => ({
             application: {
@@ -166,6 +186,15 @@ export const useRentalStore = create<RentalStore>((set) => ({
             application: {
                 ...state.application,
                 documents: data,
+            }
+        }))
+    ),
+
+    updateOcupation: (data) => (
+        set((state) => ({
+            application: {
+                ...state.application,
+                ocupationDate: data,
             }
         }))
     ),

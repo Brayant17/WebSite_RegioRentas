@@ -10,6 +10,8 @@ import ReferencesStep from "./steps/ReferencesStep";
 import DocumentsStep from "./steps/DocumentsStep";
 import SummaryStep from "./steps/SummaryStep";
 import GuarantorStep from "./steps/GuarantorStep";
+import OcupationStep from "./steps/OcupationStep";
+import Success from "./Succes";
 
 export default function RentalStepper() {
     const { currentStep } = useRentalStore();
@@ -21,7 +23,8 @@ export default function RentalStepper() {
         [RENTAL_STEPS[2].id]: <GuarantorStep />,
         [RENTAL_STEPS[3].id]: <ReferencesStep />,
         [RENTAL_STEPS[4].id]: <DocumentsStep />,
-        [RENTAL_STEPS[5].id]: <SummaryStep />,
+        [RENTAL_STEPS[5].id]: <OcupationStep />,
+        [RENTAL_STEPS[6].id]: <SummaryStep />,
     };
 
     return (
