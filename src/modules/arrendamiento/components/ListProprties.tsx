@@ -24,14 +24,11 @@ export function ListProperties({ buildingsAndUnits }: { buildingsAndUnits: Edifi
         nombre: edificio.nombre
     }))
 
-
     const selectedBuilding = buildingsAndUnits.find(
         (building) => building.id === selected?.id
     );
 
     const units = selectedBuilding?.unidades ?? [];
-
-    console.log(units)
 
     return (
         <>
