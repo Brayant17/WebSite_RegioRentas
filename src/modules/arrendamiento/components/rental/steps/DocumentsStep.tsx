@@ -32,6 +32,7 @@ export default function DocumentsStep() {
         application,
         updateDocuments,
         nextStep,
+        previousStep
     } = useRentalStore();
 
     const form = useForm<DocumentsForm>({
@@ -46,6 +47,10 @@ export default function DocumentsStep() {
         nextStep();
 
     };
+
+    const handleBack = ()=>{
+        previousStep();
+    }
 
     return (
 
@@ -113,7 +118,10 @@ export default function DocumentsStep() {
 
             </CardContent>
 
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-between">
+                <Button type="button" onClick={handleBack} variant="outline" >
+                    Atras
+                </Button>
 
                 <Button
                     type="submit"

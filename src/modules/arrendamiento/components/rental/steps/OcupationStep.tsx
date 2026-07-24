@@ -38,6 +38,7 @@ export default function OcupationStep() {
         application,
         updateOcupation,
         nextStep,
+        previousStep
     } = useRentalStore();
 
     const form = useForm<OcupationForm>({
@@ -51,6 +52,10 @@ export default function OcupationStep() {
         updateOcupation(data.ocupationDate);
         nextStep();
     };
+
+    const handleBack = () => {
+        previousStep();
+    }
 
     return (
         <Card>
@@ -109,7 +114,10 @@ export default function OcupationStep() {
 
             </CardContent>
 
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-between">
+                <Button type="button" onClick={handleBack} variant="outline" >
+                    Atras
+                </Button>
 
                 <Button
                     type="submit"
