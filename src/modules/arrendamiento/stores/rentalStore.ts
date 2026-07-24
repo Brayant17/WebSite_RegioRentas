@@ -13,6 +13,10 @@ interface RentalStore {
 
     goToStep: (step: RentalStep) => void;
 
+    updateFolio: (
+        data: RentalApplication["folio"]
+    ) => void;
+
     updatePersonal: (
         data: RentalApplication["personal"]
     ) => void;
@@ -33,6 +37,10 @@ interface RentalStore {
         data: RentalApplication["documents"]
     ) => void;
 
+    updateOcupation: (
+        data: RentalApplication["ocupationDate"]
+    ) => void;
+
     reset: (propertyId: number) => void;
 
 }
@@ -41,7 +49,11 @@ const initialApplication = (
     propertyId: number
 ): RentalApplication => ({
 
+    folio: "",
+
     propertyId,
+
+    ocupationDate: "",
 
     // Estos son los datos que se pediran
     personal: {
@@ -51,6 +63,8 @@ const initialApplication = (
         email: "",
         phone: "",
         address: "",
+        martialStatus: null,
+        gender: null
     },
 
     guarantor: {
@@ -58,7 +72,9 @@ const initialApplication = (
         paternalLastName: "",
         maternalLastName: "",
         email: "",
-        phone: ""
+        phone: "",
+        hasGuarantor: null,
+        relationship: null,
     },
 
     employment: {
@@ -67,18 +83,20 @@ const initialApplication = (
         monthlyIncome: 0,
         supervisorName: "",
         phoneCompany: "",
+        employmentDuration: null,
+        employmentStatus: null,
     },
 
     references: [
         {
             fullName: "",
             phone: "",
-            relationship: "",
+            relationship: null,
         },
         {
             fullName: "",
             phone: "",
-            relationship: "",
+            relationship: null,
         },
     ],
 
@@ -126,6 +144,14 @@ export const useRentalStore = create<RentalStore>((set) => ({
             currentStep: step,
         }),
 
+    updateFolio: (data) =>
+        set((state) => ({
+            application: {
+                ...state.application,
+                folio: data,
+            }
+        })),
+
     updatePersonal: (data) =>
         set((state) => ({
             application: {
@@ -166,6 +192,15 @@ export const useRentalStore = create<RentalStore>((set) => ({
             application: {
                 ...state.application,
                 documents: data,
+            }
+        }))
+    ),
+
+    updateOcupation: (data) => (
+        set((state) => ({
+            application: {
+                ...state.application,
+                ocupationDate: data,
             }
         }))
     ),

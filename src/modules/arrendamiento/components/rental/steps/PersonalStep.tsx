@@ -2,6 +2,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from "@/components/ui/combobox";
+
+import {
+    genderOptions,
+    martialStatusOptions,
+    type EnumOption,
+} from "@/modules/arrendamiento/constants/personal.constants";
+
+import {
     Form,
     FormControl,
     FormField,
@@ -29,6 +44,8 @@ import { useRentalStore } from "@/modules/arrendamiento/stores/rentalStore";
 
 import {
     PersonalSchema,
+    type PersonalFormInput,
+    type PersonalFormOutput,
     type PersonalForm,
 } from "@/modules/arrendamiento/schemas/personal.schema";
 
@@ -40,12 +57,12 @@ export default function PersonalStep() {
         nextStep,
     } = useRentalStore();
 
-    const form = useForm<PersonalForm>({
+    const form = useForm<PersonalFormInput, any, PersonalFormOutput>({
         resolver: zodResolver(PersonalSchema),
         defaultValues: application.personal,
     });
 
-    const onSubmit = (values: PersonalForm) => {
+    const onSubmit = (values: PersonalFormOutput) => {
         updatePersonal(values);
         nextStep();
     };
@@ -80,8 +97,8 @@ export default function PersonalStep() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Nombre</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                        <FormControl> 
+                                            <Input placeholder="Juan Antonio" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -94,7 +111,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Apellido paterno</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="Rosales" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -107,7 +124,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Apellido materno</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="Hernandez" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -120,7 +137,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Correo</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="example@example.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -133,7 +150,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Telefono</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="8123456789" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -146,7 +163,112 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Domicilio de origen</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Cumbres 2534" {...field} />
+                                            <Input placeholder="Col Paraje Calle siempre viva 2349 " {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="gender"
+                                render={({ field, fieldState }) => {
+                                    const selected: EnumOption | null =
+                                        genderOptions.find((option) => option.value === field.value) ?? null;
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Género</FormLabel>
+                                            <Combobox<EnumOption>
+                                                items={genderOptions}
+                                                itemToStringValue={(option) => option.label}
+                                                value={selected}
+                                                onValueChange={(option) => field.onChange(option?.value ?? undefined)}
+                                            >
+                                                <FormControl>
+                                                    <ComboboxInput
+                                                        placeholder="Selecciona un género"
+                                                        onBlur={field.onBlur}
+                                                        aria-invalid={!!fieldState.error}
+                                                    />
+                                                </FormControl>
+                                                <ComboboxContent>
+                                                    <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                    <ComboboxList>
+                                                        {(option) => (
+                                                            <ComboboxItem key={option.value} value={option}>
+                                                                {option.label}
+                                                            </ComboboxItem>
+                                                        )}
+                                                    </ComboboxList>
+                                                </ComboboxContent>
+                                            </Combobox>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="martialStatus"
+                                render={({ field, fieldState }) => {
+                                    const selected: EnumOption | null =
+                                        martialStatusOptions.find((option) => option.value === field.value) ?? null;
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Tipo de relación civil</FormLabel>
+                                            <Combobox<EnumOption>
+                                                items={martialStatusOptions}
+                                                itemToStringValue={(option) => option.label}
+                                                value={selected}
+                                                onValueChange={(option) => field.onChange(option?.value ?? undefined)}
+                                            >
+                                                <FormControl>
+                                                    <ComboboxInput
+                                                        placeholder="Selecciona un estado civil"
+                                                        onBlur={field.onBlur}
+                                                        aria-invalid={!!fieldState.error}
+                                                        autoComplete="off"
+                                                    />
+                                                </FormControl>
+                                                <ComboboxContent>
+                                                    <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                    <ComboboxList>
+                                                        {(option) => (
+                                                            <ComboboxItem key={option.value} value={option}>
+                                                                {option.label}
+                                                            </ComboboxItem>
+                                                        )}
+                                                    </ComboboxList>
+                                                </ComboboxContent>
+                                            </Combobox>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="rfc"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>RFC</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="ABCD010203XYZ" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="curp"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>CURP</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="ABCD010203HDFRNS09" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
