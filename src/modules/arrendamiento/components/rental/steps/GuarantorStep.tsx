@@ -58,6 +58,7 @@ export default function GuarantorStep() {
         application,
         updateGuarantor,
         nextStep,
+        previousStep
     } = useRentalStore();
 
     const form = useForm<GuarantorFormInput, any, GuarantorFormOutput>({
@@ -93,6 +94,10 @@ export default function GuarantorStep() {
         });
         nextStep();
     };
+
+    const handleBack = ()=>{
+        previousStep();
+    }
 
     return (
         <Card>
@@ -312,7 +317,10 @@ export default function GuarantorStep() {
                 </Form>
             </CardContent>
 
-            <CardFooter className="justify-end">
+            <CardFooter className="flex gap-4 justify-between" >
+                <Button type="button" onClick={handleBack} variant="outline">
+                    Atras
+                </Button>
                 <Button
                     type="submit"
                     form="guarantorStep"

@@ -53,6 +53,7 @@ export default function EmploymentStep() {
         application,
         updateEmployment,
         nextStep,
+        previousStep
     } = useRentalStore();
 
     const form = useForm<EmployFormInput, any, EmployFormOutput>({
@@ -64,6 +65,10 @@ export default function EmploymentStep() {
         updateEmployment(values);
         nextStep();
     };
+
+    const handleBack = ()=>{
+        previousStep();
+    }
 
     return (
         <Card>
@@ -276,7 +281,10 @@ export default function EmploymentStep() {
                 </Form>
             </CardContent>
 
-            <CardFooter className="justify-end">
+            <CardFooter className="flex justify-between">
+                <Button type="button" onClick={handleBack} variant="outline" >
+                    Atras
+                </Button>
                 <Button type="submit" form="employmentStep">
                     Continuar
                 </Button>

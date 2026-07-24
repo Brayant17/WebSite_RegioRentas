@@ -54,12 +54,18 @@ export default function PersonalStep() {
         application,
         updatePersonal,
         nextStep,
+        previousStep
+        
     } = useRentalStore();
 
     const form = useForm<PersonalFormInput, any, PersonalFormOutput>({
         resolver: zodResolver(PersonalSchema),
         defaultValues: application.personal,
     });
+
+    const handleBack = ()=>{
+        previousStep();
+    }
 
     const onSubmit = (values: PersonalFormOutput) => {
         updatePersonal(values);
@@ -277,7 +283,10 @@ export default function PersonalStep() {
                     </form>
                 </Form>
             </CardContent>
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-between">
+                <Button type="button" onClick={handleBack} variant="outline" >
+                    Atras
+                </Button>
                 <Button type="submit" form="peronsalStep">
                     Continuar
                 </Button>
