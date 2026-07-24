@@ -11,21 +11,70 @@ export enum RentalStep {
     ERROR = 9
 }
 
+export enum Gender {
+    Hombre = "Hombre",
+    Mujer = "Mujer",
+    NoDefinido = "No_definido"
+}
+
+// estado civil
+export enum martialStatus {
+    Soltero = "Soltero",
+    Casado = "Casado",
+    UnionLibre = "Union_libre",
+    Divorciado = "Divorciado",
+    Viudo = "Viudo"
+}
+
 export interface Person {
     firstName: string;
     paternalLastName: string;
     maternalLastName: string;
     phone: string;
     email: string;
+    rfc?: string;
+    curp?: string;
+    gender?: Gender | null;
+    martialStatus?: martialStatus | null;
 }
 
 export interface Applicant extends Person {
     address: string;
 }
 
+export interface Guarantor extends Person {
+    relationship: string
+}
+
+export interface Employment {
+    company: string;
+    position: string;
+    monthlyIncome: number;
+    supervisorName?: string;
+    phoneCompany: string;
+    employmentStatus: string; //situacion laboral
+    employmentDuration: string;
+}
+
+export interface References {
+    fullName: string;
+    phone: string;
+    relationship: string;
+}
+
+export interface Documents {
+    officialId: File | null;
+    proofOfAddress: File | null;
+    proofOfIncome: File | null;
+    taxCertificate: File | null;
+    bankStatements: File | null;
+    guarantorOfficialId: File | null;
+    guarantorProofOfAddress: File | null;
+}
+
 export interface RentalApplication {
 
-    folio: string; 
+    folio: string;
 
     propertyId: number;
 
@@ -33,37 +82,13 @@ export interface RentalApplication {
 
     ocupationDate: string;
 
-    employment: {
-        company: string;
-        position: string;
-        monthlyIncome: number;
-        supervisorName?: string;
-        phoneCompany: string;
-    };
+    employment: Employment
 
-    guarantor: Person;
+    guarantor: Guarantor;
 
-    references: Array<{
-        fullName: string;
-        phone: string;
-        relationship: string;
-    }>;
+    references: References[];
 
-    documents: {
-        officialId: File | null;
-
-        proofOfAddress: File | null;
-
-        proofOfIncome: File | null;
-
-        taxCertificate: File | null;
-
-        bankStatements: File | null;
-
-        guarantorOfficialId: File | null;
-
-        guarantorProofOfAddress: File | null;
-    }
+    documents: Documents;
 }
 
 export const RENTAL_STEPS = [

@@ -2,6 +2,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from "@/components/ui/combobox";
+
+import {
+    genderOptions,
+    martialStatusOptions,
+    type EnumOption,
+} from "@/modules/arrendamiento/constants/personal.constants";
+
+import {
     Form,
     FormControl,
     FormField,
@@ -29,6 +44,8 @@ import { useRentalStore } from "@/modules/arrendamiento/stores/rentalStore";
 
 import {
     PersonalSchema,
+    type PersonalFormInput,
+    type PersonalFormOutput,
     type PersonalForm,
 } from "@/modules/arrendamiento/schemas/personal.schema";
 
@@ -40,12 +57,12 @@ export default function PersonalStep() {
         nextStep,
     } = useRentalStore();
 
-    const form = useForm<PersonalForm>({
+    const form = useForm<PersonalFormInput, any, PersonalFormOutput>({
         resolver: zodResolver(PersonalSchema),
         defaultValues: application.personal,
     });
 
-    const onSubmit = (values: PersonalForm) => {
+    const onSubmit = (values: PersonalFormOutput) => {
         updatePersonal(values);
         nextStep();
     };
@@ -145,6 +162,111 @@ export default function PersonalStep() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Domicilio de origen</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Cumbres 2534" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="gender"
+                                render={({ field, fieldState }) => {
+                                    const selected: EnumOption | null =
+                                        genderOptions.find((option) => option.value === field.value) ?? null;
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Género</FormLabel>
+                                            <Combobox<EnumOption>
+                                                items={genderOptions}
+                                                itemToStringValue={(option) => option.label}
+                                                value={selected}
+                                                onValueChange={(option) => field.onChange(option?.value ?? undefined)}
+                                            >
+                                                <FormControl>
+                                                    <ComboboxInput
+                                                        placeholder="Selecciona un género"
+                                                        onBlur={field.onBlur}
+                                                        aria-invalid={!!fieldState.error}
+                                                    />
+                                                </FormControl>
+                                                <ComboboxContent>
+                                                    <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                    <ComboboxList>
+                                                        {(option) => (
+                                                            <ComboboxItem key={option.value} value={option}>
+                                                                {option.label}
+                                                            </ComboboxItem>
+                                                        )}
+                                                    </ComboboxList>
+                                                </ComboboxContent>
+                                            </Combobox>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="martialStatus"
+                                render={({ field, fieldState }) => {
+                                    const selected: EnumOption | null =
+                                        martialStatusOptions.find((option) => option.value === field.value) ?? null;
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Tipo de relación civil</FormLabel>
+                                            <Combobox<EnumOption>
+                                                items={martialStatusOptions}
+                                                itemToStringValue={(option) => option.label}
+                                                value={selected}
+                                                onValueChange={(option) => field.onChange(option?.value ?? undefined)}
+                                            >
+                                                <FormControl>
+                                                    <ComboboxInput
+                                                        placeholder="Selecciona un estado civil"
+                                                        onBlur={field.onBlur}
+                                                        aria-invalid={!!fieldState.error}
+                                                        autoComplete="off"
+                                                    />
+                                                </FormControl>
+                                                <ComboboxContent>
+                                                    <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                    <ComboboxList>
+                                                        {(option) => (
+                                                            <ComboboxItem key={option.value} value={option}>
+                                                                {option.label}
+                                                            </ComboboxItem>
+                                                        )}
+                                                    </ComboboxList>
+                                                </ComboboxContent>
+                                            </Combobox>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="rfc"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>RFC</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Cumbres 2534" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="curp"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>CURP</FormLabel>
                                         <FormControl>
                                             <Input placeholder="Cumbres 2534" {...field} />
                                         </FormControl>

@@ -63,6 +63,8 @@ const initialApplication = (
         email: "",
         phone: "",
         address: "",
+        martialStatus: null,
+        gender: null
     },
 
     guarantor: {
@@ -70,7 +72,8 @@ const initialApplication = (
         paternalLastName: "",
         maternalLastName: "",
         email: "",
-        phone: ""
+        phone: "",
+        relationship: "",
     },
 
     employment: {
@@ -79,6 +82,8 @@ const initialApplication = (
         monthlyIncome: 0,
         supervisorName: "",
         phoneCompany: "",
+        employmentDuration: "",
+        employmentStatus: "",
     },
 
     references: [
