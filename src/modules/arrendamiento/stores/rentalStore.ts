@@ -73,7 +73,8 @@ const initialApplication = (
         maternalLastName: "",
         email: "",
         phone: "",
-        relationship: "",
+        hasGuarantor: null,
+        relationship: null,
     },
 
     employment: {

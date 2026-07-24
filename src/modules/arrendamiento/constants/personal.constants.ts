@@ -1,5 +1,10 @@
 // src/modules/arrendamiento/constants/personal.constants.ts
-import { Gender, martialStatus } from "@/modules/arrendamiento/types/rental";
+import {
+    Gender,
+    martialStatus,
+    HasGuarantor,
+    Relationship,
+} from "@/modules/arrendamiento/types/rental";
 
 export interface EnumOption {
     value: string;
@@ -37,4 +42,18 @@ export const employmentDurationOptions: EnumOption[] = [
     { value: "DE_2_A_5_ANIOS", label: "De 2 a 5 años" },
     { value: "DE_5_A_10_ANIOS", label: "De 5 a 10 años" },
     { value: "MAS_10_ANIOS", label: "Más de 10 años" },
+];
+
+export const hasGuarantorOptions: EnumOption[] = [
+    { value: HasGuarantor.Si, label: "Sí" },
+    { value: HasGuarantor.No, label: "No" },
+];
+
+export const guarantorRelationshipOptions: EnumOption[] = [
+    { value: Relationship.Padre, label: "Padre" },
+    { value: Relationship.Madre, label: "Madre" },
+    { value: Relationship.Hermano, label: "Hermano" },
+    { value: Relationship.Familiar, label: "Familiar" },
+    { value: Relationship.Amigo, label: "Amigo" },
+    { value: Relationship.Otro, label: "Otro" },
 ];

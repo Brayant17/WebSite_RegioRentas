@@ -60,8 +60,23 @@ export interface Applicant extends Person {
     address: string;
 }
 
+export enum HasGuarantor {
+    Si = "si",
+    No = "no",
+}
+
+export enum Relationship {
+    Padre = "Padre",
+    Madre = "Madre",
+    Hermano = "Hermano",
+    Familiar = "Familiar",
+    Amigo = "Amigo",
+    Otro = "Otro",
+}
+
 export interface Guarantor extends Person {
-    relationship: string
+    hasGuarantor: HasGuarantor | null;
+    relationship?: Relationship | null;
 }
 
 export interface Employment {

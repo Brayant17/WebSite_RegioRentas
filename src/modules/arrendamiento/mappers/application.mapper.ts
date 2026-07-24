@@ -1,5 +1,5 @@
 import type { CreateApplicationDTO } from "../dtos/create-application-dto";
-import type { RentalApplication } from "../types/rental";
+import { HasGuarantor, type RentalApplication } from "../types/rental";
 
 export function toCreateApplicationDTO(application: RentalApplication): CreateApplicationDTO {
     return {
@@ -22,13 +22,16 @@ export function toCreateApplicationDTO(application: RentalApplication): CreateAp
             supervisor: application.employment.supervisorName,
             telefono_empresa: application.employment.phoneCompany,
         },
-        fiador: {
-            nombre: application.guarantor.firstName,
-            apellido_paterno: application.guarantor.paternalLastName,
-            apellido_materno: application.guarantor.maternalLastName,
-            correo: application.guarantor.email,
-            telefono: application.guarantor.phone,
-        },
+        fiador:
+            application.guarantor.hasGuarantor === HasGuarantor.Si
+                ? {
+                    nombre: application.guarantor.firstName,
+                    apellido_paterno: application.guarantor.paternalLastName,
+                    apellido_materno: application.guarantor.maternalLastName,
+                    correo: application.guarantor.email,
+                    telefono: application.guarantor.phone,
+                }
+                : undefined,
         referencias: application.references.map(reference => ({
             nombre: reference.fullName,
             telefono: reference.phone,

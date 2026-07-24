@@ -112,7 +112,7 @@ export default function EmploymentStep() {
                                         <FormLabel>Puesto</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Desarrollador de Software"
+                                                placeholder="Gerente de Ventas"
                                                 {...field}
                                             />
                                         </FormControl>
