@@ -11,11 +11,17 @@ import DocumentsStep from "./steps/DocumentsStep";
 import SummaryStep from "./steps/SummaryStep";
 import GuarantorStep from "./steps/GuarantorStep";
 import OcupationStep from "./steps/OcupationStep";
-import Success from "./Succes";
+import { useEffect } from "react";
 
 export default function RentalStepper() {
     const { currentStep } = useRentalStore();
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [currentStep])
 
     const stepComponents = {
         [RENTAL_STEPS[0].id]: <PersonalStep />,

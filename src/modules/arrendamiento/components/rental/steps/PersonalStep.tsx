@@ -46,7 +46,6 @@ import {
     PersonalSchema,
     type PersonalFormInput,
     type PersonalFormOutput,
-    type PersonalForm,
 } from "@/modules/arrendamiento/schemas/personal.schema";
 
 
