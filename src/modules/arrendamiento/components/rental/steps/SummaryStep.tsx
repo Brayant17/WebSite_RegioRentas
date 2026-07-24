@@ -39,6 +39,10 @@ export default function SummaryStep() {
         })
     }
 
+    const handleBack = ()=>{
+        previousStep();
+    }
+
     return (
         <>
             <SummarySection title="Datos personales">
@@ -171,7 +175,7 @@ export default function SummaryStep() {
                 ))}
             </SummarySection>
 
-            <CardFooter className="justify-between">
+            <CardFooter className="flex justify-between">
                 <Button
                     variant="outline"
                     onClick={previousStep}

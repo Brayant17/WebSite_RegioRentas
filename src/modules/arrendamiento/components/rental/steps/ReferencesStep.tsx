@@ -51,6 +51,7 @@ export default function ReferencesStep() {
         application,
         updateReferences,
         nextStep,
+        previousStep
     } = useRentalStore();
 
     const form = useForm<ReferencesFormInput, any, ReferencesFormOutput>({
@@ -64,6 +65,10 @@ export default function ReferencesStep() {
         updateReferences(values.references);
         nextStep();
     };
+
+    const handleBack = ()=>{
+        previousStep();
+    }
 
     return (
         <Card>
@@ -194,7 +199,10 @@ export default function ReferencesStep() {
                 </Form>
             </CardContent>
 
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-between">
+                <Button type="button" onClick={handleBack} variant="outline" >
+                    Atras
+                </Button>
                 <Button
                     type="submit"
                     form="referencesStep"
