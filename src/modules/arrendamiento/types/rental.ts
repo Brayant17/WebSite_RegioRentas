@@ -92,7 +92,7 @@ export interface Employment {
 export interface References {
     fullName: string;
     phone: string;
-    relationship: string;
+    relationship: Relationship | null;
 }
 
 export interface Documents {

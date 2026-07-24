@@ -91,12 +91,12 @@ const initialApplication = (
         {
             fullName: "",
             phone: "",
-            relationship: "",
+            relationship: null,
         },
         {
             fullName: "",
             phone: "",
-            relationship: "",
+            relationship: null,
         },
     ],
 

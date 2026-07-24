@@ -35,7 +35,7 @@ export function toCreateApplicationDTO(application: RentalApplication): CreateAp
         referencias: application.references.map(reference => ({
             nombre: reference.fullName,
             telefono: reference.phone,
-            parentesco: reference.relationship,
+            parentesco: reference.relationship ?? "", // <- Revisar mas detalle
         }))
     };
 }
