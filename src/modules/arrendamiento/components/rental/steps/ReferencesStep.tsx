@@ -2,6 +2,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from "@/components/ui/combobox";
+
+import {
     Form,
     FormControl,
     FormField,
@@ -29,8 +38,13 @@ import { useRentalStore } from "@/modules/arrendamiento/stores/rentalStore";
 
 import {
     ReferencesSchema,
-    type ReferencesForm,
+    type ReferencesFormInput,
+    type ReferencesFormOutput,
 } from "@/modules/arrendamiento/schemas/references.schema";
+import {
+    guarantorRelationshipOptions,
+    type EnumOption,
+} from "@/modules/arrendamiento/constants/personal.constants";
 
 export default function ReferencesStep() {
     const {
@@ -39,14 +53,14 @@ export default function ReferencesStep() {
         nextStep,
     } = useRentalStore();
 
-    const form = useForm<ReferencesForm>({
+    const form = useForm<ReferencesFormInput, any, ReferencesFormOutput>({
         resolver: zodResolver(ReferencesSchema),
         defaultValues: {
             references: application.references,
         },
     });
 
-    const onSubmit = (values: ReferencesForm) => {
+    const onSubmit = (values: ReferencesFormOutput) => {
         updateReferences(values.references);
         nextStep();
     };
@@ -127,20 +141,49 @@ export default function ReferencesStep() {
                                         <FormField
                                             control={form.control}
                                             name={`references.${index}.relationship`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>
-                                                        Relación
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            placeholder="Amigo, Hermano, Compañero..."
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
+                                            render={({ field, fieldState }) => {
+                                                const selected: EnumOption | null =
+                                                    guarantorRelationshipOptions.find(
+                                                        (option) => option.value === field.value
+                                                    ) ?? null;
+
+                                                return (
+                                                    <FormItem className="flex flex-col">
+                                                        <FormLabel>Parentesco</FormLabel>
+                                                        <Combobox<EnumOption>
+                                                            items={guarantorRelationshipOptions}
+                                                            itemToStringValue={(option) => option.label}
+                                                            value={selected}
+                                                            onValueChange={(option) =>
+                                                                field.onChange(option?.value ?? undefined)
+                                                            }
+                                                        >
+                                                            <FormControl>
+                                                                <ComboboxInput
+                                                                    placeholder="Selecciona un parentesco"
+                                                                    onBlur={field.onBlur}
+                                                                    aria-invalid={!!fieldState.error}
+                                                                    autoComplete="off"
+                                                                />
+                                                            </FormControl>
+                                                            <ComboboxContent>
+                                                                <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                                <ComboboxList>
+                                                                    {(option) => (
+                                                                        <ComboboxItem
+                                                                            key={option.value}
+                                                                            value={option}
+                                                                        >
+                                                                            {option.label}
+                                                                        </ComboboxItem>
+                                                                    )}
+                                                                </ComboboxList>
+                                                            </ComboboxContent>
+                                                        </Combobox>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                );
+                                            }}
                                         />
 
                                     </div>

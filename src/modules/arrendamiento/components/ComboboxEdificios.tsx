@@ -28,7 +28,7 @@ export function EdificiosCombobox({ edificios, selected, onSelect }: Props) {
             onValueChange={onSelect}
             itemToStringLabel={(item) => item?.nombre ?? ""}
         >
-            <ComboboxInput placeholder="Select a framework" />
+            <ComboboxInput placeholder="Selecciona el edificio" />
             <ComboboxContent>
                 <ComboboxEmpty>No se encontraron edificios.</ComboboxEmpty>
                 <ComboboxList>

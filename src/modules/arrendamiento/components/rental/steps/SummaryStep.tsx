@@ -7,6 +7,7 @@ import { RENTAL_DOCUMENTS } from "@/modules/arrendamiento/constants/rentalDocume
 import { saveSolicitud } from "@/modules/arrendamiento/services/solicitud.service";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner"
+import { HasGuarantor } from "@/modules/arrendamiento/types/rental";
 
 export default function SummaryStep() {
 
@@ -100,20 +101,34 @@ export default function SummaryStep() {
             </SummarySection>
 
             <SummarySection title="Información del fiador">
-                <SummaryField
-                    label="Nombre"
-                    value={`${application.guarantor.firstName} ${application.guarantor.paternalLastName} ${application.guarantor.maternalLastName}`}
-                />
+                {application.guarantor.hasGuarantor === HasGuarantor.Si ? (
+                    <>
+                        <SummaryField
+                            label="Nombre"
+                            value={`${application.guarantor.firstName} ${application.guarantor.paternalLastName} ${application.guarantor.maternalLastName}`}
+                        />
 
-                <SummaryField
-                    label="Correo"
-                    value={application.guarantor.email}
-                />
+                        <SummaryField
+                            label="Correo"
+                            value={application.guarantor.email}
+                        />
 
-                <SummaryField
-                    label="Teléfono"
-                    value={application.guarantor.phone}
-                />
+                        <SummaryField
+                            label="Teléfono"
+                            value={application.guarantor.phone}
+                        />
+
+                        <SummaryField
+                            label="Parentesco"
+                            value={application.guarantor.relationship ?? "No especificado"}
+                        />
+                    </>
+                ) : (
+                    <SummaryField
+                        label="Fiador"
+                        value="No cuenta con fiador"
+                    />
+                )}
             </SummarySection>
 
             <SummarySection title="Referencias personales">

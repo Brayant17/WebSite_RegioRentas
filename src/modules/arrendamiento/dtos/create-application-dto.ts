@@ -18,7 +18,7 @@ export interface CreateApplicationDTO {
         supervisor?: string | null;
         telefono_empresa: string;
     },
-    fiador: {
+    fiador?: {
         nombre: string;
         apellido_paterno: string;
         apellido_materno: string;
