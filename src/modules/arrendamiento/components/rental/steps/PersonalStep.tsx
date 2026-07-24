@@ -97,8 +97,8 @@ export default function PersonalStep() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Nombre</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                        <FormControl> 
+                                            <Input placeholder="Juan Antonio" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -111,7 +111,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Apellido paterno</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="Rosales" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -124,7 +124,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Apellido materno</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="Hernandez" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -137,7 +137,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Correo</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="example@example.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -150,7 +150,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Telefono</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Juan" {...field} />
+                                            <Input placeholder="8123456789" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -163,7 +163,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>Domicilio de origen</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Cumbres 2534" {...field} />
+                                            <Input placeholder="Col Paraje Calle siempre viva 2349 " {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -255,7 +255,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>RFC</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Cumbres 2534" {...field} />
+                                            <Input placeholder="ABCD010203XYZ" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -268,7 +268,7 @@ export default function PersonalStep() {
                                     <FormItem>
                                         <FormLabel>CURP</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Cumbres 2534" {...field} />
+                                            <Input placeholder="ABCD010203HDFRNS09" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
