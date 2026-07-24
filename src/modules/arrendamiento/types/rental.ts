@@ -26,6 +26,24 @@ export enum martialStatus {
     Viudo = "Viudo"
 }
 
+export enum EmploymentStatus {
+    Empleado = "empleado",
+    Independiente = "independiente",
+    Empresario = "empresario",
+    Pensionado = "pensionado",
+    Estudiante = "estudiante",
+    Otro = "otro",
+}
+
+export enum EmploymentDuration {
+    MENOS_6_MESES = "MENOS_6_MESES",
+    DE_6_A_12_MESES = "DE_6_A_12_MESES",
+    DE_1_A_2_ANIOS = "DE_1_A_2_ANIOS",
+    DE_2_A_5_ANIOS = "DE_2_A_5_ANIOS",
+    DE_5_A_10_ANIOS = "DE_5_A_10_ANIOS",
+    MAS_10_ANIOS = "MAS_10_ANIOS",
+}
+
 export interface Person {
     firstName: string;
     paternalLastName: string;
@@ -52,8 +70,8 @@ export interface Employment {
     monthlyIncome: number;
     supervisorName?: string;
     phoneCompany: string;
-    employmentStatus: string; //situacion laboral
-    employmentDuration: string;
+    employmentStatus: EmploymentStatus | null;
+    employmentDuration: EmploymentDuration | null;
 }
 
 export interface References {

@@ -82,8 +82,8 @@ const initialApplication = (
         monthlyIncome: 0,
         supervisorName: "",
         phoneCompany: "",
-        employmentDuration: "",
-        employmentStatus: "",
+        employmentDuration: null,
+        employmentStatus: null,
     },
 
     references: [

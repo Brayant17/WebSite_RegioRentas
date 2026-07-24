@@ -2,6 +2,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from "@/components/ui/combobox";
+
+import {
     Form,
     FormControl,
     FormField,
@@ -28,8 +37,15 @@ import { BriefcaseBusiness } from "lucide-react";
 import { useRentalStore } from "@/modules/arrendamiento/stores/rentalStore";
 
 import {
+    employmentDurationOptions,
+    employmentStatusOptions,
+    type EnumOption,
+} from "@/modules/arrendamiento/constants/personal.constants";
+
+import {
     EmploymentSchema,
-    type EmployForm,
+    type EmployFormInput,
+    type EmployFormOutput,
 } from "@/modules/arrendamiento/schemas/employment.schema";
 
 export default function EmploymentStep() {
@@ -39,12 +55,12 @@ export default function EmploymentStep() {
         nextStep,
     } = useRentalStore();
 
-    const form = useForm<EmployForm>({
+    const form = useForm<EmployFormInput, any, EmployFormOutput>({
         resolver: zodResolver(EmploymentSchema),
         defaultValues: application.employment,
     });
 
-    const onSubmit = (values: EmployForm) => {
+    const onSubmit = (values: EmployFormOutput) => {
         updateEmployment(values);
         nextStep();
     };
@@ -140,6 +156,102 @@ export default function EmploymentStep() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="employmentStatus"
+                                render={({ field, fieldState }) => {
+                                    const selected: EnumOption | null =
+                                        employmentStatusOptions.find(
+                                            (option) => option.value === field.value
+                                        ) ?? null;
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Situación laboral</FormLabel>
+                                            <Combobox<EnumOption>
+                                                items={employmentStatusOptions}
+                                                itemToStringValue={(option) => option.label}
+                                                value={selected}
+                                                onValueChange={(option) =>
+                                                    field.onChange(option?.value ?? undefined)
+                                                }
+                                            >
+                                                <FormControl>
+                                                    <ComboboxInput
+                                                        placeholder="Selecciona una situación laboral"
+                                                        onBlur={field.onBlur}
+                                                        aria-invalid={!!fieldState.error}
+                                                        autoComplete="off"
+                                                    />
+                                                </FormControl>
+                                                <ComboboxContent>
+                                                    <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                    <ComboboxList>
+                                                        {(option) => (
+                                                            <ComboboxItem
+                                                                key={option.value}
+                                                                value={option}
+                                                            >
+                                                                {option.label}
+                                                            </ComboboxItem>
+                                                        )}
+                                                    </ComboboxList>
+                                                </ComboboxContent>
+                                            </Combobox>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="employmentDuration"
+                                render={({ field, fieldState }) => {
+                                    const selected: EnumOption | null =
+                                        employmentDurationOptions.find(
+                                            (option) => option.value === field.value
+                                        ) ?? null;
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Antigüedad laboral</FormLabel>
+                                            <Combobox<EnumOption>
+                                                items={employmentDurationOptions}
+                                                itemToStringValue={(option) => option.label}
+                                                value={selected}
+                                                onValueChange={(option) =>
+                                                    field.onChange(option?.value ?? undefined)
+                                                }
+                                            >
+                                                <FormControl>
+                                                    <ComboboxInput
+                                                        placeholder="Selecciona tu antigüedad"
+                                                        onBlur={field.onBlur}
+                                                        aria-invalid={!!fieldState.error}
+                                                        autoComplete="off"
+                                                    />
+                                                </FormControl>
+                                                <ComboboxContent>
+                                                    <ComboboxEmpty>Sin resultados.</ComboboxEmpty>
+                                                    <ComboboxList>
+                                                        {(option) => (
+                                                            <ComboboxItem
+                                                                key={option.value}
+                                                                value={option}
+                                                            >
+                                                                {option.label}
+                                                            </ComboboxItem>
+                                                        )}
+                                                    </ComboboxList>
+                                                </ComboboxContent>
+                                            </Combobox>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
                             />
 
                             <FormField
