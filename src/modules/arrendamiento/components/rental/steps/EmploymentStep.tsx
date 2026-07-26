@@ -71,8 +71,6 @@ export default function EmploymentStep() {
             return;
         }
 
-        console.log("Se supone que el preRellenado es aqui ", application.employment)
-
         form.reset(
             {
                 employmentStatus: status,

@@ -17,7 +17,6 @@ export async function saveSolicitud(application: RentalApplication) {
 
     const dtoSolicitud = toCreateApplicationDTO(applicationCopy);
     const response = await repository.createApplication(dtoSolicitud);
-    console.log(response);
     // aqui ira el intento de subir los archivos, verificar que no vengan vacios con ZOD si es posible
     return response
 
