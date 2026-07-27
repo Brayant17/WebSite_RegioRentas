@@ -7,13 +7,9 @@ import {
   IconArrowBackUp,
   IconSettings,
   IconHelp,
-  IconSearch,
-  IconDatabase,
-  IconReport,
-  IconFileWord,
-  IconCamera,
-  IconFileDescription,
-  IconFileAi
+  IconClipboardText,
+  IconBuildingSkyscraper,
+  IconContract
 } from "@tabler/icons-react"
 
 export const adminNavigation = {
@@ -54,54 +50,6 @@ export const adminNavigation = {
             icon: IconArrowBackUp,
         },
     ],
-    navClouds: [
-        {
-            title: "Capture",
-            icon: IconCamera,
-            isActive: true,
-            url: "#",
-            items: [
-                {
-                    title: "Active Proposals",
-                    url: "#",
-                },
-                {
-                    title: "Archived",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Proposal",
-            icon: IconFileDescription,
-            url: "#",
-            items: [
-                {
-                    title: "Active Proposals",
-                    url: "#",
-                },
-                {
-                    title: "Archived",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Prompts",
-            icon: IconFileAi,
-            url: "#",
-            items: [
-                {
-                    title: "Active Proposals",
-                    url: "#",
-                },
-                {
-                    title: "Archived",
-                    url: "#",
-                },
-            ],
-        },
-    ],
     navSecondary: [
         {
             title: "Settings",
@@ -113,27 +61,22 @@ export const adminNavigation = {
             url: "#",
             icon: IconHelp,
         },
-        // {
-        //     title: "Search",
-        //     url: "#",
-        //     icon: IconSearch,
-        // },
     ],
-    documents: [
+    arrendamiento: [
         {
-            name: "Data Library",
+            name: "Solicitudes arrendamiento",
             url: "#",
-            icon: IconDatabase,
+            icon: IconClipboardText,
         },
         {
-            name: "Reports",
+            name: "Propiedades",
             url: "#",
-            icon: IconReport,
+            icon: IconBuildingSkyscraper,
         },
         {
-            name: "Word Assistant",
+            name: "Contratos",
             url: "#",
-            icon: IconFileWord,
+            icon: IconContract,
         },
     ],
 }
