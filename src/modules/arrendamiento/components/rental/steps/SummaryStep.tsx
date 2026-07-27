@@ -16,6 +16,10 @@ export default function SummaryStep() {
     const { application, previousStep, goToStep, updateFolio } = useRentalStore();
 
     const { personal } = application;
+    const hasGuarantor = application.guarantor.hasGuarantor === HasGuarantor.Si;
+    const visibleDocuments = RENTAL_DOCUMENTS.filter(
+        (document) => !document.isGuarantorDocument || hasGuarantor
+    );
 
     const handleSubmit = async () => {
         setLoading(true)
@@ -164,7 +168,7 @@ export default function SummaryStep() {
             </SummarySection>
 
             <SummarySection title="Documentos">
-                {RENTAL_DOCUMENTS.map((document) => (
+                {visibleDocuments.map((document) => (
                     <SummaryField
                         key={document.name}
                         label={document.label}

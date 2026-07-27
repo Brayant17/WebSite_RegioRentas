@@ -16,6 +16,7 @@ import { Form } from "@/components/ui/form";
 import { FileUp } from "lucide-react";
 
 import { useRentalStore } from "@/modules/arrendamiento/stores/rentalStore";
+import { HasGuarantor } from "@/modules/arrendamiento/types/rental";
 
 import {
     DocumentsSchema,
@@ -34,6 +35,12 @@ export default function DocumentsStep() {
         nextStep,
         previousStep
     } = useRentalStore();
+
+    const hasGuarantor = application.guarantor.hasGuarantor === HasGuarantor.Si;
+
+    const visibleDocuments = RENTAL_DOCUMENTS.filter(
+        (document) => !document.isGuarantorDocument || hasGuarantor
+    );
 
     const form = useForm<DocumentsForm>({
         resolver: zodResolver(DocumentsSchema),
@@ -88,7 +95,7 @@ export default function DocumentsStep() {
                         className="space-y-6"
                     >
 
-                        {RENTAL_DOCUMENTS.map((document) => (
+                        {visibleDocuments.map((document) => (
 
                             <DocumentUploader
                                 key={document.name}

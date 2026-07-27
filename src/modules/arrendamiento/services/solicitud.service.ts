@@ -2,6 +2,7 @@
 import { SolicitudRepository } from "@/modules/arrendamiento/repositories/solicitud.repository"
 import { uploadDocumentRepository } from "@/modules/arrendamiento/repositories/document.repository";
 import type { RentalApplication, Documents } from "../types/rental";
+import { HasGuarantor } from "../types/rental";
 import { toCreateApplicationDTO } from "../mappers/application.mapper";
 
 const DOCUMENTS_UPLOAD_MAP: Array<{ storageKey: string; field: keyof Documents }> = [
@@ -17,12 +18,19 @@ const DOCUMENTS_UPLOAD_MAP: Array<{ storageKey: string; field: keyof Documents }
 async function uploadApplicationDocuments(
     personaId: string,
     documents: Documents,
+    hasGuarantor: boolean,
 ) {
     const formData = new FormData();
 
     formData.append("personaId", personaId);
 
     for (const documentConfig of DOCUMENTS_UPLOAD_MAP) {
+        const isGuarantorDocument = documentConfig.field === "guarantorOfficialId" || documentConfig.field === "guarantorProofOfAddress";
+
+        if (isGuarantorDocument && !hasGuarantor) {
+            continue;
+        }
+
         const file = documents[documentConfig.field];
 
         if (!file) {
@@ -63,7 +71,11 @@ export async function saveSolicitud(application: RentalApplication) {
         throw new Error("No se recibió el identificador de la persona para registrar los documentos.");
     }
 
-    await uploadApplicationDocuments(personaId, application.documents);
+    await uploadApplicationDocuments(
+        personaId,
+        application.documents,
+        application.guarantor.hasGuarantor === HasGuarantor.Si
+    );
 
     return response;
 }

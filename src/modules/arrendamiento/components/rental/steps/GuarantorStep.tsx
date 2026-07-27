@@ -57,6 +57,7 @@ export default function GuarantorStep() {
     const {
         application,
         updateGuarantor,
+        updateDocuments,
         nextStep,
         previousStep
     } = useRentalStore();
@@ -78,6 +79,11 @@ export default function GuarantorStep() {
                 phone: "",
                 hasGuarantor: HasGuarantor.No,
                 relationship: null,
+            });
+            updateDocuments({
+                ...application.documents,
+                guarantorOfficialId: null,
+                guarantorProofOfAddress: null,
             });
             nextStep();
             return;
