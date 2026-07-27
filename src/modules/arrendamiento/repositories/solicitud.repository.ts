@@ -1,9 +1,10 @@
 import { supabase } from "@/lib/supabaseClient"
 import type { CreateApplicationDTO } from "@/modules/arrendamiento/dtos/create-application-dto"
 
-interface SolicitudResponse {
+export interface SolicitudResponse {
     id: string;
     folio: string;
+    persona_id: string;
 }
 
 export class SolicitudRepository {
@@ -17,8 +18,6 @@ export class SolicitudRepository {
             throw new Error(error.message);
         }
 
-        return data
+        return data as SolicitudResponse
     }
-
-    async createDocument() { }
 }
