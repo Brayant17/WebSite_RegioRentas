@@ -37,7 +37,7 @@ export function NavArrendamiento({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Arrendaimento</SidebarGroupLabel>
+      <SidebarGroupLabel>Arrendamiento</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
