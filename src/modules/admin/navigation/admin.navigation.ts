@@ -65,7 +65,7 @@ export const adminNavigation = {
     arrendamiento: [
         {
             name: "Solicitudes arrendamiento",
-            url: "#",
+            url: "/admin/arrendamiento/solicitudes",
             icon: IconClipboardText,
         },
         {
