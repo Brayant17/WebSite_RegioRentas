@@ -78,6 +78,7 @@ export default function TableArrendamiento() {
     const filteredSolicitudes = useMemo(() => {
         return solicitudesData.filter((item) => {
             const searchValue = filters.search.trim().toLowerCase();
+
             const matchesSearch =
                 !searchValue ||
                 item.folio.toLowerCase().includes(searchValue) ||
@@ -85,11 +86,16 @@ export default function TableArrendamiento() {
                 item.email.toLowerCase().includes(searchValue) ||
                 item.property.toLowerCase().includes(searchValue) ||
                 item.unit.toLowerCase().includes(searchValue);
-            const matchesStatus = !filters.status || item.status === filters.status;
-            const matchesPropertyType = !filters.propertyType || item.propertyType === filters.propertyType;
+
+            const matchesStatus =
+                !filters.status || item.status === filters.status;
+
+            const matchesPropertyType =
+                !filters.propertyType || item.propertyType === filters.propertyType;
+
             return matchesSearch && matchesStatus && matchesPropertyType;
         });
-    }, [filters]);
+    }, [solicitudesData, filters]);
 
     const totalPages = Math.max(1, Math.ceil(filteredSolicitudes.length / rowsPerPage));
     const visibleSolicitudes = useMemo(() => {
