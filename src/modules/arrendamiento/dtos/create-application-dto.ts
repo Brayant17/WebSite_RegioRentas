@@ -10,6 +10,10 @@ export interface CreateApplicationDTO {
         correo: string;
         telefono: string;
         direccion: string;
+        rfc: string;
+        curp: string;
+        sexo: string;
+        estado_civil: string;
     },
     informacion_laboral: {
         empresa: string;
@@ -17,6 +21,8 @@ export interface CreateApplicationDTO {
         ingreso_mensual: number;
         supervisor?: string | null;
         telefono_empresa: string;
+        situacion_laboral: string;
+        antiguedad: string;
     },
     fiador?: {
         nombre: string;
@@ -24,6 +30,7 @@ export interface CreateApplicationDTO {
         apellido_materno: string;
         correo: string;
         telefono: string;
+        parentesco: string; // <- Revisar
     },
     referencias:
     {

@@ -17,8 +17,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { NavArrendamiento } from "@/components/nav-arrendamiento"
 
-const {navMain, navSecondary} = adminNavigation
+const {navMain, navSecondary, arrendamiento} = adminNavigation
 
 export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sidebar> & { user: { name: string; email: string; avatar: string } }) {
   return (
@@ -40,7 +41,7 @@ export function AppSidebar({ user, ...props }: React.ComponentProps<typeof Sideb
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
-        {/* <NavDocuments items={data.documents} /> */}
+        <NavArrendamiento items={arrendamiento} />
         <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

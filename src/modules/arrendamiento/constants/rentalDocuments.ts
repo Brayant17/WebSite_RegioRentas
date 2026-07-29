@@ -34,11 +34,13 @@ export const RENTAL_DOCUMENTS = [
         label: "Identificación oficial del fiador",
         description: "Documento del obligado solidario",
         required: false,
+        isGuarantorDocument: true,
     },
     {
         name: "guarantorProofOfAddress",
         label: "Comprobante de domicilio del fiador",
         description: "Documento del obligado solidario",
         required: false,
+        isGuarantorDocument: true,
     },
 ] as const;

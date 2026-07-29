@@ -14,8 +14,14 @@ export function toCreateApplicationDTO(application: RentalApplication): CreateAp
             correo: application.personal.email,
             telefono: application.personal.phone,
             direccion: application.personal.address,
+            rfc: application.personal.rfc ?? "",
+            curp: application.personal.curp ?? "",
+            sexo: application.personal.gender ?? "",
+            estado_civil: application.personal.martialStatus ?? ""
         },
         informacion_laboral: {
+            situacion_laboral: application.employment.employmentStatus ?? "",
+            antiguedad: application.employment.employmentDuration ?? "",
             empresa: application.employment.company,
             puesto: application.employment.position,
             ingreso_mensual: application.employment.monthlyIncome,
@@ -30,6 +36,7 @@ export function toCreateApplicationDTO(application: RentalApplication): CreateAp
                     apellido_materno: application.guarantor.maternalLastName,
                     correo: application.guarantor.email,
                     telefono: application.guarantor.phone,
+                    parentesco: application.guarantor.relationship ?? ""
                 }
                 : undefined,
         referencias: application.references.map(reference => ({
