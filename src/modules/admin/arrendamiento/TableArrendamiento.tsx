@@ -12,19 +12,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import RequestDetailsModal from "./components/RequestDetailsModal";
 import { getListApplication } from "./services/solicitudes.service";
-
-type SolicitudArrendamiento = {
-    id: string;
-    folio: string;
-    applicantName: string;
-    email: string;
-    property: string;
-    unit: string;
-    propertyType: string;
-    status: "pendiente" | "aprobada" | "rechazada";
-    date: string;
-};
+import type { SolicitudArrendamiento } from "./types/Solicitud.type";
 
 
 const formatDate = (value: string) => {
@@ -74,6 +64,8 @@ export default function TableArrendamiento() {
     const [filters, setFilters] = useState<FiltersType>({ search: "", status: "", propertyType: "" });
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [selected, setSelected] = useState<SolicitudArrendamiento | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const filteredSolicitudes = useMemo(() => {
         return solicitudesData.filter((item) => {
@@ -106,6 +98,10 @@ export default function TableArrendamiento() {
     const handleFilter = (nextFilters: FiltersType) => {
         setFilters(nextFilters);
         setPage(1);
+    };
+
+    const handleUpdateStatus = (id: string, newStatus: SolicitudArrendamiento["status"]) => {
+        setSolicitudesData((prev) => prev.map((it) => (it.id === id ? { ...it, status: newStatus } : it)));
     };
 
     return (
@@ -179,7 +175,14 @@ export default function TableArrendamiento() {
                                     </TableCell>
                                     <TableCell>{formatDate(solicitud.date)}</TableCell>
                                     <TableCell>
-                                        <Button size="sm" variant="outline">
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => {
+                                                setSelected(solicitud);
+                                                setModalOpen(true);
+                                            }}
+                                        >
                                             Ver
                                         </Button>
                                     </TableCell>
@@ -237,6 +240,12 @@ export default function TableArrendamiento() {
                     </div>
                 </div>
             </div>
+            <RequestDetailsModal
+                open={modalOpen}
+                solicitud={selected}
+                onClose={() => setModalOpen(false)}
+                onUpdateStatus={(id, status) => handleUpdateStatus(id, status)}
+            />
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
-import type { Solicitud } from "@/modules/admin/arrendamiento/types/database.type"
+import type { ApplicationDetail, Solicitud } from "@/modules/admin/arrendamiento/types/database.type"
 
 export async function getApplications() {
     const { data, error } = await supabase
@@ -30,8 +30,6 @@ export async function getApplications() {
             error: Error | null
         };
 
-    console.log(error);
-
     if (error) {
         console.log(error)
     }
@@ -48,4 +46,19 @@ export async function getApplications() {
         status: solicitud.estatus as "pendiente" | "aprobada" | "rechazada",
         date: solicitud.created_at
     })) ?? [];
+}
+
+
+export async function getApplicationById(idSolicitud: string): Promise<ApplicationDetail> {
+    const { data, error } = await supabase
+        .from("solicitudescreadas")
+        .select("*")
+        .eq("solicitud_id", idSolicitud)
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
 }
