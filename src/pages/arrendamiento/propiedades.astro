@@ -1,14 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getBuildingsAndUnits } from "@/modules/arrendamiento/repositories/buildingsRepository";
-import { ListProperties } from "@/modules/arrendamiento/components/ListProprties"
+import { ListProperties } from "@/modules/arrendamiento/components/ListProprties";
 
 const buildingsAndUnits = await getBuildingsAndUnits();
 ---
 
 <Layout title="Solicitud de arrendamiento">
     <section class="mx-auto max-w-6xl px-6 py-10">
-        <ListProperties buildingsAndUnits={buildingsAndUnits} client:load />        
+        <ListProperties buildingsAndUnits={buildingsAndUnits} client:load />
     </section>
 </Layout>
-
