@@ -1,5 +1,5 @@
 // solicitud.service.ts
-import { SolicitudRepository } from "@/modules/arrendamiento/repositories/solicitud.repository"
+import { checkSatusByFolio, SolicitudRepository } from "@/modules/arrendamiento/repositories/solicitud.repository"
 import { uploadDocumentRepository } from "@/modules/arrendamiento/repositories/document.repository";
 import type { RentalApplication, Documents } from "../types/rental";
 import { HasGuarantor } from "../types/rental";
@@ -78,4 +78,9 @@ export async function saveSolicitud(application: RentalApplication) {
     );
 
     return response;
+}
+
+export async function checkFolio(folio: string){
+    const data = await checkSatusByFolio(folio)
+    return data
 }

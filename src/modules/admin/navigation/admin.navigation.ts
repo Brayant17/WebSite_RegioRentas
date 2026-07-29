@@ -70,12 +70,12 @@ export const adminNavigation = {
         },
         {
             name: "Propiedades",
-            url: "#",
+            url: "/admin/arrendamiento/propiedades",
             icon: IconBuildingSkyscraper,
         },
         {
             name: "Contratos",
-            url: "#",
+            url: "/admin/arrendamiento/contratos",
             icon: IconContract,
         },
     ],
