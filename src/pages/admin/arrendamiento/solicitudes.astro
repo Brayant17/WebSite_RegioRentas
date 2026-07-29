@@ -1,0 +1,11 @@
+---
+// Dashboard.astro
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import TableArrendamiento from "@/modules/admin/arrendamiento/TableArrendamiento";
+---
+
+<AdminLayout title="Dashboard">
+    <main class="p-6 space-y-4">
+        <TableArrendamiento client:load />
+    </main>
+</AdminLayout>

@@ -4,14 +4,17 @@ const fileSchema = z
     .instanceof(File)
     .nullable();
 
+const requiredFileSchema = z.instanceof(File, {
+    message: "Este documento es obligatorio.",
+});
 
 export const DocumentsSchema = z.object({
 
-    officialId: fileSchema,
+    officialId: requiredFileSchema,
 
-    proofOfAddress: fileSchema,
+    proofOfAddress: requiredFileSchema,
 
-    proofOfIncome: fileSchema,
+    proofOfIncome: requiredFileSchema,
 
     taxCertificate: fileSchema,
 
@@ -22,7 +25,6 @@ export const DocumentsSchema = z.object({
     guarantorProofOfAddress: fileSchema,
 
 });
-
 
 export type DocumentsForm =
     z.infer<typeof DocumentsSchema>;

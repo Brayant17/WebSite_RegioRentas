@@ -64,7 +64,9 @@ const initialApplication = (
         phone: "",
         address: "",
         martialStatus: null,
-        gender: null
+        gender: null,
+        rfc: "",
+        curp: "",
     },
 
     guarantor: {

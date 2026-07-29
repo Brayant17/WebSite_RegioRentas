@@ -25,8 +25,6 @@ export function useCurrentUser() {
             avatar: data.user.user_metadata.avatar_url || "https://i.pravatar.cc/150?img=3",
         }
         setUser(userData)
-
-        console.log("Current user:", data)
     }
   }
 
