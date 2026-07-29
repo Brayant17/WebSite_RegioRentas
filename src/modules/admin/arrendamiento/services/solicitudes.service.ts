@@ -1,5 +1,5 @@
 import { getDocumentsSignedUrls } from "@/modules/admin/arrendamiento/repositories/documents.repository";
-import { getApplicationById, getApplications } from "../repositories/solicitudes.repository"
+import { getApplicationById, getApplications, updateStatus } from "../repositories/solicitudes.repository"
 
 export async function getListApplication(){
     
@@ -20,4 +20,9 @@ export async function getApplication(idSolicitud: string){
     }
 
     return application
+}
+
+export async function ChangeStatus(solicitudId: string, estatus: string){
+    const data = await updateStatus(solicitudId, estatus);
+    return data
 }

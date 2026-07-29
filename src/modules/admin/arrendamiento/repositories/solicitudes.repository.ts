@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabaseClient";
 import type { ApplicationDetail, Solicitud } from "@/modules/admin/arrendamiento/types/database.type"
+import { id } from "date-fns/locale";
 
 export async function getApplications() {
     const { data, error } = await supabase
@@ -54,6 +55,24 @@ export async function getApplicationById(idSolicitud: string): Promise<Applicati
         .from("solicitudescreadas")
         .select("*")
         .eq("solicitud_id", idSolicitud)
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
+
+export async function updateStatus(solicitudId: string, estatus: string) {
+    const { data, error } = await supabase
+        .from("solicitudes")
+        .update({
+            estatus: estatus
+        })
+        .eq("id", solicitudId)
+        .select()
         .single();
 
     if (error) {

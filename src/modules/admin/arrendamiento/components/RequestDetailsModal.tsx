@@ -66,8 +66,7 @@ function getDocUrl(doc: DocumentoPersonal): string {
 }
 
 function getDocLabel(doc: DocumentoPersonal, index: number): string {
-    if (typeof doc === "string") return `Documento ${index + 1}`;
-    return doc.nombre_archivo ?? doc.tipo_documento ?? `Documento ${index + 1}`;
+    return doc.tipo_documento ?? `Documento - ${index}`
 }
 
 function isImageDoc(url: string): boolean {
@@ -91,6 +90,7 @@ export default function RequestDetailsModal({
     const [application, setApplication] = useState<ApplicationDetail | null>(null);
     const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<TabValue>("general");
+    const [isLodaing, setIsLoading] = useState(false)
 
     const solicitudId = solicitud?.id;
 
@@ -146,8 +146,22 @@ export default function RequestDetailsModal({
 
     if (!solicitud) return null;
 
-    const handleApprove = () => onUpdateStatus(solicitud.id, "aprobada");
-    const handleReject = () => onUpdateStatus(solicitud.id, "rechazada");
+    const handleApprove = async () => {
+        setIsLoading(true);
+        try {
+            await onUpdateStatus(solicitud.id, "aprobada");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const handleReject = async () => {
+        setIsLoading(true);
+        try {
+            await onUpdateStatus(solicitud.id, "rechazada")
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const badge = statusBadge(solicitud.status);
 
@@ -191,10 +205,7 @@ export default function RequestDetailsModal({
                         </div>
                     </div>
                 </div>
-
-                {/* ---------------------------------------------------------------- */}
                 {/* Pestañas (Tabs nativo del proyecto, variant="line")               */}
-                {/* ---------------------------------------------------------------- */}
                 <div className="min-h-0 flex-1 overflow-y-auto">
                     {loadingDetails && (
                         <div className="grid gap-4 px-6 py-6">
@@ -370,18 +381,23 @@ export default function RequestDetailsModal({
                         </Tabs>
                     )}
                 </div>
-
-                {/* ---------------------------------------------------------------- */}
-                {/* Acciones                                                           */}
-                {/* ---------------------------------------------------------------- */}
+                {/* Acciones */}
                 <div className="flex items-center justify-end gap-2 border-t bg-background px-6 py-4">
-                    <Button variant="ghost" onClick={onClose}>
+                    <Button variant="ghost" onClick={onClose} disabled={isLodaing}>
                         Cancelar
                     </Button>
-                    <Button variant="destructive" onClick={handleReject}>
-                        Rechazar
-                    </Button>
-                    <Button onClick={handleApprove}>Aprobar</Button>
+                    {
+                        solicitud.status == "pendiente" && (
+                            <>
+                                <Button variant="destructive" onClick={handleReject} disabled={isLodaing}>
+                                    {isLodaing ? 'Rechazando...' : 'Rechazar'}
+                                </Button>
+                                <Button onClick={handleApprove} disabled={isLodaing}>
+                                    {isLodaing ? 'Abrobando...' : 'Aprobar'}
+                                </Button>
+                            </>
+                        )
+                    }
                 </div>
 
                 {/* Lightbox de imagen                                                 */}

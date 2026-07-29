@@ -13,7 +13,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import RequestDetailsModal from "./components/RequestDetailsModal";
-import { getListApplication } from "./services/solicitudes.service";
+import { ChangeStatus, getListApplication } from "./services/solicitudes.service";
 import type { SolicitudArrendamiento } from "./types/Solicitud.type";
 
 
@@ -100,8 +100,24 @@ export default function TableArrendamiento() {
         setPage(1);
     };
 
-    const handleUpdateStatus = (id: string, newStatus: SolicitudArrendamiento["status"]) => {
-        setSolicitudesData((prev) => prev.map((it) => (it.id === id ? { ...it, status: newStatus } : it)));
+    const handleUpdateStatus = async (id: string, newStatus: SolicitudArrendamiento["status"]) => {
+        // Aqui tenemos que poner si es rechazada o aprobada
+        try {
+            await ChangeStatus(id, newStatus);
+
+            setSolicitudesData((prev) =>
+                prev.map((it) =>
+                    it.id === id
+                        ? { ...it, status: newStatus }
+                        : it
+                )
+            );
+        } catch (error) {
+            console.error("Error actualizando el estado:", error);
+        }
+        finally{
+            setModalOpen(false);
+        }
     };
 
     return (
