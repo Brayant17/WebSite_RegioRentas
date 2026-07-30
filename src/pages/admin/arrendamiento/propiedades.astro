@@ -1,10 +1,21 @@
 ---
 // Dashboard.astro
 import AdminLayout from "@/layouts/AdminLayout.astro";
+import { supabaseServer } from "@/lib/supabaseServer";
+import PropiedadesArrendamiento from "@/modules/admin/arrendamiento/propiedades/PropiedadesArrendamiento";
+import type { Edificio } from "@/modules/admin/arrendamiento/types/edificios.type";
+
+// Obtener los edificios desde el server
+const supabase = supabaseServer(Astro.cookies);
+const { data } = await supabase.from("edificios").select("*");
+
+const edificios = data as Edificio[] ?? [] 
+
+console.log("Datos traidos desde el servidor con supabase server", data);
 ---
 
 <AdminLayout title="Dashboard">
-    <main class="p-6 space-y-4">
-        <h1 class="text-xl">Propiedades - <span class="text-gray-500">Proximamente</span> </h1>
+    <main class="space-y-4">
+        <PropiedadesArrendamiento edificios={edificios} client:load />
     </main>
 </AdminLayout>
