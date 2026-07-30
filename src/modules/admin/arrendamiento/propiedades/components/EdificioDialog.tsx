@@ -23,12 +23,16 @@ import {
 } from "@/modules/admin/arrendamiento/propiedades/schemas/edificio.schema";
 import { FormInput } from "./forms/FormInput";
 import { FormSelect } from "./forms/FormSelect";
+import type { Edificio } from "../../types/edificios.type";
+import { editEdificio, saveEdificio } from "../services/propiedades.service";
+import { toast } from "sonner";
 
 type Props = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     mode: "create" | "edit";
-    edificio?: EdificioForm | null;
+    edificio?: Edificio | null;
+    onSuccess?: (edificio: Edificio) => void;
 };
 
 const typeEdificios = [
@@ -68,6 +72,7 @@ export function EdificioDialog({
     onOpenChange,
     mode,
     edificio,
+    onSuccess
 }: Props) {
     const form = useForm<EdificioForm>({
         resolver: zodResolver(edificioSchema),
@@ -76,20 +81,49 @@ export function EdificioDialog({
 
     useEffect(() => {
         if (mode === "edit" && edificio) {
-            form.reset(edificio);
+            form.reset({
+                tipo: edificio.type,
+                nombre: edificio.nombre,
+                direccion: edificio.direccion,
+                ciudad: edificio.ciudad,
+                estado: edificio.estado,
+                codigo_postal: edificio.codigo_postal,
+                estatus: edificio.estatus,
+            });
         } else {
             form.reset(DEFAULT_VALUES);
         }
     }, [mode, edificio, form]);
 
-    const onSubmit = (values: EdificioForm) => {
-        if (mode === "create") {
-            console.log("Crear", values);
-        } else {
-            console.log("Editar", values);
-        }
+    const onSubmit = async (values: EdificioForm) => {
+        try {
+            let edificioGuardado: Edificio;
 
-        onOpenChange(false);
+            if (mode === "create") {
+                edificioGuardado = await saveEdificio(values);
+            } else {
+                edificioGuardado = await editEdificio(edificio!.id, values);
+            }
+
+            form.reset(DEFAULT_VALUES);
+
+            onSuccess?.(edificioGuardado);
+
+            onOpenChange(false);
+
+            toast.success(
+                "El edificio guardo correctamente.",
+                { position: "top-center" }
+            );
+
+        } catch (error) {
+            console.error(error); // Para ti como desarrollador
+
+            toast.error(
+                "No fue posible crear el edificio. Inténtalo nuevamente.",
+                { position: "top-center" }
+            );
+        }
     };
 
     return (

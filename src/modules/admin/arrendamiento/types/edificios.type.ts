@@ -6,10 +6,10 @@ export interface Edificio {
     ciudad?: string;
     estado?: string;
     codigo_postal?: string;
-    estatus: string;
+    estatus: "activo" | "inactivo";
     created_at: string;
     updated_at?: string;
-    total_unidades: number;
+    total_unidades?: number;
 }
 
 export interface Unidad {
