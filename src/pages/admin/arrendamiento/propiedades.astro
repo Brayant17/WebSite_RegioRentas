@@ -10,7 +10,6 @@ const supabase = supabaseServer(Astro.cookies);
 const { data } = await supabase.from("edificios_con_totales").select("*");
 
 const edificios = data as Edificio[] ?? [];
-console.log(edificios);
 ---
 
 <AdminLayout title="Dashboard">

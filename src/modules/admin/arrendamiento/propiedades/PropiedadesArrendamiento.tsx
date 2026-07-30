@@ -33,6 +33,7 @@ const sidebarFilters = ["Todos", "Residencial", "Comercial"] as const;
 --------------------------------------------------------------------- */
 export default function PropiedadesArrendamiento({ edificios }: { edificios: Edificio[] }) {
     const [selectedBuildingId, setSelectedBuildingId] = useState(edificios[0].id);
+    const [selectedEdificioModal, setSelectedEdifcioModal] = useState<Edificio | null>(null)
     const [sidebarFilter, setSidebarFilter] = useState<(typeof sidebarFilters)[number]>("Todos");
     const [sidebarSearch, setSidebarSearch] = useState("");
     const [unitFilter, setUnitFilter] = useState<(typeof unitFilters)[number]>("Todas");
@@ -45,11 +46,14 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
     // handles Edificio
     const handleCreateEdificio = () => {
         setMode("create")
+        setSelectedEdifcioModal(null)
         setOpenEdificio(true);
     }
 
     const handleEditEdificio = () => {
         setMode("edit")
+        const edificioSelecionado = edificios.find(edificio => edificio.id === selectedBuildingId) ?? null;
+        setSelectedEdifcioModal(edificioSelecionado);
         setOpenEdificio(true);
     }
 
@@ -100,7 +104,12 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
 
     return (
         <div className="flex min-h-screen flex-col bg-muted/30 text-foreground">
-            <EdificioDialog open={openEdificio} onOpenChange={setOpenEdificio} mode={mode} />
+            <EdificioDialog
+                open={openEdificio}
+                onOpenChange={setOpenEdificio}
+                mode={mode}
+                edificio={selectedEdificioModal}
+            />
             <main className="flex w-full flex-1 justify-center">
                 <div className="flex w-full flex-col lg:flex-row">
                     {/* -------------------------------------------------- Sidebar */}
