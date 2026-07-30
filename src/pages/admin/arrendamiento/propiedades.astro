@@ -7,11 +7,10 @@ import type { Edificio } from "@/modules/admin/arrendamiento/types/edificios.typ
 
 // Obtener los edificios desde el server
 const supabase = supabaseServer(Astro.cookies);
-const { data } = await supabase.from("edificios").select("*");
+const { data } = await supabase.from("edificios_con_totales").select("*");
 
-const edificios = data as Edificio[] ?? [] 
-
-console.log("Datos traidos desde el servidor con supabase server", data);
+const edificios = data as Edificio[] ?? [];
+console.log(edificios);
 ---
 
 <AdminLayout title="Dashboard">

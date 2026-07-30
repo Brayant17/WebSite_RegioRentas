@@ -23,6 +23,7 @@ import { BuildingStatusPill } from "./components/BuildingStatusPill";
 import { UnitCard } from "./components/UnitCard";
 import type { Edificio, Unidad } from "../types/edificios.type";
 import { getUnitsByBuilding } from "./services/propiedades.service";
+import { EdificioDialog } from "./components/EdificioDialog";
 
 const unitFilters = ["Todas", "Disponibles", "Ocupadas", "Morosos"] as const;
 const sidebarFilters = ["Todos", "Residencial", "Comercial"] as const;
@@ -37,19 +38,33 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
     const [unitFilter, setUnitFilter] = useState<(typeof unitFilters)[number]>("Todas");
     const [unitSearch, setUnitSearch] = useState("");
     const [units, setUnits] = useState<Unidad[]>([])
+    // Dialogs
+    const [openEdificio, setOpenEdificio] = useState(false);
+    const [mode, setMode] = useState<"create" | "edit">("create")
+
+    // handles Edificio
+    const handleCreateEdificio = () => {
+        setMode("create")
+        setOpenEdificio(true);
+    }
+
+    const handleEditEdificio = () => {
+        setMode("edit")
+        setOpenEdificio(true);
+    }
 
     const selectedBuilding = edificios.find((b) => b.id === selectedBuildingId);
     // const units = unitsByBuilding[selectedBuildingId] || [];
 
-    useEffect(()=>{
-        const fetchUnidades = async () =>{
+    useEffect(() => {
+        const fetchUnidades = async () => {
             console.log("id de edificio: ", selectedBuildingId);
             const unidades = await getUnitsByBuilding(selectedBuildingId);
             console.log(unidades)
             setUnits(unidades);
-        } 
+        }
         fetchUnidades()
-    },[selectedBuildingId])
+    }, [selectedBuildingId])
 
     const filteredBuildings = useMemo(() => {
         return edificios.filter((b) => {
@@ -85,11 +100,12 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
 
     return (
         <div className="flex min-h-screen flex-col bg-muted/30 text-foreground">
+            <EdificioDialog open={openEdificio} onOpenChange={setOpenEdificio} mode={mode} />
             <main className="flex w-full flex-1 justify-center">
                 <div className="flex w-full flex-col lg:flex-row">
                     {/* -------------------------------------------------- Sidebar */}
                     <aside className="z-10 flex w-full shrink-0 flex-col border-r bg-card lg:w-[340px]">
-                        <div className="flex shrink-0 flex-col gap-4 border-b p-5">
+                        <div className="flex shrink-0 flex-col gap-4 border-b py-6.5 px-5">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-xl font-bold">Propiedades</h2>
                                 <Button
@@ -97,6 +113,7 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
                                     size="icon"
                                     className="text-primary hover:bg-primary/10 hover:text-primary"
                                     title="Añadir Edificio"
+                                    onClick={handleCreateEdificio}
                                 >
                                     <Plus className="size-5" />
                                 </Button>
@@ -168,18 +185,17 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
                                                 <BuildingStatusPill status={b.estatus} />
                                             </div>
                                             <span className="truncate text-xs text-muted-foreground">
-                                                {`${b.direccion ?? ''} ${b.cidudad ?? ''} ${b.estado ?? ''}`}
+                                                {`${b.direccion ?? ''} ${b.ciudad ?? ''} ${b.estado ?? ''}`}
                                             </span>
                                             <div className="mt-2 flex items-center gap-3">
                                                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                     <DoorOpen className="size-3.5" />
-                                                    {/* {b.units} Unidades */}
-                                                    100 Unidades
+                                                    {b.total_unidades} Unidades
                                                 </div>
                                                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                     <Percent className="size-3.5" />
                                                     {/* {b.occupancy}% Ocupación */}
-                                                    45 Ocupación
+                                                    -- Ocupación
                                                 </div>
                                             </div>
                                         </div>
@@ -217,33 +233,34 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
                                         </div>
                                         <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
                                             <MapPin className="size-4" />
-                                            {selectedBuilding.cidudad}, CP {selectedBuilding.codigo_postal}
+                                            {`${selectedBuilding.direccion} ${selectedBuilding.ciudad} ${selectedBuilding.estado}`}, CP {selectedBuilding.codigo_postal}
                                         </p>
                                         <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
                                             <div className="flex items-center gap-1.5">
                                                 <span className="size-2 rounded-full bg-emerald-500" />
                                                 <span className="font-medium">
                                                     {/* {occupiedCount} Ocupados */}
-                                                    54 Ocupados
+                                                    -- Ocupados
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-1.5">
                                                 <span className="size-2 rounded-full bg-muted-foreground/30" />
                                                 <span className="font-medium">
                                                     {/* {availableCount} Disponibles */}
-                                                    84 Disponibles
+                                                    -- Disponibles
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-1.5">
                                                 <span className="size-2 rounded-full bg-amber-400" />
-                                                <span className="font-medium">{maintenanceCount} Mantenimiento</span>
+                                                {/* <span className="font-medium">{maintenanceCount} Mantenimiento</span> */}
+                                                <span className="font-medium">-- Mantenimiento</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex gap-3">
-                                    <Button variant="outline" className="gap-2">
+                                    <Button variant="outline" className="gap-2" onClick={handleEditEdificio}>
                                         <Pencil className="size-4" />
                                         Editar
                                     </Button>
@@ -263,6 +280,7 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
                                         const active = unitFilter === f;
                                         return (
                                             <Button
+                                                disabled={true}
                                                 key={f}
                                                 size="sm"
                                                 variant={active ? "default" : "ghost"}

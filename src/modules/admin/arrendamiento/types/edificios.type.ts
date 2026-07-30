@@ -3,12 +3,13 @@ export interface Edificio {
     type: string;
     nombre: string;
     direccion?: string;
-    cidudad?: string;
+    ciudad?: string;
     estado?: string;
     codigo_postal?: string;
     estatus: string;
     created_at: string;
     updated_at?: string;
+    total_unidades: number;
 }
 
 export interface Unidad {
