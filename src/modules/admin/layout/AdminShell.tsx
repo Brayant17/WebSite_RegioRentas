@@ -13,7 +13,7 @@ export function AdminShell({ title, children }: { title:string, children: React.
         <SidebarProvider>
             <AppSidebar user={user} />
             <div className="flex flex-col w-full min-h-screen ">
-                <div className="@container/main flex flex-1 flex-col gap-2">
+                <div className="@container/main flex flex-1 flex-col">
                     <SiteHeader title={title} />
                     {children}
                 </div>
