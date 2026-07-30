@@ -216,43 +216,32 @@ export default function TableArrendamiento() {
                     </Table>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between gap-3">
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="text-sm text-muted-foreground">
                         Mostrando {visibleSolicitudes.length} de {filteredSolicitudes.length} solicitudes
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            disabled={page === 1}
-                            onClick={() => setPage(1)}
-                        >
-                            Primera
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            disabled={page === 1}
-                            onClick={() => setPage((current) => Math.max(1, current - 1))}
-                        >
-                            Anterior
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            disabled={page === totalPages}
-                            onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
-                        >
-                            Siguiente
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            disabled={page === totalPages}
-                            onClick={() => setPage(totalPages)}
-                        >
-                            Última
-                        </Button>
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                        <div className="rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground">
+                            Página {page} de {totalPages}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={page === 1}
+                                onClick={() => setPage((current) => Math.max(1, current - 1))}
+                            >
+                                Anterior
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={page === totalPages}
+                                onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                            >
+                                Siguiente
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
