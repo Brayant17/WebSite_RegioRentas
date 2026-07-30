@@ -53,6 +53,16 @@ const statusOptions = [
     },
 ];
 
+const DEFAULT_VALUES: EdificioForm = {
+    tipo: "",
+    nombre: "",
+    direccion: "",
+    ciudad: "",
+    estado: "",
+    codigo_postal: "",
+    estatus: "activo",
+};
+
 export function EdificioDialog({
     open,
     onOpenChange,
@@ -61,22 +71,14 @@ export function EdificioDialog({
 }: Props) {
     const form = useForm<EdificioForm>({
         resolver: zodResolver(edificioSchema),
-        defaultValues: {
-            tipo: "",
-            nombre: "",
-            direccion: "",
-            ciudad: "",
-            estado: "",
-            codigo_postal: "",
-            estatus: "activo",
-        },
+        defaultValues: DEFAULT_VALUES,
     });
 
     useEffect(() => {
         if (mode === "edit" && edificio) {
             form.reset(edificio);
         } else {
-            form.reset();
+            form.reset(DEFAULT_VALUES);
         }
     }, [mode, edificio, form]);
 

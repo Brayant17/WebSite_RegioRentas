@@ -45,15 +45,15 @@ export default function PropiedadesArrendamiento({ edificios }: { edificios: Edi
 
     // handles Edificio
     const handleCreateEdificio = () => {
-        setMode("create")
         setSelectedEdifcioModal(null)
+        setMode("create")
         setOpenEdificio(true);
     }
 
     const handleEditEdificio = () => {
-        setMode("edit")
         const edificioSelecionado = edificios.find(edificio => edificio.id === selectedBuildingId) ?? null;
         setSelectedEdifcioModal(edificioSelecionado);
+        setMode("edit")
         setOpenEdificio(true);
     }
 
