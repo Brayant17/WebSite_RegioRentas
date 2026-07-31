@@ -1,9 +1,8 @@
 import { AlertTriangle, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { C } from "@/modules/admin/arrendamiento/propiedades/constants/c"
 import { UnitStatusBadge } from "./UnitStatusBadge";
-import type { UnitDTO } from "../dtos/create-unitUI-dto";
 
-export function UnitCard({ unit }: {unit: UnitDTO}) {
+export function UnitCard({ unit }) {
   const isAvailable = unit.status === "Disponible";
 
   return (
@@ -49,26 +48,26 @@ export function UnitCard({ unit }: {unit: UnitDTO}) {
           </span>
           {unit.tenant ? (
             <div className="flex items-center gap-2">
-              {unit.tenant.avatarUrl ? (
+              {unit.avatarUrl ? (
                 <div
                   className="rounded-full bg-cover bg-center shrink-0"
-                  style={{ width: 24, height: 24, backgroundImage: `url("${unit.tenant.avatarUrl}")` }}
+                  style={{ width: 24, height: 24, backgroundImage: `url("${unit.avatarUrl}")` }}
                 />
               ) : (
                 <div
-                  className="rounded-full flex items-center justify-center text-xs font-bold shrink-0 outline-red-600 outline-1"
+                  className="rounded-full flex items-center justify-center text-xs font-bold shrink-0"
                   style={{
                     width: 24,
                     height: 24,
-                    backgroundColor: unit.tenant.initialsBg,
-                    color: unit.tenant.initialsText,
+                    backgroundColor: unit.initialsBg,
+                    color: unit.initialsText,
                   }}
                 >
-                  {unit.tenant.initials}
+                  {unit.initials}
                 </div>
               )}
               <span className="text-sm font-medium" style={{ color: C.text }}>
-                {unit.tenant.name}
+                {unit.tenant}
               </span>
             </div>
           ) : (
@@ -90,14 +89,14 @@ export function UnitCard({ unit }: {unit: UnitDTO}) {
             Características
           </span>
           <span className="text-sm font-medium" style={{ color: C.text }}>
-            {unit.bedrooms} Hab &bull; {unit.area}m&sup2;
+            {unit.beds} Hab &bull; {unit.area}m&sup2;
           </span>
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-xs uppercase font-bold" style={{ color: C.placeholder }}>
             {isAvailable ? "Renta Sugerida" : "Renta Actual"}
           </span>
-          <span className="text-sm font-bold" style={{ color: C.text }}>
+          {/* <span className="text-sm font-bold" style={{ color: C.text }}>
             ${(isAvailable ? unit.suggestedRent : unit.rent).toLocaleString()}.00
             {!isAvailable && (
               <span className="text-xs font-normal" style={{ color: C.textMuted }}>
@@ -105,7 +104,7 @@ export function UnitCard({ unit }: {unit: UnitDTO}) {
                 /mes
               </span>
             )}
-          </span>
+          </span> */}
         </div>
       </div>
 

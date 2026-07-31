@@ -20,12 +20,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 /* ---------------------------------------------------------------------
    Data — sin cambios, se refactorizan en un paso posterior
 --------------------------------------------------------------------- */
-import { buildings, unitsByBuilding, icon } from "@/modules/admin/arrendamiento/propiedades/mocks/propiedades";
+import { icon } from "@/modules/admin/arrendamiento/propiedades/mocks/propiedades";
 import { BuildingStatusPill } from "./components/BuildingStatusPill";
 import { UnitCard } from "./components/UnitCard";
-import type { Edificio, Unidad } from "../types/edificios.type";
+import type { Edificio } from "../types/edificios.type";
 import { getUnitsByBuilding } from "./services/propiedades.service";
 import { EdificioDialog } from "./components/EdificioDialog";
+import type { UnitDTO } from "./dtos/create-unitUI-dto";
 
 const unitFilters = ["Todas", "Disponibles", "Ocupadas", "Morosos"] as const;
 const sidebarFilters = ["Todos", "Residencial", "Comercial"] as const;
@@ -41,7 +42,7 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
     const [sidebarSearch, setSidebarSearch] = useState("");
     const [unitFilter, setUnitFilter] = useState<(typeof unitFilters)[number]>("Todas");
     const [unitSearch, setUnitSearch] = useState("");
-    const [units, setUnits] = useState<Unidad[]>([])
+    const [units, setUnits] = useState<UnitDTO[]>([])
     // Dialogs
     const [openEdificio, setOpenEdificio] = useState(false);
     const [mode, setMode] = useState<"create" | "edit">("create")
@@ -88,7 +89,7 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
             let matchesFilter = true;
             if (unitFilter === "Disponibles") matchesFilter = u.status === "Disponible";
             if (unitFilter === "Ocupadas") matchesFilter = u.status === "Ocupado";
-            if (unitFilter === "Morosos") matchesFilter = u.payment === "pendiente";
+            // if (unitFilter === "Morosos") matchesFilter = u.payment === "pendiente";
 
             const search = unitSearch.toLowerCase();
             // const matchesSearch =

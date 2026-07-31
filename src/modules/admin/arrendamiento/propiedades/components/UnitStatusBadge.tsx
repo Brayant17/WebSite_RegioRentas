@@ -1,6 +1,6 @@
 import { C } from "@/modules/admin/arrendamiento/propiedades/constants/c"
 
-export function UnitStatusBadge({ status }) {
+export function UnitStatusBadge({ status }: {status: "Disponible" | "Ocupado"}) {
     if (status === "Disponible") {
         return (
             <span
