@@ -1,9 +1,9 @@
 import { AlertTriangle, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { C } from "@/modules/admin/arrendamiento/propiedades/constants/c"
 import { UnitStatusBadge } from "./UnitStatusBadge";
-import type { UnitDTO } from "../dtos/create-unitUI-dto";
+import type { UnitDTO } from "../view-models/UnitCardViewModel";
 
-export function UnitCard({ unit }: {unit: UnitDTO}) {
+export function UnitCard({ unit, onEdit }: { unit: UnitDTO, onEdit: () => void }) {
   const isAvailable = unit.status === "Disponible";
 
   return (
@@ -32,7 +32,7 @@ export function UnitCard({ unit }: {unit: UnitDTO}) {
               {unit.name}
             </h3>
             <span className="text-xs" style={{ color: C.textMuted }}>
-              {unit.floor} &bull; {unit.location}
+              Piso {unit.floor} &bull; {unit.location}
             </span>
           </div>
         </div>
@@ -132,6 +132,7 @@ export function UnitCard({ unit }: {unit: UnitDTO}) {
         <span
           className="text-sm font-bold flex items-center gap-1"
           style={{ color: C.primary }}
+          onClick={onEdit}
         >
           {isAvailable ? "Gestionar" : "Detalles"} <ArrowRight size={16} />
         </span>

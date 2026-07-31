@@ -22,11 +22,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 --------------------------------------------------------------------- */
 import { icon } from "@/modules/admin/arrendamiento/propiedades/mocks/propiedades";
 import { BuildingStatusPill } from "./components/BuildingStatusPill";
-import { UnitCard } from "./components/UnitCard";
 import type { Edificio } from "../types/edificios.type";
 import { getUnitsByBuilding } from "./services/propiedades.service";
 import { EdificioDialog } from "./components/EdificioDialog";
-import type { UnitDTO } from "./dtos/create-unitUI-dto";
+import { UnidadDialog } from "./components/UnidadDialog";
+import type { Unit } from "../types/Unit";
+import { UnitCard } from "./components/UnitCard";
+import { toUnitCardViewModel } from "./mappers/unitCardViewModel.mapper";
 
 const unitFilters = ["Todas", "Disponibles", "Ocupadas", "Morosos"] as const;
 const sidebarFilters = ["Todos", "Residencial", "Comercial"] as const;
@@ -42,39 +44,58 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
     const [sidebarSearch, setSidebarSearch] = useState("");
     const [unitFilter, setUnitFilter] = useState<(typeof unitFilters)[number]>("Todas");
     const [unitSearch, setUnitSearch] = useState("");
-    const [units, setUnits] = useState<UnitDTO[]>([])
+    const [units, setUnits] = useState<Unit[]>([])
+
     // Dialogs
+    // Dialog edificio
     const [openEdificio, setOpenEdificio] = useState(false);
-    const [mode, setMode] = useState<"create" | "edit">("create")
+    const [buildingMode, setBuildingMode] = useState<"create" | "edit">("create");
+    // Dialog Unidad
+    const [openUnidad, setOpenUnidad] = useState(false);
+    const [unitMode, setUnitMode] = useState<"create" | "edit">("create");
+    const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
+
+    // handles unidad
+    const handleCreateUnidad = () => {
+        setSelectedUnit(null);
+        setUnitMode("create");
+        setOpenUnidad(true);
+    };
+
+    const handleEditUnidad = (unit: Unit) => {
+        setSelectedUnit(unit);
+        setUnitMode("edit");
+        setOpenUnidad(true);
+    };
+
+    const loadUnits = async () => {
+        if (!selectedBuildingId) return;
+
+        const unidades = await getUnitsByBuilding(selectedBuildingId);
+        setUnits(unidades);
+    };
+
+    useEffect(() => {
+        loadUnits();
+    }, [selectedBuildingId]);
 
     // handles Edificio
     const handleCreateEdificio = () => {
-        setSelectedEdifcioModal(null)
-        setMode("create")
+        setSelectedEdifcioModal(null);
+        setBuildingMode("create");
         setOpenEdificio(true);
-    }
+    };
 
     const handleEditEdificio = () => {
-        const edificioSelecionado = edificios.find(edificio => edificio.id === selectedBuildingId) ?? null;
-        setSelectedEdifcioModal(edificioSelecionado);
-        setMode("edit")
+        const edificio = edificios.find(e => e.id === selectedBuildingId) ?? null;
+
+        setSelectedEdifcioModal(edificio);
+        setBuildingMode("edit");
         setOpenEdificio(true);
-    }
+    };
 
     const selectedBuilding = edificios.find((b) => b.id === selectedBuildingId);
     // const units = unitsByBuilding[selectedBuildingId] || [];
-
-    useEffect(() => {
-        if (selectedBuildingId === null) {
-            setUnits([]);
-            return;
-        }
-        const fetchUnidades = async () => {
-            const unidades = await getUnitsByBuilding(selectedBuildingId);
-            setUnits(unidades);
-        }
-        fetchUnidades()
-    }, [selectedBuildingId])
 
     const filteredBuildings = useMemo(() => {
         return edificios.filter((b) => {
@@ -87,8 +108,8 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
     const filteredUnits = useMemo(() => {
         return units.filter((u) => {
             let matchesFilter = true;
-            if (unitFilter === "Disponibles") matchesFilter = u.status === "Disponible";
-            if (unitFilter === "Ocupadas") matchesFilter = u.status === "Ocupado";
+            if (unitFilter === "Disponibles") matchesFilter = u.estatus === "Disponible";
+            if (unitFilter === "Ocupadas") matchesFilter = u.estatus === "Ocupado";
             // if (unitFilter === "Morosos") matchesFilter = u.payment === "pendiente";
 
             const search = unitSearch.toLowerCase();
@@ -112,10 +133,24 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
         <>
             <Toaster />
             <div className="flex min-h-screen flex-col bg-muted/30 text-foreground">
+                {
+                    selectedBuildingId && (
+                        <UnidadDialog
+                            open={openUnidad}
+                            onOpenChange={setOpenUnidad}
+                            mode={unitMode}
+                            unidad={selectedUnit}
+                            edificioId={selectedBuildingId}
+                            onSuccess={async () => {
+                                await loadUnits();
+                            }}
+                        />
+                    )
+                }
                 <EdificioDialog
                     open={openEdificio}
                     onOpenChange={setOpenEdificio}
-                    mode={mode}
+                    mode={buildingMode}
                     edificio={selectedEdificioModal}
                     onSuccess={(edificio) => {
                         setEdificios(prev => {
@@ -189,7 +224,7 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
                                             key={b.id}
                                             onClick={() => setSelectedBuildingId(b.id)}
                                             className={cn(
-                                                "relative flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all",
+                                                "relative flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all overflow-hidden",
                                                 active
                                                     ? "border-primary/30 bg-primary/5 shadow-sm"
                                                     : "border-transparent bg-card hover:border-border hover:bg-muted/50"
@@ -293,7 +328,7 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
                                             <Pencil className="size-4" />
                                             Editar
                                         </Button>
-                                        <Button className="gap-2 font-bold shadow-md">
+                                        <Button className="gap-2 font-bold shadow-md" onClick={handleCreateUnidad}>
                                             <Plus className="size-4" />
                                             Nueva Unidad
                                         </Button>
@@ -342,7 +377,11 @@ export default function PropiedadesArrendamiento({ initialEdificios }: { initial
                                     {filteredUnits.length > 0 ? (
                                         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                                             {filteredUnits.map((unit) => (
-                                                <UnitCard key={unit.id} unit={unit} />
+                                                <UnitCard
+                                                    key={unit.id}
+                                                    unit={toUnitCardViewModel(unit)}
+                                                    onEdit={()=>handleEditUnidad(unit)}
+                                                />
                                             ))}
                                         </div>
                                     ) : (
