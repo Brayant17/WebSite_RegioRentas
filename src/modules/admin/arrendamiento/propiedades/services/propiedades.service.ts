@@ -3,10 +3,14 @@ import { getUnits, insertEdificio, updateEdificio } from "../repositories/propie
 import type { EdificioForm } from "../schemas/edificio.schema";
 import { toCreateEdificioDto } from "../mappers/edificio.mapper";
 import { toUpdateEdificioDto } from "../mappers/updateEdificio.mapper";
+import type { UnitDTO } from "../dtos/create-unitUI-dto";
+import { toCreateUnitUiDto } from "../mappers/unitUI.mapper";
 
-export async function getUnitsByBuilding(idEdificio: string) {
+export async function getUnitsByBuilding(idEdificio: string): Promise<UnitDTO[]> {
     const unidades = await getUnits(idEdificio);
-    return unidades;
+    console.log(unidades)
+    const dtoUI = unidades.map(unidad => toCreateUnitUiDto(unidad))
+    return dtoUI;
 }
 
 export async function saveEdificio(edificio: EdificioForm): Promise<Edificio> {

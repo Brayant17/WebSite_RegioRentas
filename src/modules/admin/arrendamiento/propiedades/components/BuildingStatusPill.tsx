@@ -1,4 +1,4 @@
-export function BuildingStatusPill({ status }) {
+export function BuildingStatusPill({ status }: { status: "activo" | "inactivo" | "Mantenimiento" }) {
     const isMaint = status === "Mantenimiento";
     return (
         <span

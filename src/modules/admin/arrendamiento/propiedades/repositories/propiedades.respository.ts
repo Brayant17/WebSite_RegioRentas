@@ -2,8 +2,9 @@ import { supabase } from "@/lib/supabaseClient";
 import type { CreateEdificioDto } from "../dtos/create-edifico-dto";
 import type { Edificio } from "../../types/edificios.type";
 import type { UpdateEdificioDTO } from "../dtos/update-edificio-dto";
+import type { Unit } from "@/modules/admin/arrendamiento/types/unit.type";
 
-export async function getUnits(idEdificio: string) {
+export async function getUnits(idEdificio: string): Promise<Unit[]> {
     const { data, error } = await supabase
         .from("unidades")
         .select(`*`)
@@ -13,7 +14,20 @@ export async function getUnits(idEdificio: string) {
         throw error;
     }
 
-    return data
+    return data?.map(unit => {
+        return {
+            id: unit.id,
+            name: unit.nombre,
+            floor: unit.piso,
+            location: unit.ubicacion,
+            bedrooms: unit.recamaras,
+            area: unit.area,
+            status: unit.estatus,
+            tenant: null,
+            suggestedRent: unit.precio_renta,
+            vacantSince: unit.created_at
+        }
+    })
 }
 
 export async function insertEdificio(edifico: CreateEdificioDto): Promise<Edificio> {
