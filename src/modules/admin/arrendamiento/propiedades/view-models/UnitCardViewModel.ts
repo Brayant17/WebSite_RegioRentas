@@ -1,4 +1,4 @@
-import type { PaymentStatus } from "../../types/unit.type";
+export type PaymentStatus = "al_dia" | "pendiente";
 
 export interface TenantDTO {
     id: string;
