@@ -21,6 +21,7 @@ import { HasGuarantor } from "@/modules/arrendamiento/types/rental";
 import {
     DocumentsSchema,
     type DocumentsForm,
+    type DocumentsFormInput,
 } from "@/modules/arrendamiento/schemas/documents.schema";
 
 import { DocumentUploader } from "../../DocumentUploader";
@@ -38,8 +39,11 @@ export default function DocumentsStep() {
 
     const hasGuarantor = application.guarantor.hasGuarantor === HasGuarantor.Si;
 
+
     const visibleDocuments = RENTAL_DOCUMENTS.filter(
-        (document) => !document.isGuarantorDocument || hasGuarantor
+        (document) => {
+            return !("isGuarantorDocument" in document && document.isGuarantorDocument) || hasGuarantor
+        }
     );
 
     const form = useForm<DocumentsForm>({
@@ -48,11 +52,8 @@ export default function DocumentsStep() {
     });
 
     const onSubmit = (values: DocumentsForm) => {
-
         updateDocuments(values);
-
         nextStep();
-
     };
 
     const handleBack = ()=>{

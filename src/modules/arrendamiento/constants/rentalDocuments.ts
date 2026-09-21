@@ -13,8 +13,8 @@ export const RENTAL_DOCUMENTS = [
     },
     {
         name: "proofOfIncome",
-        label: "Comprobantes de ingresos",
-        description: "Recibos de nómina o estados de ingresos",
+        label: "Comprobante de ingresos / Comprobante pago escuela",
+        description: "Recibos de nómina o estados de ingresos / comprobante de pago de colegiatura",
         required: true,
     },
     {

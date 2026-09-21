@@ -96,13 +96,14 @@ export interface References {
 }
 
 export interface Documents {
-    officialId: File | null;
-    proofOfAddress: File | null;
-    proofOfIncome: File | null;
-    taxCertificate: File | null;
-    bankStatements: File | null;
-    guarantorOfficialId: File | null;
-    guarantorProofOfAddress: File | null;
+    officialId: File;
+    proofOfAddress: File;
+    proofOfIncome: File;
+
+    taxCertificate?: File;
+    bankStatements?: File;
+    guarantorOfficialId?: File;
+    guarantorProofOfAddress?: File;
 }
 
 export interface RentalApplication {
