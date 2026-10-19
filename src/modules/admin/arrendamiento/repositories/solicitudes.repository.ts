@@ -3,7 +3,6 @@ import type {
   ApplicationDetail,
   Solicitud,
 } from "@/modules/admin/arrendamiento/types/database.type";
-import { id } from "date-fns/locale";
 
 export async function getApplications() {
   const { data, error } = (await supabase
@@ -86,23 +85,4 @@ export async function updateStatus(solicitudId: string, estatus: string) {
   }
 
   return data;
-}
-
-export async function createContract() {
-  const { data, error } = await supabase.rpc("crear_contrato_desde_solicitud", {
-    p_solicitud_id: "fdd20ebc-31ab-4207-859e-833c52d1670c",
-
-    p_fecha_inicio: "2026-10-01",
-    p_fecha_fin: "2027-09-30",
-
-    p_renta: 12000,
-    p_deposito: 12000,
-    p_dia_pago: 1,
-  });
-
-  if (error) {
-    console.error("Error al crear contrato:", error);
-  } else {
-    console.log("Contrato creado:", data);
-  }
 }

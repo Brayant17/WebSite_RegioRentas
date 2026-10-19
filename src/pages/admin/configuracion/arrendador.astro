@@ -1,0 +1,9 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import LandlordSettingsPage from "@/modules/admin/configuracion/arrendador/LandlordSettingsPage";
+---
+<AdminLayout title="Datos del arrendador">
+  <main class="p-6">
+    <LandlordSettingsPage client:load />
+  </main>
+</AdminLayout>

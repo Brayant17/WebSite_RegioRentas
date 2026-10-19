@@ -1,0 +1,21 @@
+{
+  "estado": "PROPUESTA PARCIAL: no es una plantilla V2 completa ni una versión instalada",
+  "fuente": "Fragmentos de V1 transcritos por el usuario en esta conversación. Falta HTML completo e identificación de versión para certificar una copia exacta.",
+  "fragmentos": [
+    {
+      "clausula": "SEGUNDA",
+      "antes": "El uso de la lavandería sería un costo adicional de $200 pesos mensuales por persona, en caso de requerir dicho servicio.",
+      "despues": "El uso de la lavandería sería un costo adicional de {{contrato.costo_lavanderia}} mensuales por persona, en caso de requerir dicho servicio."
+    },
+    {
+      "clausula": "CUARTA",
+      "antes": "que la duración del presente Contrato es por 1 (UN) AÑO forzoso para las partes, contado a partir del {{contrato.fecha_inicio_letra}}, para concluir el día {{contrato.fecha_fin_letra}}.",
+      "despues": "que la duración del presente Contrato será contada a partir del {{contrato.fecha_inicio_letra}}, para concluir el día {{contrato.fecha_fin_letra}}."
+    },
+    {
+      "clausula": "DÉCIMA",
+      "antes": "ARRENDADOR:\n{{arrendador.domicilio}}\n{{arrendador.ciudad}}, {{arrendador.estado}},\n{{arrendador.codigo_postal}}\n\nARRENDATARIO:\n{{arrendatario.domicilio}}\n\nFIADOR:\n{{fiador.domicilio}}",
+      "despues": "ARRENDADOR:\n{{contrato.domicilio_arrendador}}\n\nARRENDATARIO:\n{{contrato.domicilio_arrendatario}}\n\nFIADOR:\n{{contrato.domicilio_fiador}}"
+    }
+  ]
+}

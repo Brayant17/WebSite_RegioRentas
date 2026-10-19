@@ -1,0 +1,13 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import CreateContractPage from "@/modules/admin/arrendamiento/contratos/CreateContractPage";
+const solicitudId = Astro.url.searchParams.get("solicitud");
+if (!solicitudId) return Astro.redirect("/admin/arrendamiento/solicitudes");
+---
+<AdminLayout title="Generar contrato">
+  <main class="space-y-6 p-6">
+    <a class="text-sm underline" href="/admin/arrendamiento/solicitudes">Volver a solicitudes</a>
+    <h1 class="text-xl font-semibold">Generar contrato</h1>
+    <CreateContractPage solicitudId={solicitudId} client:load />
+  </main>
+</AdminLayout>

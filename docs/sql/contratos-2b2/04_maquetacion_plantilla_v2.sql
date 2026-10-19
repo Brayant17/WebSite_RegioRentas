@@ -1,0 +1,93 @@
+-- MANUAL: no ejecutado en Supabase. Requiere bloques arrendador-v2-moral-maquetacion-1.
+BEGIN;
+SET LOCAL lock_timeout = '10s';
+DO $migration$
+DECLARE
+  v_original public.versiones_plantilla%ROWTYPE;
+  v_html constant text := $v2html$<h1 style="text-align:center;">CONTRATO DE ARRENDAMIENTO</h1>
+<p>{{arrendador.bloques.comparecencia}}, y por la otra parte <strong>{{arrendatario.nombre_completo}}</strong> a quien se le denominará como EL ARRENDATARIO y <strong>{{fiador.nombre_completo}}</strong> como FIADOR quienes manifestaron su voluntad de celebrar el presente contrato por así convenir a sus intereses, basándose en los antecedentes que son del orden siguiente:</p>
+<h2 style="text-align:center;">ANTECEDENTES</h2> {{arrendador.bloques.antecedentes_identidad}}<p>c) Ser propietario en legítima propiedad, posesión y pleno dominio del Inmueble ubicado en <strong>{{inmueble.direccion_completa}}</strong> (en adelante EL INMUEBLE); y que es su deseo dar en arrendamiento <strong>{{unidad.nombre}}</strong> al ARRENDATARIO en los términos que se establezcan en este Contrato.</p>
+<p>d) Que EL INMUEBLE cuenta con las condiciones de higiene y salubridad exigidas por la Ley para ser usado como departamento.</p>
+<p>Que incluye el siguiente inventario de bienes, muebles y accesorios:</p> <p>____________________________________________________________________________<br><br>____________________________________________________________________________<br><br>____________________________________________________________________________<br><br>____________________________________________________________________________<br><br>____________________________________________________________________________</p> <p>
+<strong>II.- EL ARRENDATARIO, {{arrendatario.nombre_completo}}</strong>, bajo protesta de decir verdad manifiesta:</p>
+<p>a) Ser mexicano, mayor de edad, tener capacidad para celebrar este contrato y tener un modo honesto de vivir.</p>
+<p>b) Que ha constatado personalmente las condiciones físicas de EL INMUEBLE y sus instalaciones, y está de acuerdo en la seguridad e higiene de las instalaciones.</p>
+<p>c) Que EL INMUEBLE que por este contrato está arrendando se dedicará exclusivamente para uso habitacional, y que bajo ninguna circunstancia el mismo será utilizado o relacionado para cometer los ilícitos a que se refiere la LEY DE EXTINCIÓN DE DOMINIO para el ESTADO DE NUEVO LEÓN o cualesquier otro delito comprendido en el Código Penal del Estado o cualquier otra legislación que tipifique otros delitos y que el dinero que utilizará para el pago de las pensiones rentarías es de procedencia lícita y comprobable.</p>
+<p><strong>III.- Finalmente ambas partes manifiestan:</strong></p>
+<p>a) Su expresa conformidad con los mencionados ANTECEDENTES y por consecuencia deciden celebrar el presente CONTRATO DE ARRENDAMIENTO DE BIEN INMUEBLE sujetándolo a los términos y condiciones que se establecen por medio del mismo.</p>
+<p>b) Que se reconocen e identifican mutuamente, manifestando tener capacidad suficiente para la celebración del presente Contrato, estando facultados para obligarse en los términos y condiciones que en el presente contrato se precisan.</p>
+<p>c) Que conocen el contenido y alcance legal de la LEY FEDERAL DE EXTINCIÓN DE DOMINIO, REGLAMENTARIA DEL ARTÍCULO 22 VEINTIDÓS DE LA CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS MEXICANOS y de la LEY DE EXTINCIÓN DE DOMINIO PARA EL ESTADO DE NUEVO LEÓN por lo cual manifiestan bajo protesta de decir verdad que los recursos económicos utilizados para la celebración del presente acto son de procedencia lícita y comprobable, que el destino de los mismos serán para la realización de actividades lícitas y que realizan el presente acto de buena fe.</p>
+<p>d) Manifiestan los comparecientes que de conformidad con la Ley para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita, lo siguiente: a).- Que el acto consignado en este contrato constituye una actividad vulnerable de acuerdo con lo que establece la Ley de la materia. b).- Que en el presente contrato actúan en su nombre y por cuenta propia, manifestando bajo protesta de decir verdad que no existe un tercero beneficiario controlador que se beneficie del presente acto. c).- Por último que en esta operación se han sujetado a las restricciones sobre el cumplimiento a obligaciones y, en general, liquidar o pagar, así como aceptar la liquidación o el pago, mediante el uso de monedas y billetes, en moneda nacional o divisas y Metales Preciosos.</p>
+<p>e) Que desean celebrar el presente Contrato de Arrendamiento de acuerdo al contenido de las siguientes:</p>
+<h2 style="text-align:center;">CLÁUSULAS</h2>
+<p>
+<strong>PRIMERA: OBJETO.-</strong> EL ARRENDADOR otorga en arrendamiento al ARRENDATARIO, EL INMUEBLE descrito en el Antecedente I (PRIMERO) de este Contrato.</p>
+<p>
+<strong>SEGUNDA: POSESIÓN.-</strong> EL ARRENDADOR manifiesta que en ESTA FECHA se entregará en arrendamiento EL INMUEBLE objeto del presente contrato, en las condiciones ya descritas en el capítulo de ANTECEDENTES arriba trascrito y previa inspección que EL ARRENDATARIO realice a fin de verificar lo anterior, haciéndole mención de que tendrá que cubrir puntualmente el pago de luz. Ya está incluido en el arrendamiento el servicio de internet y agua para uso personal. El uso de la lavandería sería un costo adicional de {{contrato.costo_lavanderia}} mensuales por persona, en caso de requerir dicho servicio.</p>
+<p>
+<strong>TERCERA: MONTO DE RENTA MENSUAL Y TÉRMINOS DE PAGO.-</strong> EL ARRENDATARIO en este acto se obliga a pagar por concepto de renta la cantidad de <strong>{{contrato.renta}} ({{contrato.renta_letra}})</strong> netos mensuales.</p>
+<p>La renta será pagada los días <strong>{{contrato.dia_pago}}</strong> de cada mes correspondiente al pago, a partir del <strong>{{contrato.fecha_inicio_letra}}</strong>, teniendo como margen para pagar los siguientes 5 días. De no ser así, al sexto día se cobrará la cantidad de $100.00 (cien pesos 00/100 m.n.) por día retrasado en el pago.</p>
+<p>
+<strong>CUARTA: VIGENCIA.-</strong> EL ARRENDADOR y EL ARRENDATARIO acuerdan y así lo establecen en la presente cláusula, que la duración del presente Contrato será contada a partir del <strong>{{contrato.fecha_inicio_letra}}</strong>, para concluir el día <strong>{{contrato.fecha_fin_letra}}</strong>. En caso de que las partes decidan renovar el contrato el aumento de la renta será tendrá un aumento anual con base al índice de inflación del Banco de México.</p>
+<p>
+<strong>QUINTA: DEL DEPÓSITO.-</strong> Para garantizar todas y cada una de las obligaciones que se derivan del presente contrato, EL ARRENDATARIO hará entrega EL ARRENDADOR, de la cantidad de <strong>{{contrato.deposito}} ({{contrato.deposito_letra}})</strong>.</p>
+<p>Éste depósito será devuelto por “EL ARRENDADOR” a “EL ARRENDATARIO” a más tardar a los treinta (30) días naturales posteriores al término de este Contrato o posteriores a sus renovaciones o en su caso posteriores a la entrega física del inmueble arrendado, EN LA MISMA CANTIDAD Y MONEDA, siempre y cuando EL INMUEBLE arrendado se entregue en el mismo buen estado en el que se recibió, salvo por el deterioro normal por su uso, y que no existan adeudos pendientes de pago por pensiones rentísticas de luz, y/o cualquier otro cargo no cubierto de esta naturaleza.</p>
+<p>
+<strong>SEXTA: DEL FIADOR.-</strong> Para garantizar el cumplimiento de todas y cada una de las obligaciones que se derivan del presente Contrato, incluyendo las penas convencionales <strong>{{fiador.nombre_completo}}</strong> se constituye como FIADOR del ARRENDATARIO. Tal responsabilidad será efectiva no solamente durante la vigencia de este contrato, sino por todo el tiempo en que EL ARRENDATARIO ocupe el inmueble o adeude a EL ARRENDADOR cantidad alguna por cualquier concepto derivado del contrato o de la ley.</p>
+<p>En el entendido que el FIADOR garantiza sobre el monto total de la RENTA, así como de los pagos relativos a los servicios con los pudiere contratar a su cuenta y cargo (teléfono, televisión de paga y conexión a Internet, entre otros) EL ARRENDATARIO en materia del presente Contrato.</p>
+<p>
+<strong>SÉPTIMA: DE LA TERMINACIÓN ANTICIPADA.-</strong> El presente contrato de arrendamiento se podrá dar por terminado anticipadamente en cualquier tiempo, si el ARRENDATARIO desea desocupar EL INMUEBLE arrendado antes del vencimiento del contrato, podrá hacerlo, con el previo aviso por escrito de por lo menos 60 (SESENTA) días de anticipación a EL ARRENDADOR, en cuyo caso EL ARRENDATARIO se obliga a pagarle a EL ARRENDADOR como pena convencional la suma de 1 (UN) mes de renta si lo llegase a desocupar antes del término de fecha de arrendamiento. No contando como pago de un mes la cantidad otorgada previamente como depósito en garantía, ni contando tampoco el depósito pagado como pago del último mes de renta.</p>
+<p>Al efecto, EL ARRENDATARIO renuncia expresamente a los privilegios y prórrogas que establecen los artículos 2379, 2380 y 2381 del Código Civil del Estado.</p>
+<p>
+<strong>OCTAVA: DE LAS OBLIGACIONES DEL ARRENDATARIO.-</strong> EL ARRENDATARIO se compromete durante la vigencia del presente Contrato a:</p>
+<p>a) Pagar la RENTA en la forma y plazo convenidos los primeros cinco (05) días naturales -inclusive- de cada período mensual.</p>
+<p>b) Responder por cualquier daño que sufra EL INMUEBLE por su culpa o negligencia, ya sea por actos u omisiones de él, o de las personas a las que haya permitido el acceso al mismo.</p>
+<p>c) No subarrendar, ni traspasar, ni conceder derecho alguno sobre EL INMUEBLE sin el previo consentimiento por escrito de EL ARRENDADOR.</p>
+<p>d) A no manejar sustancias tóxicas u explosivas (excluyendo el uso doméstico del gas), dentro del Inmueble, en la inteligencia de que será responsable de cualquier daño y perjuicio que provoque por negligencia en EL INMUEBLE, como fuga de agua, incendio, explosión, etc.</p>
+<p>e) A no efectuar modificaciones en “EL INMUEBLE” sin el consentimiento por escrito de EL ARRENDADOR.</p>
+<p>f) A sacar en paz y a salvo al ARRENDADOR de todo litigio, proceso o reclamación derivada del presente contrato que le sean imputables a él, sus cohabitantes y/o visitantes.</p>
+<p>g) Servirse de la cosa para el uso convenido en este contrato.</p>
+<p>h) Dar un uso legal y pacífico a EL INMUEBLE y procurar la sana convivencia y el decoro dentro de EL INMUEBLE, evitando así el ruido excesivo. El incumplimiento de esta disposición será acreedor a rescisión de contrato.</p>
+<p>i) Avisar por escrito al ARRENDADOR en breve tiempo, máximo 1 un día hábil desde que haya tenido conocimiento, de toda usurpación o novedad dañosa que otro haya hecho o abiertamente se prepare contra la cosa arrendada.</p>
+<p>j) A devolver el inmueble en las condiciones y fecha establecidas en el presente contrato.</p>
+<p>k) A dar mantenimiento a los climas cada 6 meses.</p>
+<p>
+<strong>NOVENA: DE LAS OBLIGACIONES DEL ARRENDADOR.-</strong> EL ARRENDADOR se compromete durante la vigencia del presente Contrato a:</p>
+<p>a) Responder por todas las reparaciones a la estructura del INMUEBLE, ya sean por fallas en el diseño, vicios ocultos, terremotos, etc., comprometiéndose a efectuarlas a la mayor brevedad posible. (30 DIAS) En caso de que el ARRENDATARIO tuviese que hacer dichas reparaciones por premura de tiempo, previa aprobación del presupuesto correspondiente por parte del ARRENDADOR, podrá llevar a cabo el trabajo. Los gastos de las reparaciones, en caso de fuerza mayor, se compromete el ARRENDADOR a reembolsar a la brevedad posible con un máximo de diez (10) días naturales, a partir de recibir el presupuesto respectivo.</p>
+<p>b) Pagar el impuesto predial del inmueble respecto al INMUEBLE arrendado.</p>
+<p>c) A garantizar el uso pacífico de la cosa por todo el tiempo del contrato sin intervenir en el uso del inmueble sin consentimiento previo de las partes.</p>
+<p>d) EL ARRENDADOR no se hace responsable por siniestros, accidentes, robos, incidentes, incendios, derrumbes, naufragios, etc. dentro o fuera del inmueble.</p>
+<p>e) EL ARRENDADOR se compromete a entregar EL INMUEBLE al ARRENDATARIO, a más tardar el día de firma de este contrato.</p>
+<p>
+<strong>DÉCIMA: DEL DOMICILIO.-</strong> Para todo aviso relacionado con el presente Contrato, las partes firmantes señalan como sus domicilios para todo lo relacionado en el presente Contrato los siguientes:</p>
+<p>
+<strong>EL ARRENDADOR:</strong> {{contrato.domicilio_arrendador}}</p>
+<p>
+<strong>EL ARRENDATARIO:</strong> {{contrato.domicilio_arrendatario}}</p>
+<p>
+<strong>EL FIADOR:</strong> {{contrato.domicilio_fiador}}</p>
+<p>
+<strong>DÉCIMA PRIMERA: JURISDICCIÓN.-</strong> Para todo lo relacionado con la correcta interpretación, cumplimiento y ejecución del presente Contrato, las partes convienen expresamente en sujetarse a las leyes aplicables y a los tribunales con jurisdicción en el lugar de la ubicación del inmueble materia del presente arrendamiento, renunciando a cualquier fuero que por razón de sus domicilios presentes o futuros pudieran corresponderles.</p>
+<p style="text-align:center;">
+<strong> ESTANDO CONFORMES CON SU CONTENIDO, LAS PARTES OTORGAN Y FIRMAN ESTE CONTRATO EN {{contrato.lugar_firma}}, EL DÍA {{contrato.fecha_firma_letra}} </strong>
+</p>
+<table style="width:100%; text-align:center; margin-top:60px;">
+<tbody>
+<tr> <td style="width:50%; vertical-align:top;">                <strong>EL ARRENDADOR</strong><br><br><br><br>                ______________________________<br><br>                {{arrendador.bloques.firma}}<br>            </td> <td style="width:50%; vertical-align:top;">                <strong>EL ARRENDATARIO</strong><br><br><br><br>                ______________________________<br><br>                {{arrendatario.nombre_completo}}<br>            </td> </tr>
+<tr> <td colspan="2" style="padding-top:60px;">                <strong>EL FIADOR</strong><br><br><br><br>                ______________________________<br><br>                {{fiador.nombre_completo}}<br>            </td> </tr>
+</tbody>
+</table>
+$v2html$;
+BEGIN
+  SELECT * INTO v_original FROM public.versiones_plantilla
+  WHERE id = '599b36af-5464-43bc-acf8-a6a72afaf2ef'::uuid FOR UPDATE;
+  IF NOT FOUND THEN RAISE EXCEPTION 'No existe la V2 esperada'; END IF;
+  IF v_original.numero_version IS DISTINCT FROM 2
+     OR v_original.estado IS DISTINCT FROM 'BORRADOR'
+     OR md5(v_original.contenido) IS DISTINCT FROM '97b9c89e8721800998824378afece717' THEN
+    RAISE EXCEPTION 'V2 no coincide con el número, estado o hash esperado; no se modifica';
+  END IF;
+  UPDATE public.versiones_plantilla SET contenido = v_html WHERE id = v_original.id;
+END
+$migration$;
+COMMIT;

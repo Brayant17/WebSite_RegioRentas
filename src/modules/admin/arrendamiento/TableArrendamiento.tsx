@@ -15,6 +15,7 @@ import {
 import RequestDetailsModal from "./components/RequestDetailsModal";
 import { ChangeStatus, getListApplication } from "./services/solicitudes.service";
 import type { SolicitudArrendamiento } from "./types/Solicitud.type";
+import ApplicationContractAction from "./contratos/components/ApplicationContractAction";
 
 
 const formatDate = (value: string) => {
@@ -201,6 +202,9 @@ export default function TableArrendamiento() {
                                         >
                                             Ver
                                         </Button>
+                                        <div className="mt-2">
+                                            <ApplicationContractAction solicitudId={solicitud.id} status={solicitud.status} />
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}

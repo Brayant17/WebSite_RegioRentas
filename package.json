@@ -6,6 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test:contratos": "node --test tests/contratos*.test.mjs",
+    "test:arrendador": "node --test tests/arrendador.test.mjs",
+    "test:plantillas": "node --test tests/plantillas.test.mjs",
+    "test:documentos": "node --test tests/documentos.test.mjs",
+    "test:pdf": "node --test tests/pdf.test.mjs",
+    "test:pdf:chromium": "node --test tests/pdf.chromium.test.mjs",
+    "test:partes": "node --test tests/partes*.test.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -29,6 +36,7 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@sparticuz/chromium": "153.0.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.55.0",
     "@tabler/icons-react": "^3.35.0",
@@ -40,9 +48,12 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
+    "dompurify": "^3.4.15",
+    "jsdom": "30.1.1",
     "lucide-react": "^0.553.0",
     "motion": "^12.23.15",
     "next-themes": "^0.4.6",
+    "playwright-core": "1.63.0",
     "radix-ui": "^1.4.3",
     "react": "^19.1.1",
     "react-day-picker": "^10.0.1",
@@ -61,6 +72,8 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@types/jsdom": "^30.0.0",
     "tw-animate-css": "^1.4.0"
   }
 }

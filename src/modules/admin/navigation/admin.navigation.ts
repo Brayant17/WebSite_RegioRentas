@@ -52,8 +52,8 @@ export const adminNavigation = {
     ],
     navSecondary: [
         {
-            title: "Settings",
-            url: "#",
+            title: "Datos del arrendador",
+            url: "/admin/configuracion/arrendador",
             icon: IconSettings,
         },
         {
