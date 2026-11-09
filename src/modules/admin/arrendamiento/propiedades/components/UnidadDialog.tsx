@@ -106,6 +106,7 @@ export function UnidadDialog({
     useEffect(() => {
 
         if (mode === "edit" && unidad) {
+            console.log(unidad)
             form.reset({
                 nombre: unidad.nombre,
                 numero: unidad.numero,

@@ -1,0 +1,28 @@
+---
+import SigningPage from "@/modules/admin/arrendamiento/contratos/firmas/publica/SigningPage";
+import "../styles/global.css";
+
+export const prerender = false;
+// Página mínima y sin scripts de terceros: el token de la invitación vive en el fragmento de esta URL.
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("Referrer-Policy", "no-referrer");
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+Astro.response.headers.set("X-Frame-Options", "DENY");
+Astro.response.headers.set("Content-Security-Policy", "frame-ancestors 'none'; base-uri 'none'");
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Firma de contrato | Regio Rentas</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+  </head>
+  <body class="min-h-screen bg-gray-50 text-gray-900">
+    <SigningPage client:only="react" />
+    <noscript><p style="padding:1rem">Para firmar necesitas activar JavaScript en tu navegador.</p></noscript>
+  </body>
+</html>

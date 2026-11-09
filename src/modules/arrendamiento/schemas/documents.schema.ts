@@ -1,12 +1,10 @@
 import { z } from "zod";
 
-const fileSchema = z
-    .instanceof(File)
-    .nullable();
-
 const requiredFileSchema = z.instanceof(File, {
-    message: "Este documento es obligatorio.",
+  message: "Este documento es obligatorio.",
 });
+
+const optionalFileSchema = z.instanceof(File).optional();
 
 export const DocumentsSchema = z.object({
 
@@ -16,15 +14,14 @@ export const DocumentsSchema = z.object({
 
     proofOfIncome: requiredFileSchema,
 
-    taxCertificate: fileSchema,
+    taxCertificate: optionalFileSchema,
 
-    bankStatements: fileSchema,
+    bankStatements: optionalFileSchema,
 
-    guarantorOfficialId: fileSchema,
+    guarantorOfficialId: optionalFileSchema,
 
-    guarantorProofOfAddress: fileSchema,
+    guarantorProofOfAddress: optionalFileSchema,
 
 });
 
-export type DocumentsForm =
-    z.infer<typeof DocumentsSchema>;
+export type DocumentsForm = z.infer<typeof DocumentsSchema>;
