@@ -25,3 +25,10 @@ pnpm-debug.log*
 
 .vercel/output/
 .vercel/
+
+# Local PDF fixtures and visual QA renders
+/output/pdf/
+/tmp/pdfs/
+
+# Local development overrides
+.env.development.local

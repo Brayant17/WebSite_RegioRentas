@@ -1,0 +1,11 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import HistoricalDocumentPage from "@/modules/admin/arrendamiento/contratos/documentos/HistoricalDocumentPage";
+const { id, documentoId } = Astro.params;
+if (!id || !documentoId) return Astro.redirect("/admin/arrendamiento/contratos");
+---
+<AdminLayout title="Documento histórico">
+  <main class="p-6">
+    <HistoricalDocumentPage contractId={id} documentId={documentoId} client:load />
+  </main>
+</AdminLayout>

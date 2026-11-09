@@ -1,0 +1,11 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import ContractTemplatePreviewPage from "@/modules/admin/arrendamiento/contratos/plantillas/ContractTemplatePreviewPage";
+const { id } = Astro.params;
+if (!id) return Astro.redirect("/admin/arrendamiento/contratos");
+---
+<AdminLayout title="Vista previa del contrato">
+  <main class="p-6">
+    <ContractTemplatePreviewPage contractId={id} client:load />
+  </main>
+</AdminLayout>

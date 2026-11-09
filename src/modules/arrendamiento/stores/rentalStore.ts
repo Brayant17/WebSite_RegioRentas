@@ -104,19 +104,19 @@ const initialApplication = (
 
     documents: {
 
-        officialId: null,
+        officialId: undefined,
 
-        proofOfAddress: null,
+        proofOfAddress: undefined,
 
-        proofOfIncome: null,
+        proofOfIncome: undefined,
 
-        taxCertificate: null,
+        taxCertificate: undefined,
 
-        bankStatements: null,
+        bankStatements: undefined,
 
-        guarantorOfficialId: null,
+        guarantorOfficialId: undefined,
 
-        guarantorProofOfAddress: null,
+        guarantorProofOfAddress: undefined,
 
     }
 

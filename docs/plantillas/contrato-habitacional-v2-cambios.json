@@ -1,0 +1,40 @@
+{
+  "estado": "PROPUESTA LOCAL, NO INSERTADA EN SUPABASE",
+  "version_origen": {
+    "id": "8f30e17c-6c5e-4a42-9b66-d0d8348d9520",
+    "numero_version": 1,
+    "estado": "BORRADOR",
+    "plantilla": "Contrato de arrendamiento habitacional"
+  },
+  "fuente": "C:/Users/braya/.codex/attachments/9a4efa04-ca41-4c5c-9cb2-60f4403cfa4b/Texto pegado.txt",
+  "extraccion": "Solo se retiraron los delimitadores de la celda Markdown (| y espacio); HTML sin reformatear, con todos los <br> conservados salvo dentro de las sustituciones indicadas.",
+  "v1_sha256": "e0dfd4857058c7f8e0733da53728597ae0184a2676dd2476f0916584e058a011",
+  "v2_sha256": "5cab4a6b73998de8706a77c0984bd690027b2fc3d4a05be6f208f2da036cbb03",
+  "sustituciones": [
+    {
+      "clausula": "SEGUNDA",
+      "antes": "$200 pesos",
+      "despues": "{{contrato.costo_lavanderia}}"
+    },
+    {
+      "clausula": "CUARTA",
+      "antes": "es por<br>1 (UN) AÑO forzoso para las partes, contado",
+      "despues": "será contada"
+    },
+    {
+      "clausula": "DÉCIMA / ARRENDADOR",
+      "antes": "{{arrendador.domicilio}}<br><br>{{arrendador.ciudad}}, {{arrendador.estado}},<br>{{arrendador.codigo_postal}}",
+      "despues": "{{contrato.domicilio_arrendador}}"
+    },
+    {
+      "clausula": "DÉCIMA / ARRENDATARIO",
+      "antes": "{{arrendatario.domicilio}}",
+      "despues": "{{contrato.domicilio_arrendatario}}"
+    },
+    {
+      "clausula": "DÉCIMA / FIADOR",
+      "antes": "{{fiador.domicilio}}",
+      "despues": "{{contrato.domicilio_fiador}}"
+    }
+  ]
+}

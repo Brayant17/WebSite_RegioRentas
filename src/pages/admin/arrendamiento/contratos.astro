@@ -1,10 +1,10 @@
 ---
-// Dashboard.astro
 import AdminLayout from "@/layouts/AdminLayout.astro";
+import ContractsPage from "@/modules/admin/arrendamiento/contratos/ContractsPage";
 ---
 
-<AdminLayout title="Dashboard">
+<AdminLayout title="Contratos">
     <main class="p-6 space-y-4">
-        <h1 class="text-xl">Contratos - <span class="text-gray-500">Proximamente</span> </h1>
+        <ContractsPage client:load />
     </main>
 </AdminLayout>
