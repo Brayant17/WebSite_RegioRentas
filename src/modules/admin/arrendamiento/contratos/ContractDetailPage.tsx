@@ -8,13 +8,14 @@ import { useContract, useContractMutation } from "./hooks/useContracts";
 import ContractDocuments from "./documentos/components/ContractDocuments";
 import { contractPartiesEnabled } from "./partes/model";
 import { DraftLandlordEditor } from "./partes/DraftLandlordEditor";
+import { SignatureProcessPanel } from "./firmas/components/SignatureProcessPanel";
 
 export default function ContractDetailPage({ contractId }: { contractId: string }) {
   const { data: contract, loading, error, reload } = useContract(contractId);
   const mutation = useContractMutation();
   const [editing, setEditing] = useState(false);
   const [success, setSuccess] = useState(false);
-  return <div className="max-w-4xl space-y-6">
+  return <div className="space-y-6">
     <Button variant="outline" asChild><a href={contractsPath}>Volver a contratos</a></Button>
     {success && <p role="status" className="text-sm">Los cambios del contrato se guardaron correctamente.</p>}
     {loading ? <p role="status">Cargando contrato…</p> : error ? <ContractQueryError message={error} onRetry={reload} /> : !contract ?
@@ -55,7 +56,8 @@ export default function ContractDetailPage({ contractId }: { contractId: string 
             }} />
           {mutation.error && <Button variant="outline" disabled={mutation.saving} onClick={() => { setEditing(false); reload(); }}>Actualizar detalle</Button>}
         </section> : <Button onClick={() => { setEditing(true); setSuccess(false); }}>Editar borrador</Button>)}
-        <ContractDocuments contractId={contract.id} />
+        <SignatureProcessPanel contractId={contract.id} onChanged={reload} />
+        <ContractDocuments contractId={contract.id} contractStatus={contract.estado} onSignatureStarted={reload} />
         {contractPartiesEnabled && contract.estado === "BORRADOR" && <DraftLandlordEditor contractId={contract.id} parts={contract.partes} onSaved={() => { setSuccess(true); reload(); }} />}
         <section className="space-y-4">
           <h2 className="text-lg font-semibold">Partes del contrato</h2>

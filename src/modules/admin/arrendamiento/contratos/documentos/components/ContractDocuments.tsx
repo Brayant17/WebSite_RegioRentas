@@ -4,9 +4,12 @@ import { ContractQueryError } from "../../components/ContractShared";
 import { useContractDocuments } from "../hooks/useContractDocuments";
 import { documentGeneratedAt, documentPath } from "./DocumentShared";
 import { PdfActions } from "./PdfActions";
+import { canStartSignature } from "../../firmas/model";
+import { StartSignatureAction } from "../../firmas/components/StartSignatureAction";
 
-export default function ContractDocuments({ contractId }: { contractId: string }) {
+export default function ContractDocuments({ contractId, contractStatus, onSignatureStarted }: { contractId: string; contractStatus?: string; onSignatureStarted?: () => void }) {
   const { data, loading, error, reload } = useContractDocuments(contractId);
+  const signatureStarted = () => { reload(); onSignatureStarted?.(); };
   return <section className="space-y-4" aria-labelledby="contract-documents-title">
     <div className="flex flex-wrap items-center justify-between gap-2">
       <h2 id="contract-documents-title" className="text-lg font-semibold">Documentos del contrato</h2>
@@ -20,7 +23,8 @@ export default function ContractDocuments({ contractId }: { contractId: string }
         </TableRow></TableHeader><TableBody>{data.map(document => <TableRow key={document.id}>
           <TableCell>v{document.numero_version}</TableCell><TableCell>{document.tipo}</TableCell><TableCell>{document.estado}</TableCell>
           <TableCell>{documentGeneratedAt(document.generated_at)}</TableCell><TableCell>{document.nombre_archivo}</TableCell>
-          <TableCell className="space-y-2"><Button asChild size="sm" variant="outline"><a href={documentPath(contractId, document.id)}>Ver documento</a></Button><PdfActions contractId={contractId} documentId={document.id} storagePath={document.storage_path} /></TableCell>
+          <TableCell className="space-y-2"><Button asChild size="sm" variant="outline"><a href={documentPath(contractId, document.id)}>Ver documento</a></Button><PdfActions contractId={contractId} documentId={document.id} storagePath={document.storage_path} />
+            {canStartSignature(contractStatus, document) && <StartSignatureAction contractId={contractId} documentId={document.id} onStarted={signatureStarted} />}</TableCell>
         </TableRow>)}</TableBody></Table>
       </div>}
   </section>;

@@ -17,6 +17,7 @@ export interface PdfStorage {
   hasPdf(path: string): Promise<boolean>;
   upload(path: string, bytes: Uint8Array): Promise<void>;
   signedUrl(path: string, downloadName?: string): Promise<string>;
+  download(path: string): Promise<Uint8Array>;
 }
 
 export type PdfGenerator = (html: string, options?: { folio: string }) => Promise<Uint8Array>;

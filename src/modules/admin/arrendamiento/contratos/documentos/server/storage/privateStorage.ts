@@ -46,5 +46,10 @@ export function privatePdfStorage(client: SupabaseClient): PdfStorage {
       if (error || !data?.signedUrl) throw new PdfError(500, "SIGNED_URL_FAILED", "No se pudo crear el acceso temporal al PDF. Vuelve a intentarlo.", error);
       return data.signedUrl;
     },
+    async download(path) {
+      const { data, error } = await bucket.download(path);
+      if (error || !data) throw new PdfError(500, "DOWNLOAD_FAILED", "No se pudo descargar el PDF del bucket privado para verificarlo. Vuelve a intentarlo.", error);
+      return new Uint8Array(await data.arrayBuffer());
+    },
   };
 }

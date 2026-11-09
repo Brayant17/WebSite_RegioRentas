@@ -17,6 +17,7 @@ registerHooks({resolve(specifier,context,next){
  if(specifier==='@/lib/supabaseClient')return moduleSource('export const supabase={};');
  if(specifier==='./hooks/useContracts')return moduleSource('import {useState} from "react";const r=globalThis[Symbol.for("draft.ui")];export function useContract(){const [,set]=useState(0);return {data:r.data,loading:false,error:null,reload:()=>set(n=>n+1)}};export const useContractMutation=()=>({saving:false,error:null,update:r.update});');
  if(specifier==='./documentos/components/ContractDocuments')return moduleSource('export default function Documents(){return null}');
+ if(specifier==='./firmas/components/SignatureProcessPanel')return moduleSource('export function SignatureProcessPanel(){return null}');
  if(specifier==='./partes/DraftLandlordEditor')return moduleSource('export function DraftLandlordEditor(){return null}');
  if(specifier==='../components/DataItem')return moduleSource('import {createElement} from "react";export function DataItem({label,value}){return createElement("p",null,label+": "+value)}');
  if(specifier.startsWith('@/components/ui/')) {
